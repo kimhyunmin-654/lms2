@@ -30,6 +30,8 @@ public class MemberController {
 		String userId = req.getParameter("userId");
 		String password = req.getParameter("password");
 		
+		
+		
 		MemberDTO dto = dao.loginMember(userId, password);
 		if(dto != null) {
 			
@@ -77,7 +79,7 @@ public class MemberController {
         return mav;
     }
 	
-	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)
+	@RequestMapping(value = "/home/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 로그아웃
 		
