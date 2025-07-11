@@ -20,7 +20,7 @@
 		<div class="text-center mb-4">
 			<img src="dist/images/profile.png" alt="프로필" class="rounded-circle">
 			<p class="mt-2">
-				김교수<br> <span style="font-size: 12px;">컴퓨터공학과</span>
+				김관리자<br> <span style="font-size: 12px;">행정실</span>
 			</p>
 		</div>
 
