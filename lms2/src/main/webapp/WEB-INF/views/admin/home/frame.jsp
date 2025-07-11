@@ -16,8 +16,8 @@
 		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp"/>
 			<div class="container" style="margin-left: 240px; margin-top: 70px;">
 				<h2>메인페이지 콘텐츠</h2>
-				<p>내용</p>
+				<p>내용</p> 
 			</div>
-	</main>
+	</main>  
 </body>
 </html>
