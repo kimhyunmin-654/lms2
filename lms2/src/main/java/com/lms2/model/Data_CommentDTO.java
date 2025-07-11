@@ -7,7 +7,7 @@ public class Data_CommentDTO {
 	private int parent_comment_id;
 	private int showReply;
 	private int block;
-	private int data_id;
+	private int data_id; 
 	
 	public int getComment_id() {
 		return comment_id;

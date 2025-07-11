@@ -10,7 +10,7 @@ public class RatingDTO {
 	private int total_rating;
 	private String raiting;
 	private String reg_date;
-	private String modify_date;
+	private String modify_date; 
 	
 	public String getMember_id() {
 		return member_id;

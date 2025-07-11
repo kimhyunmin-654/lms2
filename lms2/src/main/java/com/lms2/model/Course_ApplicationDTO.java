@@ -4,7 +4,7 @@ public class Course_ApplicationDTO {
 	private int course_id;
 	private String apply_status;
 	private String member_id;
-	private String lecture_code;
+	private String lecture_code; 
 	
 	public int getCourse_id() {
 		return course_id;

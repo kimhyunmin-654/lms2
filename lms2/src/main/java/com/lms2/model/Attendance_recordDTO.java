@@ -6,7 +6,7 @@ public class Attendance_recordDTO {
 	private String checkin_time;
 	private String checkout_time;
 	private int status;
-	private int course_id;
+	private int course_id; 
 	
 	public int getAttend_id() {
 		return attend_id;
