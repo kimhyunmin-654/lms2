@@ -1,19 +1,9 @@
 package com.lms2.model;
 
-public class ProfessorDTO {
+public class ProfessorDTO extends MemberDTO {
 
-	private MemberDTO member;
-
-	private String position; // 직책
-	private String department_id; // 학과 코드
-
-	public MemberDTO getMember() {
-		return member;
-	}
-
-	public void setMember(MemberDTO member) {
-		this.member = member;
-	}
+	private String position;
+	private String department_id;
 
 	public String getPosition() {
 		return position;
