@@ -25,7 +25,7 @@
 		</div>
 
 		<div class="login-container">
-			<form name="loginForm" action="${pageContext.request.contextPath}/home/main" method="post" class="login-form">
+			<form name="loginForm" action="" method="post" class="login-form">
 				<label for="userId">아이디/학번</label> 
 				<input type="text" id="userId" name="userId"> 
 				<label for="password">비밀번호</label>
@@ -36,7 +36,7 @@
 					<a href="${pageContext.request.contextPath}/">비밀번호 찾기</a>
 				</div>
 
-				<button type="submit" class="login-btn" onclick="sendLogin();">로그인</button>
+				<button type="button" class="login-btn" onclick="sendLogin();">로그인</button>
 			</form>
 		</div>
 		<div style="margin-top: 20px; text-align: center; font-size: 14px; color: #ffcc00; font-weight: bold;">
@@ -65,6 +65,7 @@ function sendLogin() {
 		return;
 	}
 	
+	f.action = '${pageContext.request.contextPath}/home/main';
 	f.submit();
 
 }
