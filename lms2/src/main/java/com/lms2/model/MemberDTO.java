@@ -56,10 +56,10 @@ public class MemberDTO {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-	public String getEmail1() {
+	public String getEmail() {
 		return email;
 	}
-	public void setEmail1(String email1) {
+	public void setEmail(String email1) {
 		this.email = email1;
 	}
 	public String getPhone() {
