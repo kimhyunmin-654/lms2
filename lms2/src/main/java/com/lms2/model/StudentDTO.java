@@ -2,10 +2,10 @@ package com.lms2.model;
 
 public class StudentDTO extends MemberDTO {
 	
-	private int grade; // 학년
-	private String admission_date; // 입학일
-	private String graduate_date; // 졸업일
-	private String department_id; // 학과 코드
+	private int grade;
+	private String admission_date;
+	private String graduate_date;
+	private String department_id;
 	
 	public int getGrade() {
 		return grade;
