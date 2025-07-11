@@ -1,35 +1,28 @@
 package com.lms2.model;
 
 public class SessionInfo {
-	private Long memberIdx;
-	private String userId;
-	private String userName;
-	private int userLevel;
+	private String member_id;
+	private String name;
+	private int role;
 	private String avatar; // profile photo
 	
-	public Long getMemberIdx() {
-		return memberIdx;
+	public String getMember_id() {
+		return member_id;
 	}
-	public void setMemberIdx(Long memberIdx) {
-		this.memberIdx = memberIdx;
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
-	public String getUserId() {
-		return userId;
+	public String getName() {
+		return name;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getUserName() {
-		return userName;
+	public int getRole() {
+		return role;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public int getUserLevel() {
-		return userLevel;
-	}
-	public void setUserLevel(int userLevel) {
-		this.userLevel = userLevel;
+	public void setRole(int role) {
+		this.role = role;
 	}
 	public String getAvatar() {
 		return avatar;
@@ -37,4 +30,7 @@ public class SessionInfo {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+	
+	
+
 }
