@@ -24,12 +24,12 @@
 		<div class="accordion accordion-flush" id="accordionFlushExample">
 			<div class="accordion-item">
 				<h2 class="accordion-header">
-					<button class="accordion-button collapsed" type="button"
+					<button class="accordion-button collapsed menuaccordion" type="button"
 						data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
 						aria-expanded="false" aria-controls="flush-collapseOne">
 						강의실</button>
 				</h2>
-				<div id="flush-collapseOne" class="accordion-collapse collapse"
+				<div id="flush-collapseOne" class="accordion-collapse collapse menuaccordion"
 					data-bs-parent="#accordionFlushExample">
 					<div class="accordion-body">수강 과목</div>
 					<div class="accordion-body">성적 관리</div>
