@@ -3,8 +3,6 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.rmi.ServerException;
 
-import javax.mail.Session;
-
 import com.lms2.dao.MemberDAO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.SessionInfo;
@@ -87,6 +85,13 @@ public class MemberController {
 	public String adminMain(HttpServletRequest req, HttpServletResponse resp) {
 	    return "admin/home/frame"; // JSP 뷰 경로
 	}
+	
+	@RequestMapping(value = "/home/main_base", method = RequestMethod.GET)
+	public String studentMain(HttpServletRequest req, HttpServletResponse resp) {
+	    return "home/main_base"; // JSP 뷰 경로
+	}
+	
+
 	
 	@RequestMapping(value = "/home/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
