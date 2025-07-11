@@ -19,7 +19,7 @@
 	<div class="container">
 		<div class="body-container row justify-content-center">
 			<div class="col-md-10 my-3 p-3">
-				메인 화면입니다.
+				메인 화면입니다. ^^
 			</div>
 		</div>
 	</div>
