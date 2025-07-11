@@ -1,19 +1,11 @@
 package com.lms2.model;
 
-public class AdminDTO {
+public class AdminDTO extends MemberDTO {
 	
-	private MemberDTO member;
-
+	
 	private String position; // 직책
 	private String division; // 부서
 
-	public MemberDTO getMember() {
-		return member;
-	}
-
-	public void setMember(MemberDTO member) {
-		this.member = member;
-	}
 
 	public String getPosition() {
 		return position;
