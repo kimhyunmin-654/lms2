@@ -9,7 +9,7 @@ public class LectureDTO {
 	private int lecture_year;
 	private String semester;
 	private int capacity;
-	private double credit;
+	private String credit;
 	private String department_id;
 	private String member_id;
 	private int file_id;
@@ -18,36 +18,6 @@ public class LectureDTO {
 	private int file_size;
 	private String reg_date;
 	
-	public int getFile_id() {
-		return file_id;
-	}
-	public void setFile_id(int file_id) {
-		this.file_id = file_id;
-	}
-	public String getSave_filename() {
-		return save_filename;
-	}
-	public void setSave_filename(String save_filename) {
-		this.save_filename = save_filename;
-	}
-	public String getOriginal_filename() {
-		return original_filename;
-	}
-	public void setOriginal_filename(String original_filename) {
-		this.original_filename = original_filename;
-	}
-	public int getFile_size() {
-		return file_size;
-	}
-	public void setFile_size(int file_size) {
-		this.file_size = file_size;
-	}
-	public String getReg_date() {
-		return reg_date;
-	}
-	public void setReg_date(String reg_date) {
-		this.reg_date = reg_date;
-	}
 	public String getLecture_code() {
 		return lecture_code;
 	}
@@ -96,10 +66,10 @@ public class LectureDTO {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	public double getCredit() {
+	public String getCredit() {
 		return credit;
 	}
-	public void setCredit(double credit) {
+	public void setCredit(String credit) {
 		this.credit = credit;
 	}
 	public String getDepartment_id() {
@@ -113,5 +83,35 @@ public class LectureDTO {
 	}
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
+	}
+	public int getFile_id() {
+		return file_id;
+	}
+	public void setFile_id(int file_id) {
+		this.file_id = file_id;
+	}
+	public String getSave_filename() {
+		return save_filename;
+	}
+	public void setSave_filename(String save_filename) {
+		this.save_filename = save_filename;
+	}
+	public String getOriginal_filename() {
+		return original_filename;
+	}
+	public void setOriginal_filename(String original_filename) {
+		this.original_filename = original_filename;
+	}
+	public int getFile_size() {
+		return file_size;
+	}
+	public void setFile_size(int file_size) {
+		this.file_size = file_size;
+	}
+	public String getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(String reg_date) {
+		this.reg_date = reg_date;
 	}
 }
