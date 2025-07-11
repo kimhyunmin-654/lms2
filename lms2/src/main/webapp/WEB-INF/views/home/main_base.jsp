@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -7,29 +7,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spring</title>
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 </head>
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-
-<main>
-	<div class="container">
-		<div class="body-container row justify-content-center">
-			<div class="col-md-10 my-3 p-3">
-				메인 화면입니다. ^^
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
+	</header>
+	<main>
+		<jsp:include page="/WEB-INF/views/layout/student_mainsidebar.jsp" />
+		<div class="container">
+			<div class="body-container row justify-content-center">
+				<div class="col-md-10 my-3 p-3">메인 화면</div>
 			</div>
 		</div>
-	</div>
-</main>
 
-<footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-</footer>
-
-<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
-
+	</main>
 </body>
 </html>
