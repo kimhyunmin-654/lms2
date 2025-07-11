@@ -18,12 +18,12 @@ public class MemberDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT  m1.member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2 "
+			sql = "SELECT  m1.member_id, name, m1.password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2 "
 					+ " FROM member m1 "
 					+ " LEFT OUTER JOIN student s1 ON m1.member_id = s1.member_id "
 					+ " LEFT OUTER JOIN professor p1 ON m1.member_id = p1.member_id "
 					+ " LEFT OUTER JOIN admin a1 ON m1.member_id = a1.member_id "
-					+ " WHERE m1.member_id = ? AND password = ?";
+					+ " WHERE m1.member_id = ? AND m1.password = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			

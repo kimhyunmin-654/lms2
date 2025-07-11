@@ -13,28 +13,24 @@ import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MemberController {
-	@RequestMapping(value="/home/main", method = RequestMethod.GET)
-	public String loginForm(HttpServletRequest req, HttpServletResponse resp) throws ServerException, IOException {
-		// 로그인 폼
-		
-		return "home/main";
-	}
-	@RequestMapping(value = "home/main", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/home/main", method = RequestMethod.POST)
 	public ModelAndView loginSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServerException, IOException {
 		// 로그인 처리
 		MemberDAO dao = new MemberDAO();
 		HttpSession session = req.getSession();
 		
-		String userId = req.getParameter("member_id");
-		String userPwd = req.getParameter("password");
+		String userId = req.getParameter("userId");
+		String password = req.getParameter("password");
 		
-		MemberDTO dto = dao.loginMember(userId, userPwd);
+		MemberDTO dto = dao.loginMember(userId, password);
 		if(dto != null) {
 			
 			// 세션 유지시간 1시간
@@ -54,14 +50,47 @@ public class MemberController {
 				return new ModelAndView(preLoginURI);
 			}
 			
-			// 메인화면으로 리다이렉트
-			return new ModelAndView("redirect:/");
-		}
-		// 로그인 실패한 경우 로그인 페이지
-		ModelAndView mav = new ModelAndView("home/main");
-				
-		return mav;
+
+            // 역할에 따른 리다이렉트 처리
+            int role = dto.getRole();
+
+            if (role == 99) {
+                // 관리자
+                return new ModelAndView("redirect:/admin/home/main");
+            } else if (role == 51) {
+                // 교수
+                return new ModelAndView("redirect:/home/main_base");
+            } else if (role == 1) {
+                // 학생
+                return new ModelAndView("redirect:/home/main_base");
+            } else {
+                // 알 수 없는 역할
+                ModelAndView mav = new ModelAndView("home/main");
+                mav.addObject("message", "알 수 없는 사용자 권한입니다.");
+                return mav;
+            }
+        }
+
+        // 로그인 실패
+        ModelAndView mav = new ModelAndView("home/main");
+        mav.addObject("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+        return mav;
+    }
 	
+	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 로그아웃
+		
+		HttpSession session = req.getSession();
+		
+		// member라는 이름으로 세션에 저장된 속성 삭제
+		session.removeAttribute("member");
+		
+		// 세션에 저장된 모든 속성을 지우고, 세션을 초기화
+		session.invalidate();
+		
+		// 메인화면으로 리다이렉트
+		return "redirect:/home/main";
 	}
 	
 	
