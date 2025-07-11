@@ -2,7 +2,7 @@ package com.lms2.filter;
 
 import java.io.IOException;
 
-import com.hs.model.SessionInfo;
+import com.lms2.model.SessionInfo;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -73,14 +73,14 @@ public class LoginFilter implements Filter {
     			session.setAttribute("preLoginURI", uri);
     			
     			// 로그인 페이지로 리다이렉트
-    			resp.sendRedirect(cp + "/member/login");
+    			resp.sendRedirect(cp + "/home/main");
     		}
     		
     		return;
     	} else if(info != null && uri.indexOf("admin") != -1) {
     		// 로그인 되어 있는 상태에서  관리자 메뉴를 접근하는 경우
-    		if(info.getUserLevel() < 51) {
-    			resp.sendRedirect(cp + "/member/noAuthorized");
+    		if(info.getRole() < 51) {
+    			resp.sendRedirect(cp + "/home/noAuthorized");
     			return;
     		}
     	}
