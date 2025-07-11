@@ -16,13 +16,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class StudentController {
 	
-	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
-	public String loginForm(HttpServletRequest req, HttpServletRequest resp) throws ServletException, IOException {
-		
-		return "member/login";
-	}
 	
-
+	
 	
 	
 	

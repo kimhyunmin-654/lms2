@@ -46,10 +46,14 @@ public class MemberController {
 			
 			session.setAttribute("member", info);
 			
-			String preLoginURI = (String)session.getAttribute("preLoginURI");
+			String preLoginURI = (String) session.getAttribute("preLoginURI");
 			session.removeAttribute("preLoginURI");
-			if(preLoginURI != null) {
-				return new ModelAndView(preLoginURI);
+			if (preLoginURI != null) {
+			    if (preLoginURI.startsWith("redirect:")) {
+			        return new ModelAndView(preLoginURI);
+			    } else {
+			        return new ModelAndView("redirect:" + preLoginURI);
+			    }
 			}
 			
 
@@ -58,7 +62,7 @@ public class MemberController {
 
             if (role == 99) {
                 // 관리자
-                return new ModelAndView("redirect:/admin/home/main");
+                return new ModelAndView("redirect:/admin/home/frame");
             } else if (role == 51) {
                 // 교수
                 return new ModelAndView("redirect:/home/main_base");
@@ -78,6 +82,11 @@ public class MemberController {
         mav.addObject("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
         return mav;
     }
+	
+	@RequestMapping(value = "/admin/home/frame", method = RequestMethod.GET)
+	public String adminMain(HttpServletRequest req, HttpServletResponse resp) {
+	    return "admin/home/frame"; // JSP 뷰 경로
+	}
 	
 	@RequestMapping(value = "/home/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

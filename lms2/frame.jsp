@@ -13,7 +13,7 @@
 		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/student_mainsidebar.jsp"/>
+		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp"/>
 			<div class="container" style="margin-left: 240px; margin-top: 70px;">
 				<h2>메인페이지 콘텐츠</h2>
 				<p>내용</p>
