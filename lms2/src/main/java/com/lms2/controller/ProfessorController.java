@@ -13,27 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ProfessorController {
-	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
-	public String loginFrom(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 로그인 폼
-		
-		return "";
-	}
-	
-	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
-	public ModelAndView loginSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 로그인 처리
-		
-		return null;
-	}
-	
-	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)
-	public String logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 로그아웃
-		
-		return "redirect:/";
-	}
-	
 	
 	
 	
