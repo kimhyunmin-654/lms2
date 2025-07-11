@@ -15,6 +15,8 @@
 		<div class="container-fluid" style="font-size: 26px; color: white; font-weight: bold;">
 			페이지제목
 		</div>
+		<div>icon</div>
+		<div>icon</div>
 	</nav>
 </body>
 </html>
