@@ -27,39 +27,41 @@
 		<div class="accordion accordion-flush" id="accordionFlushExample">
 			<div class="accordion-item">
 				<h2 class="accordion-header">
-					<button class="accordion-button collapsed" type="button"
-						data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-						aria-expanded="false" aria-controls="flush-collapseOne">
-						강의실</button>
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" onclick="location.href='${pageContext.request.contextPath}/">
+						강의실
+					</button>
 				</h2>
 				<div id="flush-collapseOne" class="accordion-collapse collapse"
 					data-bs-parent="#accordionFlushExample">
-					<div class="accordion-body">수강 과목</div>
-					<div class="accordion-body">성적 관리</div>
-					<div class="accordion-body">출석 관리</div>
-					<div class="accordion-body">수업 일정</div>
+					<div class="accordion-body"><a href="${pageContext.request.contextPath}/">수강 과목</a></div>
+					<div class="accordion-body"><a href="${pageContext.request.contextPath}/">성적 관리</a></div>
+					<div class="accordion-body"><a href="${pageContext.request.contextPath}/">출석 관리</a></div>
+					<div class="accordion-body"><a href="${pageContext.request.contextPath}/">수업 일정</a></div>
 				</div>
 			</div>
 
 			<div class="accordion-item">
 				<h2 class="accordion-header">
-					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo" onclick="location.href='${pageContext.request.contextPath}/">
 						학습활동
 					</button>
 				</h2>
 				<div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
 					<div class="accordion-body">
+					<a href="${pageContext.request.contextPath}/">
 						과제
+					</a>
 					</div>
 					<div class="accordion-body">
+					<a href="${pageContext.request.contextPath}/">
 						자료실
+					</a>
 					</div>
 				</div>
 			</div>
-
-			<div>학사 공지사항</div>
-			<div>내 정보 관리</div>
-			<div>로그아웃</div>
+			<div><a href="${pageContext.request.contextPath}/">학사 공지사항</a></div>
+			<div><a href="${pageContext.request.contextPath}/">내 정보 관리</a></div>
+			<div><a href="${pageContext.request.contextPath}/">로그아웃</a></div>
 		</div>
 	</div>
 </body>
