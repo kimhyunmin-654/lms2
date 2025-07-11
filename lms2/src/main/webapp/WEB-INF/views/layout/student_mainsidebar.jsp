@@ -9,8 +9,11 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/dist/css/main.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 	<div class="text-white p-3 position-fixed blackbox">
@@ -24,12 +27,12 @@
 		<div class="accordion accordion-flush" id="accordionFlushExample">
 			<div class="accordion-item">
 				<h2 class="accordion-header">
-					<button class="accordion-button collapsed menuaccordion" type="button"
+					<button class="accordion-button collapsed" type="button"
 						data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
 						aria-expanded="false" aria-controls="flush-collapseOne">
 						강의실</button>
 				</h2>
-				<div id="flush-collapseOne" class="accordion-collapse collapse menuaccordion"
+				<div id="flush-collapseOne" class="accordion-collapse collapse"
 					data-bs-parent="#accordionFlushExample">
 					<div class="accordion-body">수강 과목</div>
 					<div class="accordion-body">성적 관리</div>

@@ -9,8 +9,7 @@ html, body {
 }
 
 body {
-	background: url('/dist/images/background.jpg') no-repeat center center
-		fixed;
+	background: url('/dist/images/background.jpg') no-repeat center center fixed;
 	background-size: cover;
 	position: relative;
 }
@@ -132,4 +131,43 @@ body {
 	text-align: center;
 	font-size: 12px;
 	color: white;
+}
+
+.rounded-circle {
+	width: 120px;
+	height: 120px;
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+.blackbox {
+	width: 220px;
+	top: 30px;
+	height: calc(100vh - 30px);
+	background-color: #222;
+}
+
+.blackbox2 {
+	width: 220px;
+	top: 50px;
+	height: calc(100vh - 50px);
+	background-color: #222;
+}
+
+.redbox {
+	background-color: #cf1c31;
+}
+
+.icon {
+	height: 30px; 
+	width: 30px;
+}
+
+.accordion-button,
+.accordion-body,
+.accordion-button:focus,
+.accordion-button:not(.collapsed),
+.accordion-item {
+  background-color: transparent !important;
+  color: white !important;
 }
