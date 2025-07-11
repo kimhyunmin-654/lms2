@@ -19,13 +19,13 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MemberController {
-	@RequestMapping(value="/member/login", method = RequestMethod.GET)
+	@RequestMapping(value="/home/main", method = RequestMethod.GET)
 	public String loginForm(HttpServletRequest req, HttpServletResponse resp) throws ServerException, IOException {
 		// 로그인 폼
 		
-		return "member/login";
+		return "home/main";
 	}
-	@RequestMapping(value = "member/login", method = RequestMethod.POST)
+	@RequestMapping(value = "home/main", method = RequestMethod.POST)
 	public ModelAndView loginSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServerException, IOException {
 		// 로그인 처리
 		MemberDAO dao = new MemberDAO();
@@ -58,7 +58,7 @@ public class MemberController {
 			return new ModelAndView("redirect:/");
 		}
 		// 로그인 실패한 경우 로그인 페이지
-		ModelAndView mav = new ModelAndView("member/login");
+		ModelAndView mav = new ModelAndView("home/main");
 				
 		return mav;
 	
