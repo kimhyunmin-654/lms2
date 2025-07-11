@@ -9,8 +9,7 @@ public class MemberDTO {
 	private String create_date; // 생성일
 	private String modify_date; // 수정일
 	private String avatar; // 사진등록
-	private String email1; // 이메일
-	private String email2; // 이메일
+	private String email; // 이메일
 	private String phone; // 핸드폰 번호
 	private String birth; // 생년월일
 	private String addr1; // 주소
@@ -58,16 +57,10 @@ public class MemberDTO {
 		this.avatar = avatar;
 	}
 	public String getEmail1() {
-		return email1;
+		return email;
 	}
 	public void setEmail1(String email1) {
-		this.email1 = email1;
-	}
-	public String getEmail2() {
-		return email2;
-	}
-	public void setEmail2(String email2) {
-		this.email2 = email2;
+		this.email = email1;
 	}
 	public String getPhone() {
 		return phone;
