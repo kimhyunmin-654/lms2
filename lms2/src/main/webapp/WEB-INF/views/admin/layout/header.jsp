@@ -30,7 +30,7 @@
 							<span class="fw-semibold" style="font-size: 10px;">관리자</span>
 						</div>
 						<div class="text-start">
-							<span>${sessionScope.member.userName} 님</span>
+							<span>${sessionScope.member.name} 님</span>
 							&nbsp;<a href="${pageContext.request.contextPath}/"><i class="bi bi-box-arrow-right"></i></a>
 						</div>
 					</div>
