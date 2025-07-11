@@ -4,7 +4,7 @@ public class Data_CommentDTO {
 	private int comment_id;
 	private String content;
 	private String reg_date;
-	private int parent_comment_id;
+	private int parent_comment_id;  
 	private int showReply;
 	private int block;
 	private int data_id; 
