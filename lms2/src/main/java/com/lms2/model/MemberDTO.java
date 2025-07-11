@@ -1,66 +1,48 @@
 package com.lms2.model;
 
 public class MemberDTO {
-	private Long memberIdx;
-	private String userId;
-	private String userPwd;
-	private String userName;
-	private int userLevel;
-	private int enabled;
-	private String register_date;
-	private String modify_date;
-	private String email;
-	private String email1;
-	private String email2;
-	private int receiveEmail;
-	private String profile_photo;
-	private String tel;
-	private String birth;
-	private String zip;
-	private String addr1;
-	private String addr2;
 
-	public Long getMemberIdx() {
-		return memberIdx;
+	private String member_id; // 학번,교번,사번
+	private String name; // 이름
+	private String password; // 비밀번호
+	private int role; // 역할
+	private String create_date; // 생성일
+	private String modify_date; // 수정일
+	private String avatar; // 사진등록
+	private String email; // 이메일
+	private String phone; // 핸드폰 번호
+	private String birth; // 생년월일
+	private String addr1; // 주소
+	private String addr2; // 상세 주소
+	public String getMember_id() {
+		return member_id;
 	}
-	public void setMemberIdx(Long memberIdx) {
-		this.memberIdx = memberIdx;
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
-	public String getUserId() {
-		return userId;
+	public String getName() {
+		return name;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getUserPwd() {
-		return userPwd;
+	public String getPassword() {
+		return password;
 	}
-	public void setUserPwd(String userPwd) {
-		this.userPwd = userPwd;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	public String getUserName() {
-		return userName;
+	public int getRole() {
+		return role;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setRole(int role) {
+		this.role = role;
 	}
-	public int getUserLevel() {
-		return userLevel;
+	public String getCreate_date() {
+		return create_date;
 	}
-	public void setUserLevel(int userLevel) {
-		this.userLevel = userLevel;
-	}
-	public int getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(int enabled) {
-		this.enabled = enabled;
-	}
-	public String getRegister_date() {
-		return register_date;
-	}
-	public void setRegister_date(String register_date) {
-		this.register_date = register_date;
+	public void setCreate_date(String create_date) {
+		this.create_date = create_date;
 	}
 	public String getModify_date() {
 		return modify_date;
@@ -68,53 +50,29 @@ public class MemberDTO {
 	public void setModify_date(String modify_date) {
 		this.modify_date = modify_date;
 	}
-	public String getEmail() {
-		return email;
+	public String getAvatar() {
+		return avatar;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 	public String getEmail1() {
-		return email1;
+		return email;
 	}
 	public void setEmail1(String email1) {
-		this.email1 = email1;
+		this.email = email1;
 	}
-	public String getEmail2() {
-		return email2;
+	public String getPhone() {
+		return phone;
 	}
-	public void setEmail2(String email2) {
-		this.email2 = email2;
-	}
-	public int getReceiveEmail() {
-		return receiveEmail;
-	}
-	public void setReceiveEmail(int receiveEmail) {
-		this.receiveEmail = receiveEmail;
-	}
-	public String getProfile_photo() {
-		return profile_photo;
-	}
-	public void setProfile_photo(String profile_photo) {
-		this.profile_photo = profile_photo;
-	}
-	public String getTel() {
-		return tel;
-	}
-	public void setTel(String tel) {
-		this.tel = tel;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	public String getBirth() {
 		return birth;
 	}
 	public void setBirth(String birth) {
 		this.birth = birth;
-	}
-	public String getZip() {
-		return zip;
-	}
-	public void setZip(String zip) {
-		this.zip = zip;
 	}
 	public String getAddr1() {
 		return addr1;
@@ -128,4 +86,7 @@ public class MemberDTO {
 	public void setAddr2(String addr2) {
 		this.addr2 = addr2;
 	}
+
+	
+
 }
