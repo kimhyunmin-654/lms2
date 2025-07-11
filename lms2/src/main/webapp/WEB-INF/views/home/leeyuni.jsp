@@ -9,6 +9,6 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
-	히히 배고파요 점심시간 빨리 와라 이히히히히히히히히 
+	히히 배고파요 점심시간 빨리 와라
 </body>
 </html>
