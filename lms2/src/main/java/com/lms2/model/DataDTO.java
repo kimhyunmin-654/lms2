@@ -1,18 +1,18 @@
 package com.lms2.model;
 
 public class DataDTO {
-	private int data_id;
-	private String subject;
-	private String content;
-	private int hit_count;
-	private String reg_date;
-	private String modify_date;
-	private String lecture_code;
+	private int data_id; // 자료실 번호
+	private String subject; // 제목
+	private String content; // 내용
+	private int hit_count; // 조회수
+	private String reg_date; // 등록 날짜
+	private String modify_date; // 수정일
+	private String lecture_code; // 강의 코드
 	
-	private int file_id;
-	private String save_filename;
-	private String original_filename;
-	private int file_size;
+	private int file_id; // 파일 번호
+	private String save_filename; // 저장된 파일 이름
+	private String original_filename; // 원본 파일 이름
+	private int file_size; // 파일 크기
 	public int getData_id() {
 		return data_id;
 	}

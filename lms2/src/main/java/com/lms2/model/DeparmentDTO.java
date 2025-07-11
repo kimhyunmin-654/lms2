@@ -1,8 +1,8 @@
 package com.lms2.model;
 
 public class DeparmentDTO {
-	private String department_id;
-	private String department_name;
+	private String department_id; // 학과 코드
+	private String department_name; // 학과 명칭
 	
 	public String getDepartment_id() {
 		return department_id;

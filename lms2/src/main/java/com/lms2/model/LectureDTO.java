@@ -1,23 +1,23 @@
 package com.lms2.model;
 
 public class LectureDTO {
-	private String lecture_code;
-	private String subject;
-	private int grade;
-	private String classroom;
-	private String division;
-	private int lecture_year;
-	private String semester;
-	private int capacity;
-	private String credit;
-	private String department_id;
-	private String member_id;
+	private String lecture_code; // 강의 코드
+	private String subject; // 강의 명
+	private int grade; // 학년
+	private String classroom; // 강의실
+	private String division; // 분류
+	private int lecture_year; // 개설연도
+	private String semester; // 학기
+	private int capacity; // 수강 정원
+	private String credit; // 학점
+	private String department_id; // 학과 코드
+	private String member_id; // 학번
 	
-	private int file_num;
-	private String sava_filename;
-	private String original_filename;
-	private int file_size;
-	private String reg_date;
+	private int file_id; // 파일 번호
+	private String sava_filename; // 저장된 파일명
+	private String original_filename; // 업로드한 원래 파일명
+	private int file_size; // 파일 크기
+	private String reg_date; // 등록일시
 	
 	public String getLecture_code() {
 		return lecture_code;
@@ -85,11 +85,11 @@ public class LectureDTO {
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
-	public int getFile_num() {
-		return file_num;
+	public int getFile_id() {
+		return file_id;
 	}
-	public void setFile_num(int file_num) {
-		this.file_num = file_num;
+	public void setFile_id(int file_id) {
+		this.file_id = file_id;
 	}
 	public String getSava_filename() {
 		return sava_filename;
