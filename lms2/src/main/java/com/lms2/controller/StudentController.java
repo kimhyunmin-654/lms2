@@ -22,13 +22,7 @@ public class StudentController {
 		return "member/login";
 	}
 	
-	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)
-	public String logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 로그아웃
-		
-		return "redirect:/";
-	}
-	
+
 	
 	
 	
