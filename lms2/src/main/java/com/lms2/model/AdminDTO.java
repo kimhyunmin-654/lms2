@@ -3,8 +3,8 @@ package com.lms2.model;
 public class AdminDTO extends MemberDTO {
 	
 	
-	private String position; // 직책
-	private String division; // 부서
+	private String position; 
+	private String division; 
 
 
 	public String getPosition() {

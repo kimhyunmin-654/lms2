@@ -2,8 +2,8 @@ package com.lms2.model;
 
 public class ProfessorDTO extends MemberDTO {
 
-	private String position; // 직책
-	private String department_id; // 학과 코드
+	private String position;
+	private String department_id;
 
 	public String getPosition() {
 		return position;
