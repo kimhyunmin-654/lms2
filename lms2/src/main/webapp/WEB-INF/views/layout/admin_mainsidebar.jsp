@@ -36,7 +36,7 @@
 				</h2>
 				<div id="flush-collapseOne" class="accordion-collapse collapse"
 					data-bs-parent="#accordionFlushExample">
-					<div class="accordion-body">학생 관리</div>
+					<div class="accordion-body"><a href="${pageContext.request.contextPath}/admin/student/list">학생 관리</a></div>
 					<div class="accordion-body">교수 관리</div>
 					<div class="accordion-body">관리자 관리</div>
 				</div>
