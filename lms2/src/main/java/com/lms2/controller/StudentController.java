@@ -19,22 +19,6 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class StudentController {
-	
-	@RequestMapping(value = "/student/bbs/list", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 게시물 리스트
-		ModelAndView mav = new ModelAndView("/student/bbs/list");
-		return mav;
-	}
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 글 읽기
-		ModelAndView mav = new ModelAndView("");
-		return mav;
-	}
-	
-	
 	@RequestMapping(value = "/admin/student/list", method = RequestMethod.GET)
 	public ModelAndView studentList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 학생 리스트

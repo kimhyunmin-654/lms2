@@ -1,73 +1,66 @@
 package com.lms2.controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import com.lms2.dao.DataDAO;
 import com.lms2.dao.ProfessorDAO;
+import com.lms2.model.DataDTO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
+import com.lms2.util.MyUtil;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ProfessorController {
-	
+
 	@RequestMapping(value = "/admin/professor/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    ModelAndView mav = new ModelAndView("admin/professor/list");
-	    return mav;
+		ModelAndView mav = new ModelAndView("admin/professor/list");
+		return mav;
 	}
-	
+
 	@RequestMapping(value = "/admin/professor/write", method = RequestMethod.GET)
-	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("admin/professor/write");
 		mav.addObject("mode", "write");
 		return mav;
 	}
-	
-	@RequestMapping(value = "/admin/professor/write", method = RequestMethod.POST)
-	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    ProfessorDAO dao = new ProfessorDAO();
-	    try {
-	        ProfessorDTO dto = new ProfessorDTO();
-	        
-	        dto.setMember_id(req.getParameter("member_id"));
-	        dto.setName(req.getParameter("name"));
-	        dto.setPassword(req.getParameter("password"));
-	        dto.setAvatar(req.getParameter("avatar"));
-	        dto.setEmail(req.getParameter("email"));
-	        dto.setPhone(req.getParameter("phone"));
-	        dto.setBirth(req.getParameter("birth"));
-	        dto.setAddr1(req.getParameter("addr1"));
-	        dto.setAddr2(req.getParameter("addr2"));
-	        
-	        dto.setPosition(req.getParameter("position"));
-	        dto.setDepartment_id(req.getParameter("department_id"));
-	        
-	        dao.insertProfessor(dto);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
 
-	    return new ModelAndView("redirect:/admin/professor/list");
-	}
-	
-	@RequestMapping(value = "/professor/bbs/list", method = RequestMethod.GET)
-	public ModelAndView dataList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 자료실 게시물 리스트
-		ModelAndView mav = new ModelAndView("professor/bbs/list");
-		return mav;
-	}
-	
-	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
-	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp)
+	@RequestMapping(value = "/admin/professor/write", method = RequestMethod.POST)
+	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 글쓰기 폼
-		ModelAndView mav = new ModelAndView("professor/bbs/write");
-		return mav;
+		ProfessorDAO dao = new ProfessorDAO();
+		try {
+			ProfessorDTO dto = new ProfessorDTO();
+
+			dto.setMember_id(req.getParameter("member_id"));
+			dto.setName(req.getParameter("name"));
+			dto.setPassword(req.getParameter("password"));
+			dto.setAvatar(req.getParameter("avatar"));
+			dto.setEmail(req.getParameter("email"));
+			dto.setPhone(req.getParameter("phone"));
+			dto.setBirth(req.getParameter("birth"));
+			dto.setAddr1(req.getParameter("addr1"));
+			dto.setAddr2(req.getParameter("addr2"));
+
+			dto.setPosition(req.getParameter("position"));
+			dto.setDepartment_id(req.getParameter("department_id"));
+
+			dao.insertProfessor(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/admin/professor/list");
 	}
 }

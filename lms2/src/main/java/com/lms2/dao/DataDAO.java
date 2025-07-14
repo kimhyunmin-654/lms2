@@ -23,7 +23,7 @@ public class DataDAO {
 		try {
 			sql = "INSERT INTO data(data_id, subject, content, hit_count, reg_date, modify_date, lecture_code)"
 					+ " VALUES(DATA_SEQ.NEXTVAL, ?, ?, 0, SYSDATE, SYSDATE, ?)";
-
+		 	
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, dto.getSubject());
@@ -118,12 +118,12 @@ public class DataDAO {
 			sb.append(" SELECT data_id, subject, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, hit_count ");
 			sb.append(" FROM DATA");
 			sb.append(" ORDER BY data_id DESC ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
 			pstmt = conn.prepareStatement(sb.toString());
-
+			
 			pstmt.setInt(1, offset);
 			pstmt.setInt(2, size);
-
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -231,8 +231,10 @@ public class DataDAO {
 
 		try {
 			sql = "SELECT data_id, subject, content, hit_count, reg_date, lecture_code " + " FROM DATA "
-					+ " WHERE NUM = ?";
+					+ " WHERE data_id = ?";
 
+			// NUM이 아니라 data_id...
+			
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setLong(1, data_id);
