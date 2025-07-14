@@ -24,7 +24,7 @@
 				<h3 style="font-size: 29px;">학생관리</h3>
 			</div>
 			
-		
+		   
 			
 			<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/admin/student/account">학생 등록</a></div>
 		</div>
