@@ -46,7 +46,7 @@ public class LectureDAO {
 
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, dto.getSava_filename());
+			pstmt.setString(1, dto.getSave_filename());
 			pstmt.setString(2, dto.getOriginal_filename());
 			pstmt.setInt(3, dto.getFile_size());
 			pstmt.setString(4, dto.getLecture_code());
