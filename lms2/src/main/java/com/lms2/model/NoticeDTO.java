@@ -1,7 +1,11 @@
 package com.lms2.model;
 
+import java.util.List;
+
+import com.lms2.util.MyMultipartFile;
+
 public class NoticeDTO {
-	private int notice_id;
+	private long notice_id;
 	private int is_notice;
 	private String subject;
 	private String content;
@@ -9,15 +13,21 @@ public class NoticeDTO {
 	private String reg_date;
 	private String modify_date;
 	private int is_visible;
-	private int file_id;
+	private String member_id;
+	private String name;
+	
+	
+	private List<MyMultipartFile> listFile;
+	
+	private long file_id;
 	private String save_filename;
 	private String original_filename;
-	private int file_size;
-	
-	public int getNotice_id() {
+	private long file_size;
+		
+	public long getNotice_id() {
 		return notice_id;
 	}
-	public void setNotice_id(int notice_id) {
+	public void setNotice_id(long notice_id) {
 		this.notice_id = notice_id;
 	}
 	public int getIs_notice() {
@@ -62,11 +72,40 @@ public class NoticeDTO {
 	public void setIs_visible(int is_visible) {
 		this.is_visible = is_visible;
 	}
-	public int getFile_id() {
+						
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
+	
+		
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<MyMultipartFile> getListFile() {
+		return listFile;
+	}
+	public void setListFile(List<MyMultipartFile> listFile) {
+		this.listFile = listFile;
+	}
+	
+
+	public long getFile_id() {
 		return file_id;
 	}
-	public void setFile_id(int file_id) {
+	public void setFile_id(long file_id) {
 		this.file_id = file_id;
+	}
+	public long getFile_size() {
+		return file_size;
+	}
+	public void setFile_size(long file_size) {
+		this.file_size = file_size;
 	}
 	public String getSave_filename() {
 		return save_filename;
@@ -80,17 +119,5 @@ public class NoticeDTO {
 	public void setOriginal_filename(String original_filename) {
 		this.original_filename = original_filename;
 	}
-	public int getFile_size() {
-		return file_size;
-	}
-	public void setFile_size(int file_size) {
-		this.file_size = file_size;
-	}
-	public int getNotice_num() {
-		return notice_num;
-	}
-	public void setNotice_num(int notice_num) {
-		this.notice_num = notice_num;
-	}
-	private int notice_num;
+
 }
