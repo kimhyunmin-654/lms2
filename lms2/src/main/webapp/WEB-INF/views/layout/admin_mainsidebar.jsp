@@ -24,11 +24,11 @@
 				data-bs-parent="#sidebarAccordion">
 				<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/admin/student/list">학생 관리</a></div>
 				<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/admin/professor/list">교수 관리</a></div>
-				<div class="accordion-body custom-submenu">관리자 관리</div>
+				<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/admin/admin/list">관리자 관리</a></div>
 			</div>
 		</div>
 
-		<div class="accordion-button custom-accordion-btn collapsed">강의 관리</div>
+		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/admin/lecture/list">강의 관리</a></div>
 		<div class="accordion-button custom-accordion-btn collapsed">공지사항 관리</div>
 		<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
 		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
