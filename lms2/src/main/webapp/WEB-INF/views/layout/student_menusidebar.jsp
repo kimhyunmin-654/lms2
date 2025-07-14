@@ -13,44 +13,38 @@
 </head>
 <body>
 	<div class="text-white p-3 position-fixed blackbox2">
-		<div class="accordion accordion-flush" id="accordionFlushExample">
+		<div class="accordion accordion-flush" id="sidebarAccordion">
 			<div class="accordion-item">
 				<h2 class="accordion-header">
-					<button class="accordion-button collapsed " type="button"
-						data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-						aria-expanded="false" aria-controls="flush-collapseOne">
-						강의실</button>
-				</h2>
-				<div id="flush-collapseOne" class="accordion-collapse collapse"
-					data-bs-parent="#accordionFlushExample">
-					<div class="accordion-body">수강 과목</div>
-					<div class="accordion-body">성적 관리</div>
-					<div class="accordion-body">출석 관리</div>
-					<div class="accordion-body">수업 일정</div>
-				</div>
-			</div>
-
-			<div class="accordion-item">
-				<h2 class="accordion-header">
-					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-						학습활동
+					<button class="accordion-button custom-accordion-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+						강의실 <span class="ms-auto toggle-icon">+</span>
 					</button>
 				</h2>
-				<div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-					<div class="accordion-body">
-						과제
-					</div>
-					<div class="accordion-body">
-					<a href="">
-						자료실
-					</a>
-					</div>
+				<div id="collapseOne" class="accordion-collapse collapse"
+					data-bs-parent="#sidebarAccordion">
+					<div class="accordion-body custom-submenu">수강 과목</div>
+					<div class="accordion-body custom-submenu">성적 관리</div>
+					<div class="accordion-body custom-submenu">출석 관리</div>
+					<div class="accordion-body custom-submenu">수업 일정</div>
 				</div>
 			</div>
 
-			<div>학사 공지사항</div>
-			<div>내 정보 관리</div>
-			<div>로그아웃</div>
+			<div class="accordion-item">
+				<h2 class="accordion-header">
+					<button class="accordion-button custom-accordion-btn collapsed" type="button" data-bs-toggle="collapse"	data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+						학습활동 <span class="ms-auto toggle-icon">+</span>
+					</button>
+				</h2>
+				<div id="collapseTwo" class="accordion-collapse collapse"
+					data-bs-parent="#sidebarAccordion">
+					<div class="accordion-body custom-submenu">과제</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/bbs/list">자료실</a></div>
+				</div>
+			</div>
+
+			<div class="accordion-button custom-accordion-btn collapsed">학사 공지사항</div>
+			<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
 	</div>
 </body>

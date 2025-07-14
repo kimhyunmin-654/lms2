@@ -7,8 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -52,7 +51,7 @@
 
 			<div class="accordion-button custom-accordion-btn collapsed">학사 공지사항</div>
 			<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
-			<div class="accordion-button custom-accordion-btn collapsed">로그아웃</div>
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
 	</div>
 </body>

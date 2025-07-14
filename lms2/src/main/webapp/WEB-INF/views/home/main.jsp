@@ -5,17 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
-</head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>쌍용대학교 통합 로그인</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
-<body
-	style="background: url('${pageContext.request.contextPath}/dist/images/background.jpg') no-repeat center center fixed; background-size: cover;">
+<body style="background: url('${pageContext.request.contextPath}/dist/images/background.jpg') no-repeat center center fixed; background-size: cover;">
 
 	<div class="overlay"></div>
 
@@ -27,9 +22,7 @@
 				서비스 이용을 끝낸 후에는 개인정보 보호를 위해여 꼭 로그아웃을 해주시길 바랍니다.<br>아이디는 학생은 학번,
 				교수/직원은 포털 아이디(이메일 아이디) 또는 직번입니다.
 			</p>
-
 		</div>
-
 
 		<div class="login-container">
 			<form name="loginForm" action="" method="post" class="login-form">
@@ -37,7 +30,6 @@
 				<input type="text" id="userId" name="userId"> 
 				<label for="password">비밀번호</label>
 				<input type="password" id="password" name="password">
-
 				<div class="find-links">
 					<a href="${pageContext.request.contextPath}/">아이디 찾기</a> | 
 					<a href="${pageContext.request.contextPath}/">비밀번호 찾기</a>
@@ -59,7 +51,6 @@
 			</div>
 		</div>
 	</div>
-	
 <script type="text/javascript">
 function sendLogin() {
 	const f = document.loginForm;
@@ -76,7 +67,6 @@ function sendLogin() {
 	
 	f.action = '${pageContext.request.contextPath}/home/main';
 	f.submit();
-
 }
 </script>
 
