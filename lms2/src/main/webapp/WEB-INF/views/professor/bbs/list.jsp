@@ -89,8 +89,9 @@
 						</form>
 					</div>
 					
+					<!--학생은 안 보이게 할 것 -->
 					<div class="col text-end">
-						<button type="button" class="btn btn-light"  style="display: none"></button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/write';">글올리기</button>
 					</div>
 				</div>
 			</div>
