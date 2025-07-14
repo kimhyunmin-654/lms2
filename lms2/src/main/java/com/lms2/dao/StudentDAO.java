@@ -148,5 +148,31 @@ public class StudentDAO {
 		
 		return list;
 	}
+	
+	public StudentDTO findbyId(String member_id) {
+		
+		StudentDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = " ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member_id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new StudentDTO();
+				
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setName(rs.getString("name"));
+			}
+		}
+		
+		return dto;
+	}
 
 }
