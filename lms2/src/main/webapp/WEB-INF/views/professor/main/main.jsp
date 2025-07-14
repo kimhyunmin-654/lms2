@@ -21,7 +21,7 @@
 
 			<div class="body-container row justify-content-center"
 				style="margin: 100px;">
-				<h3 style="font-size: 29px;">관리자 메인페이지</h3>
+				<h3 style="font-size: 29px;">교수 메인페이지</h3>
 					내용
 			</div>
 		</div>

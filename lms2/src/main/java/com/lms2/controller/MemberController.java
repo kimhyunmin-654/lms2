@@ -66,7 +66,7 @@ public class MemberController {
             if (role == 99) {
                 // 관리자
                 return new ModelAndView("redirect:/admin/home/frame");
-            } else if (role == 51) {
+            } else if (role == 2) {
                 // 교수
                 return new ModelAndView("redirect:/professor/main/main");
             } else if (role == 1) {
@@ -89,6 +89,11 @@ public class MemberController {
 	@RequestMapping(value = "/admin/home/frame", method = RequestMethod.GET)
 	public String adminMain(HttpServletRequest req, HttpServletResponse resp) {
 	    return "admin/home/frame"; // JSP 뷰 경로
+	}
+	
+	@RequestMapping(value = "/professor/main/main", method = RequestMethod.GET)
+	public String professorMain(HttpServletRequest req, HttpServletResponse resp) {
+	    return "professor/main/main"; // JSP 뷰 경로
 	}
 	
 	@RequestMapping(value = "/student/main/main", method = RequestMethod.GET)
