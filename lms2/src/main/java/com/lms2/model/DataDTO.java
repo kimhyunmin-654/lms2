@@ -8,11 +8,19 @@ public class DataDTO {
 	private String reg_date; // 등록 날짜
 	private String modify_date; // 수정일
 	private String lecture_code; // 강의 코드
+	private String member_id;
 	
 	private int file_id; // 파일 번호
 	private String save_filename; // 저장된 파일 이름
 	private String original_filename; // 원본 파일 이름
 	private int file_size; // 파일 크기
+	
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
 	public int getData_id() {
 		return data_id;
 	}

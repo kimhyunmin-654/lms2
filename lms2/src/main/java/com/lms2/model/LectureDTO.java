@@ -19,6 +19,7 @@ public class LectureDTO {
 	private int file_size; // 파일 크기
 	private String reg_date; // 등록일시
 	
+	
 	public String getLecture_code() {
 		return lecture_code;
 	}
