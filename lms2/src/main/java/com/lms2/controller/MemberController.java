@@ -18,6 +18,11 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MemberController {
+	@RequestMapping(value = "/home/main", method = RequestMethod.GET)
+	public String loginForm(HttpServletRequest req, HttpServletResponse resp) {
+	    return "home/main"; // 로그인 JSP
+	}
+	
 
 	@RequestMapping(value = "/home/main", method = RequestMethod.POST)
 	public ModelAndView loginSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServerException, IOException {
