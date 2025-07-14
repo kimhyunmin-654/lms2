@@ -23,7 +23,7 @@
 			<div id="collapseOne" class="accordion-collapse collapse"
 				data-bs-parent="#sidebarAccordion">
 				<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/admin/student/list">학생 관리</a></div>
-				<div class="accordion-body custom-submenu">교수 관리</div>
+				<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/admin/professor/list">교수 관리</a></div>
 				<div class="accordion-body custom-submenu">관리자 관리</div>
 			</div>
 		</div>
