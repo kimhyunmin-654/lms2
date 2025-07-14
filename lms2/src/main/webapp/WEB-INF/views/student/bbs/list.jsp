@@ -8,20 +8,19 @@
 <title>자료실</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main1.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 </head>
 <body>
-<header>
-	<jsp:include page="/WEB-INF/views/layout/menuheader.jsp"/>
-</header>
-
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp"/>
+	</header>
 	<main>
 		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
-			<div class="body-container row justify-content-center"
-				style="margin: 100px;">
+			<div class="body-container row justify-content-center" style="margin: 100px;">
 				<h3 style="font-size: 29px;">자료실</h3>
 					내용
 			</div>

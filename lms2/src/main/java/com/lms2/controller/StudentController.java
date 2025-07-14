@@ -26,6 +26,4 @@ public class StudentController {
 		ModelAndView mav = new ModelAndView("");
 		return mav;
 	}
-	
-	
 }
