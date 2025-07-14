@@ -2,8 +2,11 @@ package com.lms2.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lms2.model.ProfessorDTO;
 import com.lms2.util.DBConn;
@@ -20,8 +23,8 @@ public class ProfessorDAO {
 		try {
 			conn.setAutoCommit(false);
 
-			sql = "INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2)"
-					+ "VALUES(?,?,?,51,SYSDATE,SYSDATE,?,?,?,TO_DATE(?,'YYYY-MM-DD'),?,?";
+			sql = "INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2) "
+				    + "VALUES(?,?,?,51,SYSDATE,SYSDATE,?,?,?,TO_DATE(?,'YYYY-MM-DD'),?,?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -45,7 +48,7 @@ public class ProfessorDAO {
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getMember_id());
-			pstmt.setString(1, dto.getPosition());
+			pstmt.setString(2, dto.getPosition());
 			pstmt.setString(3, dto.getDepartment_id());
 			
 			pstmt.executeUpdate();
@@ -66,8 +69,8 @@ public class ProfessorDAO {
 		}	
 	}
 	
-	// 테이블 조인
 	/*
+	// 테이블 조인
 	public ProfessorDTO findById(String member_id) {
 		ProfessorDTO dto = null;
 		
@@ -115,10 +118,18 @@ public class ProfessorDAO {
 		return dto;
 		
 	}
-	*/
+	
+	// 게시물 리스트
+	public List<ProfessorDTO> listProfessor(int offset, int size){
+		List<ProfessorDTO> list = new ArrayList<ProfessorDTO>();
+		
+		PreparedStatement pstmt = null;
+		
+		
+		return list;
+	}
 	
 	// 교수 수정
-	/*
 	public void updateProfessor(ProfessorDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
@@ -158,9 +169,7 @@ public class ProfessorDAO {
 			DBUtil.close(pstmt);
 		}
 	}
-	*/
 	
-	/*
 	// 교수 삭제
 	public void deleteProfessor(String member_id) throws SQLException{
 		PreparedStatement pstmt = null;
