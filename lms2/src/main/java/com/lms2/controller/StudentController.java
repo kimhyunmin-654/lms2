@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class StudentController {
+	
 	@RequestMapping(value = "/student/bbs/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 게시물 리스트
@@ -126,7 +127,7 @@ public class StudentController {
 			
 		} catch (SQLException e) {
 			if(e.getErrorCode() == 1) {
-				message = "이미 등록된 학번/사번 입니다.";
+				message = "이미 등록된 학번입니다.";
 			} else if(e.getErrorCode() == 1840 || e.getErrorCode() == 1861) {
 				message = "날짜 형식이 올바르지 않습니다.";
 			} else {
