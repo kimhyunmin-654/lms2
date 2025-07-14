@@ -51,7 +51,7 @@
 
 			<div class="accordion-button custom-accordion-btn collapsed">학사 공지사항</div>
 			<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
-			<div class="accordion-button custom-accordion-btn collapsed">로그아웃</div>
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
 	</div>
 </body>

@@ -59,7 +59,6 @@
 					<div class="accordion-body custom-submenu">내 정보 관리</div>
 				</div>
 			</div>
-
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
 	</div>
