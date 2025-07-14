@@ -28,7 +28,6 @@
 			</div>
 		</div>
 
-<<<<<<< HEAD
 		<div class="accordion accordion-flush" id="accordionFlushExample">
 			<div>메인페이지</div>
 			<div class="accordion-item">
@@ -51,11 +50,11 @@
 			<div>내 정보 관리</div>
 			<div><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
-=======
+
 		<div class="accordion-button custom-accordion-btn collapsed">강의 관리</div>
 		<div class="accordion-button custom-accordion-btn collapsed">공지사항 관리</div>
 		<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
 		<div class="accordion-button custom-accordion-btn collapsed">로그아웃</div>
->>>>>>> branch 'main' of https://github.com/kimhyunmin-654/lms2.git
+
 	</div>
 </div>
