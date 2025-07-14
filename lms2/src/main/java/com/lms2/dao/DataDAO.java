@@ -9,6 +9,7 @@ import java.util.List;
 
 
 import com.lms2.model.DataDTO;
+import com.lms2.model.Data_CommentDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
 
@@ -384,7 +385,7 @@ public class DataDAO {
 
 		return dto;
 	}
-	
+	//게시물 수정
 	public void updateData(DataDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
@@ -407,6 +408,7 @@ public class DataDAO {
 		}
 	}
 	
+	//게시물 삭제
 	public void deleteData(int data_id, String member_id) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
@@ -425,6 +427,104 @@ public class DataDAO {
 		} finally {
 			DBUtil.close(pstmt);
 		}
+	}	
+		//댓글 쓰기
+		public void insertComment(Data_CommentDTO dto) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql;
+			
+			try {
+				sql = "INSET INTO data_comment(comment_id, content, reg_date, parent_comment_id, showReply, block, data_id) "
+						+ " VALUES(DATA_SEQ.NEXTVAL, ?, SYSDATE, ?, ?, ?, ?)";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getContent());
+				pstmt.setInt(2, dto.getParent_comment_id());
+				pstmt.setInt(3, dto.getShowReply());
+				pstmt.setInt(4, dto.getBlock());
+				pstmt.setInt(5, dto.getData_id());
+				
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				DBUtil.close(pstmt);
+			}
+		}
+		
+		public int dataCountComment(int comment_id) {
+			int result = 0;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql;
+			
+			try {
+				sql = "SELECT COUNT(*) FROM data_comment "
+						+ " WHERE comment_id = ? AND parent_comment_id = 0 AND block = 0";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, comment_id);
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					result = rs.getInt(1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
+			}
+			
+			return result;
+		}
+	
+		//댓글리스트
+	public List<Data_CommentDTO> listComment(int data_id, int offset, int size) {
+		List<Data_CommentDTO> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(" SELECT comment_id, content, ");
+			sb.append(" TO_CHAR(reg_date, 'YYYYMMDD')reg_date, ");
+			sb.append(" parent_comment_Id, showReply, block, data_id ");
+			sb.append(" FROM data_comment ");
+			sb.append(" WHERE data_id = ? ");
+			sb.append(" ORDER BY comment_id ASC ");
+			sb.append(" OFFSET ? ROWD FRTCH FIRST ? ROWS ONLY ");
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, data_id);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Data_CommentDTO dto = new Data_CommentDTO();
+				
+				dto.setComment_id(rs.getInt("comment_id"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setParent_comment_id(rs.getInt("parent_comment_id"));
+				dto.setShowReply(rs.getInt("showReply"));
+				dto.setBlock(rs.getInt("block"));
+				dto.setData_id(rs.getInt("data_id"));
+				
+				list.add(dto);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return list;
 	}
 	
 }

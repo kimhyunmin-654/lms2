@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import com.lms2.dao.DataDAO;
 import com.lms2.model.DataDTO;
+import com.lms2.model.Data_CommentDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
@@ -284,9 +286,52 @@ public class DataController {
 	@RequestMapping(value = "/data/listReply", method = RequestMethod.GET)
 	public ModelAndView listComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//리플리스트
-		ModelAndView mav = new ModelAndView("data/listReply");
+		DataDAO dao = new DataDAO();
+		MyUtil util = new MyUtil();
 		
-		return mav;//리스트페이지로 리턴
+		try {
+			int data_id = Integer.parseInt(req.getParameter("data_id"));
+			String pageNo = req.getParameter("pageNo");
+			int current_page = 1;
+			if(pageNo != null) {
+				current_page = Integer.parseInt(pageNo);
+			}
+			int size = 5;
+			int total_page = 0;
+			int commentCount = 0;
+			
+			commentCount = dao.dataCountComment(data_id);
+			total_page = util.pageCount(commentCount, size);
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page -1) * size;
+			if(offset < 0) offset = 0;
+			
+			List<Data_CommentDTO> listComment = dao.listComment(data_id, offset, size);
+			
+			for(Data_CommentDTO dto : listComment) {
+				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+				
+			}
+			String paging = util.pagingMethod(current_page, total_page, "listpage");
+			
+			ModelAndView mav = new ModelAndView("data/listComment");
+			
+			mav.addObject("listComment", listComment);
+			mav.addObject("pageNo", pageNo);
+			mav.addObject("commentCount", commentCount);
+			mav.addObject("total_page", total_page);
+			mav.addObject("paging", paging);
+			
+			return mav;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.sendError(406);
+			throw e;
+		}
 	}
 	
 	@ResponseBody
@@ -294,6 +339,28 @@ public class DataController {
 	public Map<String, Object> insertComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Map<String, Object> model = new HashMap<String, Object>();
 		//리플 등록
+		
+		DataDAO dao = new DataDAO();
+		
+		String state = "false";
+		
+		try {
+			Data_CommentDTO dto = new Data_CommentDTO();
+			
+			int data_id = Integer.parseInt(req.getParameter("data_id"));
+			dto.setData_id(data_id);
+			dto.setContent(req.getParameter("content"));
+			String parent_comment_id = req.getParameter("parent_comment_id");
+			if(parent_comment_id != null) {
+				dto.setParent_comment_id(Integer.parseInt(parent_comment_id));
+			}
+			
+			dao.insertComment(dto);
+			state = "true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.put("state", state);
 		
 		return model;
 	}
