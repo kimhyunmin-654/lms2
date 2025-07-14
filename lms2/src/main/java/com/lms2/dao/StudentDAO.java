@@ -2,7 +2,10 @@ package com.lms2.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lms2.util.DBUtil;
 import com.lms2.model.StudentDTO;
@@ -13,7 +16,7 @@ public class StudentDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	// 학생 등록
-	private void insertStudent(StudentDTO dto) throws SQLException {
+	public void insertStudent(StudentDTO dto) throws SQLException {
 		
 		PreparedStatement pstmt = null;
 		String sql;
@@ -71,6 +74,79 @@ public class StudentDAO {
 			}
 		}
 		
+	}
+	
+	// 학생수
+	public int dataCount() {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = " SELECT COUNT(*) FROM student ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return result;
+		
+	}
+	
+	// 학생 리스트
+	public List<StudentDTO> listStudent(int offset, int size) {
+		List<StudentDTO> list = new ArrayList<StudentDTO>();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(" SELECT m.member_id, name, grade, admission_date, graduate_date, phone, birth ");
+			sb.append(" FROM member m ");
+			sb.append(" JOIN student s ON m.member_id = s.member_id ");
+			sb.append(" ORDER BY m.member_id DESC ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, offset);
+			pstmt.setInt(2, size);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				StudentDTO dto = new StudentDTO();
+				
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setName(rs.getString("name"));
+				dto.setGrade(rs.getInt("grade"));
+				dto.setAdmission_date("admission_date");
+				dto.setGraduate_date("graduate_date");
+				dto.setPhone(rs.getString("phone"));
+				dto.setBirth(rs.getString("birth"));
+				
+				list.add(dto);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return list;
 	}
 
 }
