@@ -68,7 +68,7 @@ public class MemberController {
                 return new ModelAndView("redirect:/admin/home/frame");
             } else if (role == 51) {
                 // 교수
-                return new ModelAndView("redirect:/home/main_base");
+                return new ModelAndView("redirect:/professor/main/main");
             } else if (role == 1) {
                 // 학생
                 return new ModelAndView("redirect:/student/main/main");

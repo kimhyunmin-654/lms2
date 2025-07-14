@@ -2,7 +2,10 @@ package com.lms2.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lms2.model.LectureDTO;
 import com.lms2.util.DBConn;
@@ -70,5 +73,29 @@ public class LectureDAO {
 			}
 		}
 		
+	}
+	
+	public List<LectureDTO> listLecture(int offset, int size){
+		List<LectureDTO> list = new ArrayList<LectureDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(" SELECT lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, department_id");	
+			sb.append(" FROM LECTURE");
+			sb.append("");
+			sb.append("");
+			sb.append("");
+			sb.append("");
+			sb.append("");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return list;
 	}
 }
