@@ -22,10 +22,11 @@ public class AdminDAO {
 		try {
 			conn.setAutoCommit(false);
 			
-			sql = "INSERT INTO member(member_id, name, password, role ,create_date, modify_date, avatar, email, phone, birth, addr1, addr2) "
-					+ " VALUES(?, ?, ?, 99 ,SYSDATE, SYSDATE, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD), ?, ?";
+			sql = " INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2) "
+					+ " VALUES(?, ?, ?, 1, SYSDATE, SYSDATE, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?) ";
 			
 			pstmt = conn.prepareStatement(sql);
+			
 			pstmt.setString(1, dto.getMember_id());
 			pstmt.setString(2, dto.getName());
 			pstmt.setString(3, dto.getPassword());
@@ -40,7 +41,7 @@ public class AdminDAO {
 			pstmt.close();
 			pstmt = null;
 			
-			sql = "INSERT INTO admin(member_id, positon, division) "
+			sql = "INSERT INTO admin(member_id, position, division) "
 					+ "	VALUES(?, ? ,?) ";
 			
 			pstmt = conn.prepareStatement(sql);
