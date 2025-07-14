@@ -14,7 +14,7 @@ public class LectureDTO {
 	private String member_id; // 학번
 	
 	private int file_id; // 파일 번호
-	private String sava_filename; // 저장된 파일명
+	private String save_filename; // 저장된 파일명
 	private String original_filename; // 업로드한 원래 파일명
 	private int file_size; // 파일 크기
 	private String reg_date; // 등록일시
@@ -92,11 +92,11 @@ public class LectureDTO {
 	public void setFile_id(int file_id) {
 		this.file_id = file_id;
 	}
-	public String getSava_filename() {
-		return sava_filename;
+	public String getSave_filename() {
+		return save_filename;
 	}
 	public void setSava_filename(String sava_filename) {
-		this.sava_filename = sava_filename;
+		this.save_filename = sava_filename;
 	}
 	public String getOriginal_filename() {
 		return original_filename;
