@@ -13,16 +13,18 @@
 		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/prof_mainsidebar.jsp"/>
+		<!--<jsp:include page="/WEB-INF/views/layout/prof_mainsidebar.jsp"/>-->
 			<div class="container" style="margin-left: 240px; margin-top: 70px;">
 				<h2>교수 관리</h2>
 				<p>내용</p>
 			</div>
-			<a href="write.jsp">
+			<a href="write">
   				<button type="button">교수 등록</button>
 			</a>
 
 	</main>
+	
+	
 
 </body>
 </html>
