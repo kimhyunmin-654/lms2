@@ -16,13 +16,13 @@
 </header>
 
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
 			<div class="body-container row justify-content-center"
 				style="margin: 100px;">
-				<h3 style="font-size: 29px;">강의 등록</h3>
+				<h3 style="font-size: 29px;">자료실</h3>
 					내용
 			</div>
 		</div>
