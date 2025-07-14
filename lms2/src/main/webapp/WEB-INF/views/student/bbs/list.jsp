@@ -22,7 +22,7 @@
 
 			<div class="body-container row justify-content-center" style="margin: 100px;">
 				<h3 style="font-size: 29px;">자료실</h3>
-					내용
+					내용입니다
 			</div>
 		</div>
 	</main>
