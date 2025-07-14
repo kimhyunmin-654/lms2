@@ -1,7 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>쌍용대학교 통합 로그인</title>
@@ -24,6 +30,7 @@
 
 		</div>
 
+<<<<<<< HEAD
 		<div class="login-container">
 			<form name="loginForm" action="" method="post" class="login-form">
 				<label for="userId">아이디/학번</label> 
@@ -41,6 +48,13 @@
 		</div>
 		<div style="margin-top: 20px; text-align: center; font-size: 14px; color: #ffcc00; font-weight: bold;">
 			<p>초기 비밀번호는 회원 수정에서 반드시 변경 후 사용하여 주시길 바랍니다.</p>
+=======
+		<div class="footer-wrapper">
+			<div class="login-footer">
+				<p>개인정보 처리 방침 | 이메일 무단 수집 거부</p>
+				<p>쌍용대학교 서울특별시 마포구 월드컵북로 21<br> Tel.02-336-8546~8 Fax.02-334-5405</p>
+			</div>
+>>>>>>> branch 'main' of https://github.com/kimhyunmin-654/lms2.git
 		</div>
 
 		<div class="login-footer footer-overlay">
