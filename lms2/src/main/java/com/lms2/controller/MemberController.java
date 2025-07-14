@@ -71,7 +71,7 @@ public class MemberController {
                 return new ModelAndView("redirect:/home/main_base");
             } else if (role == 1) {
                 // 학생
-                return new ModelAndView("redirect:/home/main_base");
+                return new ModelAndView("redirect:/student/main/main");
             } else {
                 // 알 수 없는 역할
                 ModelAndView mav = new ModelAndView("home/main");
