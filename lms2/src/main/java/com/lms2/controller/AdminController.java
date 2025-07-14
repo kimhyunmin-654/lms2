@@ -77,9 +77,9 @@ public class AdminController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "admin/student/account", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/student/account", method = RequestMethod.POST)
 	public ModelAndView accountStudentSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 학생 등록 폼
+		// 학생 등록
 		StudentDAO dao = new StudentDAO();
 		
 		// 사진 파일은 나중에... -김하은
@@ -101,6 +101,8 @@ public class AdminController {
 			dto.setAddr2(req.getParameter("addr2"));
 			
 			dto.setGrade(Integer.parseInt(req.getParameter("grade")));
+			dto.setAdmission_date(req.getParameter("admission_date"));
+			dto.setDepartment_id(req.getParameter("department_id"));
 			
 			dao.insertStudent(dto);
 			
@@ -128,7 +130,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/student/complete", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/student/complete", method = RequestMethod.GET)
 	public ModelAndView studentComplete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 학생 등록 완료 후
 		HttpSession session = req.getSession();
@@ -154,7 +156,7 @@ public class AdminController {
 			message += "학생 정보 수정이 완료되었습니다.";
 		}
 		
-		ModelAndView mav = new ModelAndView("student/complete");
+		ModelAndView mav = new ModelAndView("admin/student/complete");
 		
 		mav.addObject("title", title);
 		mav.addObject("message", message);
