@@ -1,6 +1,7 @@
 package com.lms2.controller;
 
 import java.io.IOException;
+
 import com.lms2.dao.ProfessorDAO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.mvc.annotation.Controller;
@@ -55,4 +56,18 @@ public class ProfessorController {
 	    return new ModelAndView("redirect:/admin/professor/list");
 	}
 	
+	@RequestMapping(value = "/professor/bbs/list", method = RequestMethod.GET)
+	public ModelAndView dataList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 자료실 게시물 리스트
+		ModelAndView mav = new ModelAndView("professor/bbs/list");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
+	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// 글쓰기 폼
+		ModelAndView mav = new ModelAndView("professor/bbs/write");
+		return mav;
+	}
 }
