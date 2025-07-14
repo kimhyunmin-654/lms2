@@ -46,7 +46,7 @@ public class StudentDAO {
 			
 			sql = " INSERT INTO STUDENT(member_id, grade, admission_date, graduate_date, department_id) "
 					+ " VALUES(?, ?, TO_DATE(?, 'YYYY-MM-DD'), TO_DATE(?, 'YYYY-MM-DD'), ?) ";
-			
+			  
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getMember_id());
