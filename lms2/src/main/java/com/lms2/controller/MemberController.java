@@ -91,7 +91,7 @@ public class MemberController {
 	    return "admin/home/frame"; // JSP 뷰 경로
 	}
 	
-	@RequestMapping(value = "/home/main_base", method = RequestMethod.GET)
+	@RequestMapping(value = "/student/main/main", method = RequestMethod.GET)
 	public String studentMain(HttpServletRequest req, HttpServletResponse resp) {
 	    return "student/main/main"; // JSP 뷰 경로
 	}
