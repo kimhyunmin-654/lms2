@@ -77,6 +77,7 @@
 
 			<div class="accordion-button custom-accordion-btn collapsed">로그아웃</div>
 		</div>
+		
 	</div>
 </body>
 </html>
