@@ -48,23 +48,17 @@
 		</div>
 		<div style="margin-top: 20px; text-align: center; font-size: 14px; color: #ffcc00; font-weight: bold;">
 			<p>초기 비밀번호는 회원 수정에서 반드시 변경 후 사용하여 주시길 바랍니다.</p>
+		</div>
 
 		<div class="footer-wrapper">
 			<div class="login-footer">
 				<p>개인정보 처리 방침 | 이메일 무단 수집 거부</p>
-				<p>쌍용대학교 서울특별시 마포구 월드컵북로 21<br> Tel.02-336-8546~8 Fax.02-334-5405</p>
+				<p>
+					쌍용대학교 서울특별시 마포구 월드컵북로 21<br> Tel.02-336-8546~8 Fax.02-334-5405
+				</p>
 			</div>
-
-		</div>
-
-		<div class="login-footer footer-overlay">
-			<p>개인정보 처리 방침 | 이메일 무단 수집 거부</p>
-			<p>
-				쌍용대학교 서울특별시 마포구 월드컵북로 21<br> Tel.02-336-8546~8 Fax.02-334-5405
-			</p>
 		</div>
 	</div>
-</div>
 	
 <script type="text/javascript">
 function sendLogin() {
