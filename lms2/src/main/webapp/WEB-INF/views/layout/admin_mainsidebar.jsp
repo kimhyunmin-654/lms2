@@ -44,7 +44,7 @@
 			<div>강의 관리</div>
 			<div>공지사항 관리</div>
 			<div>내 정보 관리</div>
-			<div>로그아웃</div>
+			<div><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
 	</div>
 </body>
