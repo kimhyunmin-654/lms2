@@ -63,12 +63,12 @@
                     </tbody>
                 </table>
 
-                <!-- 페이징 처리 -->
+            
                 <div class="d-flex justify-content-center my-4">
-                    ${page} <!-- 컨트롤러에서 생성된 페이징 HTML -->
+                    ${page} 
                 </div>
 
-                <!-- 관리자 글쓰기 버튼 -->
+               
                 <div class="d-flex justify-content-end">
                     <a href="${pageContext.request.contextPath}/admin/notice/account" class="btn btn-primary">
                         <i class="bi bi-pencil-square"></i> 글쓰기
