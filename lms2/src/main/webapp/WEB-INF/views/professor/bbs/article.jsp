@@ -47,12 +47,8 @@
 
 							<tbody>
 								<tr>
-									<td width="80px;" align="justify">작 성 자</td>
-									<td align="center">${dto.member_id}</td>
-								</tr>
-								<tr>
 									<td width="80px;" align="justify">강의 과목</td>
-									<td align="center">${dto.member_id}</td>
+									<td align="left">${dto.lecture_code} 얘도 join join 해야하는 군</td>
 								</tr>
 								<tr>
 									<td width="80px;" align="justify">조회수</td>
@@ -60,7 +56,7 @@
 								</tr>
 
 								<tr>
-									<td colspan="2" valign="top" height="200">${dto.content}</td>
+									<td colspan="2" valign="top" height="200" style="padding: 20px;">${dto.content}</td>
 								</tr>
 
 								<tr>
@@ -81,14 +77,12 @@
 
 						<table class="table table-borderless mb-2">
 							<tr>
-								<td width="50%">수정버튼
+								<td width="50%"><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/update?num=${dto.data_id}&page=${page}';">수정</button>
 								<td class="text-end">
-									<button type="button" class="btn btn-light"
-										onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?${query}';">리스트</button>
+									<button type="button" class="btn btn-light" 	onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?${query}';">리스트</button>
 								</td>
 							</tr>
 						</table>
-
 					</div>
 				</div>
 			</div>
