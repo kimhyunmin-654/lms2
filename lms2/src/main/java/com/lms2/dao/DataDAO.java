@@ -76,7 +76,8 @@ public class DataDAO {
 		String sql;
 
 		try {
-			sql = "SELECT COUNT(*) FROM DATA";
+			sql = "SELECT COUNT(*) FROM DATA WHERE 1 = 1";
+			// WHERE 없이 AND 쓰면 안 되용...
 			if (schType.equals("all")) {
 				sql += " AND (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ";
 			} else if (schType.equals("reg_date")) {
@@ -87,7 +88,6 @@ public class DataDAO {
 			}
 
 			pstmt = conn.prepareStatement(sql);
-
 			pstmt.setString(1, kwd);
 			if (schType.equals("all")) {
 				pstmt.setString(2, kwd);
@@ -125,6 +125,7 @@ public class DataDAO {
 			
 			pstmt.setInt(1, offset);
 			pstmt.setInt(2, size);
+			
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -210,8 +211,8 @@ public class DataDAO {
 
 		try {
 			sql = "UPDATE DATA SET hit_count = hit_count + 1 WHERE data_id = ?";
+			
 			pstmt = conn.prepareStatement(sql);
-
 			pstmt.setInt(1, data_id);
 
 			pstmt.executeUpdate();
@@ -231,11 +232,10 @@ public class DataDAO {
 		String sql;
 
 		try {
-			sql = "SELECT data_id, subject, content, hit_count, reg_date, lecture_code " + " FROM DATA "
+			sql = "SELECT data_id, subject, content, hit_count, reg_date, lecture_code " 
+					+ " FROM DATA "	
 					+ " WHERE data_id = ?";
 
-			// NUM이 아니라 data_id...
-			
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setLong(1, data_id);
@@ -277,14 +277,14 @@ public class DataDAO {
 
 				if (schType.equals("all")) {
 					sb.append(" AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
-				} else if ("reg_date".equals(schType)) {
+				} else if (schType.equals("reg_date")) {
 					kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
-					sb.append(" AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ");
+					sb.append(" AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");
 				} else {
-					sb.append(" AND INSTR(" + schType + ", ?) >= 1 ");
+					sb.append(" AND ( INSTR(" + schType + ", ?) >= 1  ) ");
 				}
 
-				sb.append(" ORDER BY data_id DESC ");
+				sb.append(" ORDER BY data_id ASC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
@@ -324,8 +324,6 @@ public class DataDAO {
 		return dto;
 	}
 
-
-
 	// 다음글
 	public DataDTO findByNext(int data_id, String schType, String kwd) {
 		DataDTO dto = null;
@@ -348,7 +346,7 @@ public class DataDAO {
 					sb.append(" AND INSTR(" + schType + ", ?) >= 1 ");
 				}
 
-				sb.append(" ORDER BY data_id ASC ");
+				sb.append(" ORDER BY data_id DESC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
@@ -387,6 +385,7 @@ public class DataDAO {
 
 		return dto;
 	}
+	
 	//게시물 수정
 	public void updateData(DataDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
@@ -430,6 +429,7 @@ public class DataDAO {
 			DBUtil.close(pstmt);
 		}
 	}	
+<<<<<<< HEAD
 		//댓글 쓰기
 		public void insertComment(Data_CommentDTO dto, String member_id) throws SQLException {
 			PreparedStatement pstmt = null;
@@ -484,8 +484,10 @@ public class DataDAO {
 			
 			return result;
 		}
+=======
+>>>>>>> branch 'main' of https://github.com/kimhyunmin-654/lms2.git
 	
-		//댓글리스트
+	//댓글리스트
 	public List<Data_CommentDTO> listComment(int data_id, int offset, int size) {
 		List<Data_CommentDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
