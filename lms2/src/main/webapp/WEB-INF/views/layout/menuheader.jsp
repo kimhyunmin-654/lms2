@@ -14,13 +14,13 @@
 <body>
 	<nav style="height: 50px;" class="redbox navbar navbar-expand-lg navbar-dark fixed-top">
 		<div style="margin-right: 12px;"></div>
-		<div><img src="dist/images/home.png" class="icon"></div>
+		<div><img src="${pageContext.request.contextPath}/dist/images/home.png" class="icon"></div>
 		<div class="container-fluid" style="font-size: 26px; color: white; font-weight: bold;">
 			페이지제목
 		</div>
-		<div><img src="dist/images/profile.png" class="icon"></div>
+		<div><img src="${pageContext.request.contextPath}/dist/images/profile.png" class="icon"></div>
 		<div style="margin: 10px">&nbsp;</div>
-		<div><img src="dist/images/logout.png" class="icon" style="margin-right: 28px"></div>
+		<div><img src="${pageContext.request.contextPath}/dist/images/logout.png" class="icon" style="margin-right: 28px"></div>
 	</nav>
 </body>
 </html>
