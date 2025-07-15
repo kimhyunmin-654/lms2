@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.lms2.util.DBUtil;
 import com.lms2.model.Course_ApplicationDTO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.StudentDTO;
 import com.lms2.util.DBConn;
 
@@ -309,8 +310,53 @@ public class StudentDAO {
 			
 		}
 		
+		//  강의 리스트 ( 수강신청 하기 위한 리스트)
+		public List<LectureDTO> listLecture(int offset, int size){
+			List<LectureDTO> list = new ArrayList<LectureDTO>();
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			StringBuilder sb = new StringBuilder();
+			
+			try {
+				sb.append(" SELECT lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, department_id " );
+				sb.append(" FROM FROM LECTURE ");
+				sb.append(" ORDER BY lecture_code DESC ");
+				sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+				
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, offset);
+				pstmt.setInt(2, size);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					LectureDTO dto = new LectureDTO();
+					
+					dto.setLecture_code(rs.getString("lecture_code"));
+					dto.setSubject(rs.getString("subject"));
+					dto.setGrade(rs.getInt("grade"));
+					dto.setClassroom(rs.getString("classroom"));
+					dto.setDivision(rs.getString("division"));
+					dto.setLecture_year(rs.getInt("lecture_year"));
+					dto.setSemester(rs.getString("semester"));
+					dto.setCapacity(rs.getInt("capacity"));
+					dto.setCredit(rs.getDouble("credit"));
+					dto.setDepartment_id(rs.getString("department_id"));
+					
+					list.add(dto);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
+			}
+			
+			return list;
+		}
+		
 		// 학생 수강신청
-		public void insertCOURSE(Course_ApplicationDTO dto ) throws SQLException {
+		public void insertCOURSE(Course_ApplicationDTO dto) throws SQLException {
 			PreparedStatement pstmt = null;
 			String sql;
 			
@@ -329,6 +375,26 @@ public class StudentDAO {
 			} finally {
 				DBUtil.close(pstmt);
 			}
+			
+		}
+		
+		// 수강 신청 리스트
+		public List<Course_ApplicationDTO> listCourse(String department_id) {
+			List<Course_ApplicationDTO> list = new ArrayList<Course_ApplicationDTO>();
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			StringBuilder sb = new StringBuilder();
+			
+			try {
+				sb.append(" SELECT lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit ");
+				sb.append(" FROM LECTURE");
+				sb.append(" WHERE ");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return list;
 			
 		}
 
