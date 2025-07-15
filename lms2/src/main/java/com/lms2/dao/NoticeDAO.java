@@ -73,7 +73,7 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM notice";
+			sql = "SELECT NVL(COUNT(*), 0) FROM notice WHERE is_notice != 1 ";
 			pstmt = conn.prepareStatement(sql);
 			
 			rs = pstmt.executeQuery();
@@ -144,10 +144,11 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT n.notice_id, subject, hit_count, reg_date, n.member_id, m.name ");
+			sb.append(" SELECT n.notice_id, n.is_notice, subject, hit_count, reg_date, n.member_id, m.name ");
 			sb.append(" FROM notice n ");
 			sb.append(" JOIN admin a ON n.member_id = a.member_id");
 			sb.append(" JOIN member m ON a.member_id = m.member_id");
+			sb.append(" WHERE is_notice != 1 ");
 			sb.append(" ORDER BY n.notice_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
@@ -162,6 +163,7 @@ public class NoticeDAO {
 				NoticeDTO dto = new NoticeDTO();
 				
 				dto.setNotice_id(rs.getLong("notice_id"));
+				dto.setIs_notice(rs.getInt("is_notice"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setReg_date(rs.getString("reg_date"));
@@ -254,10 +256,11 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT n.notice_id, subject, hit_count, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, n.member_id, m.name ");
+			sb.append(" SELECT n.notice_id, n.is_notice, subject, hit_count, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, n.member_id, m.name ");
 			sb.append(" FROM notice n ");
 			sb.append(" JOIN admin a ON n.member_id = a.member_id");
 			sb.append(" JOIN member m ON a.member_id = m.member_id");
+			sb.append(" WHERE is_notice = 1  ");
 			sb.append(" ORDER BY n.notice_id DESC ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
@@ -268,6 +271,7 @@ public class NoticeDAO {
 				NoticeDTO dto = new NoticeDTO();
 				
 				dto.setNotice_id(rs.getLong("notice_id"));
+				dto.setIs_notice(rs.getInt("is_notice"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setReg_date(rs.getString("reg_date"));
@@ -458,7 +462,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "UPDATE notice SET hitCount = hit_count + 1 WHERE notice_id = ?";
+			sql = "UPDATE notice SET hit_count = hit_count + 1 WHERE notice_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setLong(1, notice_id);
@@ -569,8 +573,8 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT file_id, file_size, save_Filename, original_Filename, notice_id "
-					+ " FROM notice_file WHERE notice_id = ?";
+			sql = "SELECT file_id, file_size, save_Filename, original_Filename, notice_num "
+					+ " FROM notice_file WHERE notice_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setLong(1, notice_id);
@@ -584,7 +588,7 @@ public class NoticeDAO {
 				dto.setFile_size(rs.getInt("file_size"));
 				dto.setSave_filename(rs.getString("save_Filename"));
 				dto.setOriginal_filename(rs.getString("original_Filename"));
-				dto.setNotice_id(rs.getInt("notice_id"));
+				dto.setNotice_id(rs.getInt("notice_num"));
 				
 				list.add(dto);
 			}
@@ -605,7 +609,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT file_id, file_size, save_Filename, original_Filename, notice_id "
+			sql = "SELECT file_id, file_size, save_Filename, original_Filename, notice_num "
 					+ " FROM notice_file WHERE file_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -620,7 +624,7 @@ public class NoticeDAO {
 				dto.setFile_size(rs.getInt("file_size"));
 				dto.setSave_filename(rs.getString("save_Filename"));
 				dto.setOriginal_filename(rs.getString("original_Filename"));
-				dto.setNotice_id(rs.getInt("notice_id"));
+				dto.setNotice_id(rs.getInt("notice_num"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
