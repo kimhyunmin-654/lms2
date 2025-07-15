@@ -41,6 +41,7 @@ public class NoticeController {
 			if(page != null) {
 				current_page = Integer.parseInt(page);
 			}
+			page = String.valueOf(current_page);
 			
 			String schType = req.getParameter("schType");
 			String kwd = req.getParameter("kwd");
@@ -159,8 +160,8 @@ public class NoticeController {
 			NoticeDTO dto = new NoticeDTO(); 
 			
 			dto.setMember_id(info.getMember_id());
-			if(req.getParameter("notice") != null) {
-				dto.setIs_notice(Integer.parseInt(req.getParameter("notice")));
+			if(req.getParameter("is_notice") != null) {
+				dto.setIs_notice(Integer.parseInt(req.getParameter("is_notice")));
 			}
 			
 			dto.setSubject(req.getParameter("subject"));
@@ -175,7 +176,7 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/admin/notice/list?size=" + size);
+		return new ModelAndView("redirect:/admin/notice/list");
 				
 	}
 	
@@ -244,7 +245,7 @@ public class NoticeController {
 		String size = req.getParameter("size");
 
 		try {
-			long num = Long.parseLong(req.getParameter("num"));
+			long num = Long.parseLong(req.getParameter("notice_id"));
 
 			NoticeDTO dto = dao.findById(num);
 			if (dto == null) {
@@ -294,8 +295,8 @@ public class NoticeController {
 		try {
 			NoticeDTO dto = new NoticeDTO();
 			dto.setNotice_id(Long.parseLong(req.getParameter("notice_id")));
-			if(req.getParameter("notice") != null) {
-				dto.setIs_notice(Integer.parseInt(req.getParameter("notice")));
+			if(req.getParameter("is_notice") != null) {
+				dto.setIs_notice(Integer.parseInt(req.getParameter("is_notice")));
 			}
 			
 			dto.setSubject(req.getParameter("subject"));
