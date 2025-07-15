@@ -429,7 +429,7 @@ public class DataDAO {
 			DBUtil.close(pstmt);
 		}
 	}	
-<<<<<<< HEAD
+
 		//댓글 쓰기
 		public void insertComment(Data_CommentDTO dto, String member_id) throws SQLException {
 			PreparedStatement pstmt = null;
@@ -484,8 +484,7 @@ public class DataDAO {
 			
 			return result;
 		}
-=======
->>>>>>> branch 'main' of https://github.com/kimhyunmin-654/lms2.git
+
 	
 	//댓글리스트
 	public List<Data_CommentDTO> listComment(int data_id, int offset, int size) {

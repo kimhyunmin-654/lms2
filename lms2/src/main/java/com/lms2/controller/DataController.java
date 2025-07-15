@@ -160,10 +160,8 @@ public class DataController {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
 			
-<<<<<<< HEAD
-=======
+
 			// 조회수 증가
->>>>>>> branch 'main' of https://github.com/kimhyunmin-654/lms2.git
 			dao.updateHitCount(data_id);
 			
 			//게시물가져오기
