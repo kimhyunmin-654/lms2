@@ -42,7 +42,6 @@
 								<tr style="border-top: 3px solid black;">
 									<td width="80px;" align="justify">제   목</td>
 									<td align="left">${dto.subject}</td>
-									<td align="right">&nbsp;</td>
 								</tr>
 							</thead>
 
@@ -50,35 +49,31 @@
 								<tr>
 									<td width="80px;" align="justify">작 성 자</td>
 									<td align="center">${dto.member_id}</td>
-									<td align="right">&nbsp;</td>
 								</tr>
 								<tr>
 									<td width="80px;" align="justify">강의 과목</td>
 									<td align="center">${dto.member_id}</td>
-									<td align="right">&nbsp;</td>
 								</tr>
 								<tr>
 									<td width="80px;" align="justify">조회수</td>
 									<td align="left">${dto.hit_count}</td>
-									<td align="right">&nbsp;</td>
 								</tr>
 
 								<tr>
-									<td colspan="3" valign="top" height="200">${dto.content}</td>
+									<td colspan="2" valign="top" height="200">${dto.content}</td>
 								</tr>
 
 								<tr>
 									<td width="80px;" align="justify">파일명</td>
 									<td align="left">자바의 이해.pdf</td>
-									<td align="right">&nbsp;</td>
 								</tr>
 
 								<tr>
-									<td colspan="3">이전글:때문인가
+									<td colspan="2">이전글:때문인가
 									</td>
 								</tr>
 								<tr  style="border-bottom: 2px solid gray;">
-									<td colspan="3">다음글:때문인가
+									<td colspan="2">다음글:때문인가
 									</td>
 								</tr>
 							</tbody>
@@ -89,7 +84,7 @@
 								<td width="50%">수정버튼
 								<td class="text-end">
 									<button type="button" class="btn btn-light"
-										onclick="location.href='${pageContext.request.contextPath}/bbs/list?${query}';">리스트</button>
+										onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?${query}';">리스트</button>
 								</td>
 							</tr>
 						</table>
