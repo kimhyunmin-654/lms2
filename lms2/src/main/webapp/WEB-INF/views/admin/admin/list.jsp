@@ -13,10 +13,10 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp"/>
+		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 

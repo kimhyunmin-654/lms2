@@ -92,7 +92,9 @@ public class AdminController {
 			dto.setMember_id(req.getParameter("userId"));
 			dto.setName(req.getParameter("name"));
 			dto.setPassword(req.getParameter("password"));
-			dto.setEmail(req.getParameter("email"));
+			String e1 = req.getParameter("email1");
+			String e2 = req.getParameter("email2");
+			dto.setEmail(e1 + "@" + e2);
 			dto.setPhone(req.getParameter("phone"));
 			dto.setBirth(req.getParameter("birth"));
 			dto.setAddr1(req.getParameter("addr1"));
@@ -126,6 +128,7 @@ public class AdminController {
 		
 		return mav;
 	}
+	
 	
 	
 

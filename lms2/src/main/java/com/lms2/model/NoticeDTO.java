@@ -23,6 +23,8 @@ public class NoticeDTO {
 	private String save_filename;
 	private String original_filename;
 	private long file_size;
+	
+	private long gap;
 		
 	public long getNotice_id() {
 		return notice_id;
@@ -119,5 +121,13 @@ public class NoticeDTO {
 	public void setOriginal_filename(String original_filename) {
 		this.original_filename = original_filename;
 	}
+	public long getGap() {
+		return gap;
+	}
+	public void setGap(long gap) {
+		this.gap = gap;
+	}
 
+	
+	
 }
