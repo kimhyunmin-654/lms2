@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lms2.util.DBUtil;
+import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.StudentDTO;
 import com.lms2.util.DBConn;
 
@@ -114,7 +115,7 @@ public class StudentDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT m.member_id, name, grade, admission_date, graduate_date, phone, birth ");
+			sb.append(" SELECT m.member_id, name, grade, email, admission_date, graduate_date, phone, birth ");
 			sb.append(" FROM member m ");
 			sb.append(" JOIN student s ON m.member_id = s.member_id ");
 			sb.append(" ORDER BY m.member_id DESC ");
@@ -131,6 +132,7 @@ public class StudentDAO {
 				dto.setMember_id(rs.getString("member_id"));
 				dto.setName(rs.getString("name"));
 				dto.setGrade(rs.getInt("grade"));
+				dto.setEmail(rs.getString("email"));
 				dto.setAdmission_date("admission_date");
 				dto.setGraduate_date("graduate_date");
 				dto.setPhone(rs.getString("phone"));
@@ -304,6 +306,29 @@ public class StudentDAO {
 			} finally {
 				DBUtil.close(pstmt);
 			} 
+			
+		}
+		
+		// 학생 수강신청
+		public void insertCOURSE(Course_ApplicationDTO dto ) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql;
+			
+			try {
+				sql = " INSERT INTO COURSE_APPLICATION (course_id, apply_status, member_id, lecture_code) "
+						+ " VALUES(COURSE_APPLICATION_SEQ.NEXTVAL, '신청', ?, ?)  ";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getMember_id());
+				pstmt.setString(2, dto.getLecture_code());
+				pstmt.execute();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				DBUtil.close(pstmt);
+			}
 			
 		}
 
