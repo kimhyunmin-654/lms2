@@ -8,6 +8,29 @@ public class Attendance_recordDTO {
 	private int status;
 	private int course_id; 
 	
+	private String member_id;
+	private String name;
+	private String lecture_code;
+	
+		
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getLecture_code() {
+		return lecture_code;
+	}
+	public void setLecture_code(String lecture_code) {
+		this.lecture_code = lecture_code;
+	}
 	public int getAttend_id() {
 		return attend_id;
 	}

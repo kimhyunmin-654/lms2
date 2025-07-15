@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class DataController {
 	
-	@RequestMapping(value = "/professor/bbs/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/lists", method = RequestMethod.GET) /*/professor/bbs/list*/
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 리스트
 		ModelAndView mav = new ModelAndView("/professor/bbs/list");
@@ -100,7 +100,7 @@ public class DataController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/writes", method = RequestMethod.GET) /* /professor/bbs/write */
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글쓰기
 		ModelAndView mav = new ModelAndView("/professor/bbs/write");
@@ -108,7 +108,7 @@ public class DataController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.POST)
+	@RequestMapping(value = "/professor/bbs/writes", method = RequestMethod.POST) /* /professor/bbs/write */
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글 저장
 		DataDAO dao = new DataDAO();
@@ -137,7 +137,7 @@ public class DataController {
 		
 	}
 	
-	@RequestMapping(value = "/professor/bbs/article", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/articles", method = RequestMethod.GET) /*"/professor/bbs/article"*/
 	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글보기
 		DataDAO dao = new DataDAO();
@@ -257,7 +257,7 @@ public class DataController {
 		return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 	}
 	
-	@RequestMapping(value = "/professor/bbs/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/deletes", method = RequestMethod.GET) /*/professor/bbs/deletes*/
 	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글삭제
 		DataDAO dao = new DataDAO();
