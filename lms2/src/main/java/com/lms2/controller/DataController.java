@@ -147,7 +147,7 @@ public class DataController {
 		String query = "page=" + page;
 		
 		try {
-			int data_id = Integer.parseInt(req.getParameter("data_id"));
+			int data_id = Integer.parseInt(req.getParameter("num"));
 			String schType = req.getParameter("schType");
 			String kwd = req.getParameter("kwd");
 			if(schType == null) {
@@ -159,8 +159,13 @@ public class DataController {
 			if(kwd.length() != 0) {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
+			
+			// 조회수 증가
+			dao.updateHitCount(data_id);
+			
 			//게시물가져오기
 			DataDTO dto = dao.findById(data_id);
+			
 			if(dto == null) {
 				return new ModelAndView("redirect:/professor/bbs/list?" + query);
 			}
@@ -171,7 +176,6 @@ public class DataController {
 			DataDTO nextDto = dao.findByNext(dto.getData_id(), schType, kwd);
 			
 			ModelAndView mav = new ModelAndView("/professor/bbs/article");
-			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
 			mav.addObject("query", query);

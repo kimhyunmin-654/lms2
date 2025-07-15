@@ -6,48 +6,94 @@
 <head>
 <meta charset="UTF-8">
 <title>자료실</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/main2.css">
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
-
 	<main>
+		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
+		
 		<div class="container">
-			<div class="body-container row justify-content-center">
+			<div class="body-container row justify-content-center" style="margin: 100px;">
 				<div class="col-md-10 my-3 p-3">
 					<div class="body-title">
-						<h3>
-							<i class="bi bi-app"></i> 게시판
-						</h3>
+						
+						<table class="table" style="margin-bottom: 30px;">
+							<tr>
+								<td width="100px;" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">자료실</td>
+								<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+								<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+							</tr>
+						</table>
 					</div>
-					
+
 					<div class="body-main">
+
 						<table class="table board-article">
 							<thead>
-								<tr>
-									<td colspan="2" align="center">${dto.subject}</td>
+								<tr style="border-top: 3px solid black;">
+									<td width="80px;" align="justify">제   목</td>
+									<td align="left">${dto.subject}</td>
+									<td align="right">&nbsp;</td>
 								</tr>
 							</thead>
-							
+
 							<tbody>
 								<tr>
-									<td width="50%">이름 : ${dto.userName}</td>
-									<td align="right">${dto.reg_date}|조회수 ${dto.hitCount}</td>
+									<td width="80px;" align="justify">작 성 자</td>
+									<td align="center">${dto.member_id}</td>
+									<td align="right">&nbsp;</td>
 								</tr>
-							
 								<tr>
-									<td colspan="2" class="text-center p-3">
-										<button type="button" class="btn btn-outline-primary btnSendBoardLike" title="좋아요">
-											<span id="boardLikeCount">좋아용!</span>
-										</button>
+									<td width="80px;" align="justify">강의 과목</td>
+									<td align="center">${dto.member_id}</td>
+									<td align="right">&nbsp;</td>
+								</tr>
+								<tr>
+									<td width="80px;" align="justify">조회수</td>
+									<td align="left">${dto.hit_count}</td>
+									<td align="right">&nbsp;</td>
+								</tr>
+
+								<tr>
+									<td colspan="3" valign="top" height="200">${dto.content}</td>
+								</tr>
+
+								<tr>
+									<td width="80px;" align="justify">파일명</td>
+									<td align="left">자바의 이해.pdf</td>
+									<td align="right">&nbsp;</td>
+								</tr>
+
+								<tr>
+									<td colspan="3">이전글:때문인가
+									</td>
+								</tr>
+								<tr  style="border-bottom: 2px solid gray;">
+									<td colspan="3">다음글:때문인가
 									</td>
 								</tr>
 							</tbody>
 						</table>
+
+						<table class="table table-borderless mb-2">
+							<tr>
+								<td width="50%">수정버튼
+								<td class="text-end">
+									<button type="button" class="btn btn-light"
+										onclick="location.href='${pageContext.request.contextPath}/bbs/list?${query}';">리스트</button>
+								</td>
+							</tr>
+						</table>
+
 					</div>
 				</div>
 			</div>
