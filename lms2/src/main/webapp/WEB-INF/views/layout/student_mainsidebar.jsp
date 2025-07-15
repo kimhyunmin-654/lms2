@@ -33,6 +33,7 @@
 					<div class="accordion-body custom-submenu">성적 관리</div>
 					<div class="accordion-body custom-submenu">출석 관리</div>
 					<div class="accordion-body custom-submenu">수업 일정</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/lecture/list">수강신청</a></div>
 				</div>
 			</div>
 

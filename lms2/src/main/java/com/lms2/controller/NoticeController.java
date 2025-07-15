@@ -245,7 +245,7 @@ public class NoticeController {
 		String size = req.getParameter("size");
 
 		try {
-			long num = Long.parseLong(req.getParameter("notice_id"));
+			long num = Long.parseLong(req.getParameter("num"));
 
 			NoticeDTO dto = dao.findById(num);
 			if (dto == null) {

@@ -32,7 +32,7 @@ public class LectureDAO {
 			pstmt.setInt(6, dto.getLecture_year());
 			pstmt.setString(7, dto.getSemester());
 			pstmt.setInt(8, dto.getCapacity());
-			pstmt.setString(9, dto.getCredit());
+			pstmt.setDouble(9, dto.getCredit());
 			pstmt.setString(10, dto.getDepartment_id());
 			pstmt.setString(11, dto.getMember_id());
 			
@@ -82,13 +82,36 @@ public class LectureDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, department_id");	
-			sb.append(" FROM LECTURE");
-			sb.append("");
-			sb.append("");
-			sb.append("");
-			sb.append("");
-			sb.append("");
+			sb.append(" SELECT l.member_id, name, lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, department_id ");	
+			sb.append(" FROM lecture l ");
+			sb.append(" JOIN member m ON l.member_id = m.member_id ");
+			sb.append(" ORDER BY lecture_code DESC ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, offset); 
+			pstmt.setInt(2, size);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				
+				dto.setLecture_code(rs.getString("lecture_code"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setGrade(rs.getInt("grade"));
+				dto.setClassroom(rs.getString("classroom"));
+				dto.setDivision(rs.getString("division"));
+				dto.setLecture_year(rs.getInt("lecture_year"));
+				dto.setSemester(rs.getString("semester"));
+				dto.setCapacity(rs.getInt("capacity"));
+				dto.setCredit(rs.getDouble("credit"));
+				dto.setDepartment_id(rs.getString("department_id"));
+				dto.setName(rs.getString("name"));
+				
+				list.add(dto);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -98,4 +121,33 @@ public class LectureDAO {
 		
 		return list;
 	}
+	
+	// 강의수
+		public int dataCount() {
+			int result = 0;
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql;
+			
+			try {
+				sql = " SELECT COUNT(*) FROM lecture ";
+				
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					result = rs.getInt(1);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
+			}
+			
+			return result;
+			
+		}
 }

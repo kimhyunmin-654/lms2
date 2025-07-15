@@ -22,7 +22,7 @@
 			<div class="body-container row justify-content-center"
 				style="margin: 100px;">
 				<h3 style="font-size: 29px;">학생 메인페이지</h3>
-					내용
+					수강과목 / 학기 일정 / 공지사항 표시 해야 함
 			</div>
 		</div>
 	</main>
