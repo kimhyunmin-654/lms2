@@ -9,7 +9,7 @@ public class LectureDTO {
 	private int lecture_year; // 개설연도
 	private String semester; // 학기
 	private int capacity; // 수강 정원
-	private double credit; // 학점
+	private String credit; // 학점
 	private String department_id; // 학과 코드
 	private String member_id; // 학번
 	
@@ -19,7 +19,6 @@ public class LectureDTO {
 	private int file_size; // 파일 크기
 	private String reg_date; // 등록일시
 	
-	private String name;
 	
 	public String getLecture_code() {
 		return lecture_code;
@@ -69,10 +68,10 @@ public class LectureDTO {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	public double getCredit() {
+	public String getCredit() {
 		return credit;
 	}
-	public void setCredit(double credit) {
+	public void setCredit(String credit) {
 		this.credit = credit;
 	}
 	public String getDepartment_id() {
@@ -116,12 +115,6 @@ public class LectureDTO {
 	}
 	public void setReg_date(String reg_date) {
 		this.reg_date = reg_date;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	

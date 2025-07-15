@@ -13,7 +13,14 @@ public class Pro_hwDTO {
 	private String save_filename;
 	private String original_filename;
 	private int file_size;
+	private String member_id;
 	
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
 	public int getHomework_id() {
 		return homework_id;
 	}

@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class DataController {
 	
-	@RequestMapping(value = "/professor/bbs/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/lists", method = RequestMethod.GET) /*/professor/bbs/list*/
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 리스트
 		ModelAndView mav = new ModelAndView("/professor/bbs/list");
@@ -100,7 +100,7 @@ public class DataController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/writes", method = RequestMethod.GET) /* /professor/bbs/write */
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글쓰기
 		ModelAndView mav = new ModelAndView("/professor/bbs/write");
@@ -108,7 +108,7 @@ public class DataController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.POST)
+	@RequestMapping(value = "/professor/bbs/writes", method = RequestMethod.POST) /* /professor/bbs/write */
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글 저장
 		DataDAO dao = new DataDAO();
@@ -137,7 +137,7 @@ public class DataController {
 		
 	}
 	
-	@RequestMapping(value = "/professor/bbs/article", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/articles", method = RequestMethod.GET) /*"/professor/bbs/article"*/
 	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글보기
 		DataDAO dao = new DataDAO();
@@ -160,6 +160,7 @@ public class DataController {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
 			
+
 			// 조회수 증가
 			dao.updateHitCount(data_id);
 			
@@ -256,7 +257,7 @@ public class DataController {
 		return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 	}
 	
-	@RequestMapping(value = "/professor/bbs/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/deletes", method = RequestMethod.GET) /*/professor/bbs/deletes*/
 	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글삭제
 		DataDAO dao = new DataDAO();
@@ -351,6 +352,7 @@ public class DataController {
 		
 		DataDAO dao = new DataDAO();
 		
+		String member_id = (String) req.getSession().getAttribute("member_id");
 		String state = "false";
 		
 		try {
@@ -364,7 +366,7 @@ public class DataController {
 				dto.setParent_comment_id(Integer.parseInt(parent_comment_id));
 			}
 			
-			dao.insertComment(dto);
+			dao.insertComment(dto, member_id);
 			state = "true";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -380,6 +382,22 @@ public class DataController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		//리플 삭제
 		
+		DataDAO dao = new DataDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String state = "false";
+		
+		try {
+			int comment_id = Integer.parseInt(req.getParameter("comment_id"));
+			dao.deleteComment(comment_id, info.getMember_id());
+			
+			state = "true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.put("state", state);
 		return model;
 	}
 	

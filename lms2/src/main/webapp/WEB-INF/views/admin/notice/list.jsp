@@ -65,12 +65,12 @@
 							        </tr>
 							    </c:forEach>
 							
-							    <c:forEach var="dto" items="${list}">
+							    <c:forEach var="dto" items="${list}" varStatus="status">
 							        <tr>
 							            <td>
 							                <input type="checkbox" name="noticeIds" value="${dto.notice_id}" class="row-check">
 							            </td>
-							            <td>${dto.notice_id}</td>
+							            <td>${dataCount - (page-1) * size - status.index}</td>
 							            <td class="text-start">
 							                <a href="${articleUrl}&notice_id=${dto.notice_id}" class="text-reset">
 							                    ${dto.subject}

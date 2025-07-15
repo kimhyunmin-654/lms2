@@ -55,7 +55,7 @@ public class LectureController {
 	        dto.setLecture_year(Integer.parseInt(req.getParameter("lecture_year")));
 	        dto.setSemester(req.getParameter("semester"));
 	        dto.setCapacity(Integer.parseInt(req.getParameter("capacity")));
-	        dto.setCredit(Double.parseDouble(req.getParameter("credit")));
+	        dto.setCredit(req.getParameter("credit"));
 	        dto.setDepartment_id(req.getParameter("department_id"));
 	        dto.setMember_id(req.getParameter("member_id"));
 

@@ -429,6 +429,62 @@ public class DataDAO {
 			DBUtil.close(pstmt);
 		}
 	}	
+
+		//댓글 쓰기
+		public void insertComment(Data_CommentDTO dto, String member_id) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql;
+			
+			try {
+				sql = "INSERT INTO data_comment(comment_id, content, reg_date, parent_comment_id, showReply, block, data_id, member_id) "
+						+ " VALUES(DATA_COMMENT_SEQ.NEXTVAL, ?, SYSDATE, ?, ?, ?, ?, ?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getContent());
+				pstmt.setInt(2, dto.getParent_comment_id());
+				pstmt.setInt(3, dto.getShowReply());
+				pstmt.setInt(4, dto.getBlock());
+				pstmt.setInt(5, dto.getData_id());
+				pstmt.setString(6, member_id);
+				
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				DBUtil.close(pstmt);
+			}
+		}
+		
+		public int dataCountComment(int comment_id) {
+			int result = 0;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql;
+			
+			try {
+				sql = "SELECT COUNT(*) FROM data_comment "
+						+ " WHERE comment_id = ? AND parent_comment_id = 0 AND block = 0";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, comment_id);
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					result = rs.getInt(1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
+			}
+			
+			return result;
+		}
+
 	
 	//댓글리스트
 	public List<Data_CommentDTO> listComment(int data_id, int offset, int size) {
@@ -474,6 +530,30 @@ public class DataDAO {
 		}
 		
 		return list;
+	}
+	
+	public void deleteComment(int comment_id, String member_id) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "DELETE FROM data_comment WHERE comment_id = ? AND member_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, comment_id);
+			pstmt.setString(2, member_id);
+			
+			int result = pstmt.executeUpdate();
+			
+			if(result == 0) {
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
 	}
 	
 }

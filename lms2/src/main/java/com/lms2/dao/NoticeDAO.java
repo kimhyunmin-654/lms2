@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lms2.model.AdminDTO;
 import com.lms2.model.NoticeDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
@@ -573,7 +572,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT file_id, file_size, save_Filename, original_Filename, notice_num "
+			sql = "SELECT file_id, file_size, save_filename, original_filename, notice_num "
 					+ " FROM notice_file WHERE notice_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -642,7 +641,7 @@ public class NoticeDAO {
 
 		try {
 			if (mode.equals("all")) {
-				sql = "DELETE FROM notice_file WHERE notice_id = ?";
+				sql = "DELETE FROM notice_file WHERE notice_num = ?";
 			} else {
 				sql = "DELETE FROM notice_file WHERE file_id = ?";
 			}

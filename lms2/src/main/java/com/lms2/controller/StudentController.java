@@ -3,13 +3,10 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
-import com.lms2.dao.LectureDAO;
 import com.lms2.dao.StudentDAO;
-import com.lms2.model.LectureDTO;
 import com.lms2.model.StudentDTO;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.view.ModelAndView;
@@ -165,64 +162,4 @@ public class StudentController {
 		
 		return mav;
 	}
-	
-	@RequestMapping(value = "/student/lecture/list", method = RequestMethod.GET)
-	public ModelAndView lectureList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의 리스트
-		LectureDAO dao = new LectureDAO();
-		MyUtil util = new MyUtil();
-		
-		ModelAndView mav = new ModelAndView("student/lecture/list");
-		
-		try {
-			String page = req.getParameter("page");
-			int current_page = 1;
-			if(page != null) {
-				current_page = Integer.parseInt(page);
-			}
-			
-			int dataCount = dao.dataCount();
-			
-			int size = 10;
-			int total_page = util.pageCount(dataCount, size);
-			if(current_page > total_page) {
-				current_page = total_page;
-			}
-			
-			int offset = (current_page - 1) * size;
-			if(offset < 0) offset = 0;
-			
-			List<LectureDTO> list = dao.listLecture(offset, size);
-			
-			String cp = req.getContextPath();
-			String listUrl = cp + "/student/lecture/list";
-			String articleUrl = cp + "/student/lecture/view?page=" + current_page;
-			
-			String paging = util.paging(current_page, total_page, listUrl);
-			
-			mav.addObject("list", list);
-			mav.addObject("dataCount", dataCount);
-			mav.addObject("size", size);
-			mav.addObject("page", page);
-			mav.addObject("total_page", total_page);
-			mav.addObject("articleUrl", articleUrl);
-			mav.addObject("paging", paging);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mav;
-	}
-	
-	@RequestMapping(value = "/student/lecture/")
-	public ModelAndView lectureSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 수강신청
-		
-		
-		
-		return mav;
-	}
-	
-	
-	
 }

@@ -22,7 +22,7 @@
     <div class="container" style="margin-left: 220px; padding: 30px;">
         <div class="row justify-content-center mt-5">
             <div class="col-md-8">
-                <h3 class="mb-4">공지사항 등록</h3>
+                <h3 class="mb-4">공지사항</h3>
 
 				<form name="noticeForm" action="" method="post" enctype="multipart/form-data"
 				      class="border p-4 rounded bg-white shadow-sm">
@@ -81,12 +81,12 @@
 				            </button>
 				            <button type="reset" class="btn btn-warning me-2">다시 입력</button>
 				            <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-secondary">목록</a>
-				
+							<input type="hidden" name="size" value="${size}">
 				            <c:if test="${mode=='update'}">
 				                <input type="hidden" name="num" value="${dto.notice_id}">
 				                <input type="hidden" name="page" value="${page}">
-				                <input type="hidden" name="saveFilename" value="${dto.saveFilename}">
-				                <input type="hidden" name="originalFilename" value="${dto.originalFilename}">
+				                <input type="hidden" name="saveFilename" value="${dto.save_filename}">
+				                <input type="hidden" name="originalFilename" value="${dto.original_filename}">
 				            </c:if>
 				        </div>
 				    </div>

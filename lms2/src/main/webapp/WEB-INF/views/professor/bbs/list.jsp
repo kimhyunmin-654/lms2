@@ -22,7 +22,7 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
@@ -37,7 +37,7 @@
 						<tr>
 							<th width="60">번호</th>
 							<th>제목</th>
-							<th width="200">등록일</th>
+							<th width="100">작성시간</th>
 							<th width="100">첨부파일</th>
 						</tr>
 					</thead>
@@ -48,11 +48,12 @@
 								<td>${dataCount - (page - 1) * size - status.index}</td>
 								<td class="left">
 									<div class="text-wrap">
-										<a href="${articleUrl}&num=${dto.data_id}" class="text-reset">${dto.subject}</a>
+										<a href="${articleUrl}&num=${dto.num}" class="text-reset">${dto.subject}</a>
 									</div>
 								</td>
-								<td>${dto.reg_date}</td>
-								<td>ㅇ</td>
+								<td>작성자</td>
+								<td>등록일</td>
+								<td>조회수</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -63,7 +64,7 @@
 
 				<div class="row board-list-footer">
 					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list';">새로고침</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/student/bbs/list';">새로고침</button>
 					</div>
 					<div class="col-6 d-flex justify-content-center">
 						<form class="row" name="searchForm">
@@ -87,7 +88,8 @@
 							</div>
 						</form>
 					</div>
-
+					
+					<!--학생은 안 보이게 할 것 -->
 					<div class="col text-end">
 						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/write';">글올리기</button>
 					</div>
