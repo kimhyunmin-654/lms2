@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import com.lms2.dao.DataDAO;
 import com.lms2.model.DataDTO;
 import com.lms2.model.Data_CommentDTO;
 import com.lms2.model.SessionInfo;
+import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.annotation.ResponseBody;
@@ -21,12 +21,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+@Controller
 public class DataController {
 	
-	@RequestMapping(value = "/data/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 리스트
-		ModelAndView mav = new ModelAndView("data/list");
+		ModelAndView mav = new ModelAndView("/professor/bbs/list");
 		
 		DataDAO dao = new DataDAO();
 		MyUtil util = new MyUtil();
@@ -75,8 +76,8 @@ public class DataController {
 			}
 			
 			String cp = req.getContextPath();
-			String listUrl = cp + "data/list";
-			String articleUrl = cp + "/data/article?page=" + current_page;
+			String listUrl = cp + "/professor/bbs/list";
+			String articleUrl = cp + "/professor/bbs/article?page=" + current_page;
 			if(query.length() != 0) {
 				listUrl += "?" + query;
 				articleUrl += "&" + query;
@@ -99,21 +100,24 @@ public class DataController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/data/write", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글쓰기
-		ModelAndView mav = new ModelAndView("data/write");
+		ModelAndView mav = new ModelAndView("/professor/bbs/write");
 		mav.addObject("mode", "write");
 		return mav;
 	}
 	
-	@RequestMapping(value = "/data/write", method = RequestMethod.POST)
+	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.POST)
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글 저장
 		DataDAO dao = new DataDAO();
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		System.out.println("로그인한 사용자 ID: " + info.getMember_id());
+		
+		System.out.println("writeSubmit 호출됨");
 		
 		try {
 			DataDTO dto = new DataDTO();
@@ -122,17 +126,18 @@ public class DataController {
 			
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("content"));
+			dto.setLecture_code(req.getParameter("lesson"));
 			
 			dao.insertData(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/data/list");
+		return new ModelAndView("redirect:/professor/bbs/list");
 		
 	}
 	
-	@RequestMapping(value = "/data/article", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/article", method = RequestMethod.GET)
 	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글보기
 		DataDAO dao = new DataDAO();
@@ -157,7 +162,7 @@ public class DataController {
 			//게시물가져오기
 			DataDTO dto = dao.findById(data_id);
 			if(dto == null) {
-				return new ModelAndView("redirect:/data/list?" + query);
+				return new ModelAndView("redirect:/professor/bbs/list?" + query);
 			}
 			dto.setContent(util.htmlSymbols(dto.getContent()));
 			
@@ -165,7 +170,7 @@ public class DataController {
 			DataDTO prevDto = dao.findByPrev(dto.getData_id(), schType, kwd);
 			DataDTO nextDto = dao.findByNext(dto.getData_id(), schType, kwd);
 			
-			ModelAndView mav = new ModelAndView("data/article");
+			ModelAndView mav = new ModelAndView("/professor/bbs/article");
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
@@ -179,7 +184,7 @@ public class DataController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/data/list?" + query);
+		return new ModelAndView("redirect:/professor/bbs/list?" + query);
 	}
 	
 	@RequestMapping(value = "/data/update", method = RequestMethod.GET)
@@ -197,12 +202,12 @@ public class DataController {
 			DataDTO dto = dao.findById(data_id);
 			
 			if(dto == null) {
-				return new ModelAndView("redirect:/data/list?page=" + page);
+				return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 			}
 			
 			//게시물 작성자가 아니면
 			if(! dto.getMember_id().equals(info.getMember_id())) {
-				return new ModelAndView("redirect:/data/list?page=" + page);
+				return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 			}
 			
 			ModelAndView mav = new ModelAndView("data/write");
@@ -216,7 +221,7 @@ public class DataController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/data/list?page=" + page);
+		return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 	}
 	
 	@RequestMapping(value = "/data/update", method = RequestMethod.POST)
@@ -244,10 +249,10 @@ public class DataController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/data/list?page=" + page);
+		return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 	}
 	
-	@RequestMapping(value = "/data/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/delete", method = RequestMethod.GET)
 	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글삭제
 		DataDAO dao = new DataDAO();
@@ -280,10 +285,10 @@ public class DataController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/data/list?" + query);
+		return new ModelAndView("redirect:/professor/bbs/list?" + query);
 	}
 	
-	@RequestMapping(value = "/data/listReply", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/listReply", method = RequestMethod.GET)
 	public ModelAndView listComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//리플리스트
 		DataDAO dao = new DataDAO();

@@ -27,7 +27,7 @@
 					</div>
 					
 					<div class="body-main">
-						<form name="bbsForm">
+						<form name="bbsForm" action="${pageContext.request.contextPath}/professor/bbs/write" method="post">
 							<table class="table">
 								<tr>
 									<td>제목
@@ -42,12 +42,12 @@
 									</td>
 									<td>
 										<select name="lesson" id="lesson-select">
-											<option value="a">a</option>
-											<option value="b">b</option>
-											<option value="c">c</option>
-											<option value="d">d</option>
-											<option value="e">e</option>
-											<option value="f">f</option>
+											<option value="CS01">a</option>
+											<option value="CS02">b</option>
+											<option value="CS03">c</option>
+											<option value="CS04">d</option>
+											<option value="CS05">e</option>
+											<option value="CS06">f</option>
 										</select>
 									</td>
 								</tr>
@@ -92,7 +92,7 @@
 	
 	<script type="text/javascript">
 		function sendOk() {
-			const f = document.postForm;
+			const f = document.bbsForm;
 			let str;
 			
 			str = f.subject.value.trim();
