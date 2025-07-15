@@ -58,7 +58,7 @@
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">공지 등록</div>
 				        <div class="col-sm-10 bg-white py-3">
 				            <div class="form-check">
-				                <input class="form-check-input" type="checkbox" id="id_notice" name="id_notice"
+				                <input class="form-check-input" type="checkbox" id="is_notice" name="is_notice"
 				                       value="1" ${dto.is_notice==1 ? "checked" : "" }>
 				                <label class="form-check-label" for="id_notice">공지로 등록</label>
 				            </div>
