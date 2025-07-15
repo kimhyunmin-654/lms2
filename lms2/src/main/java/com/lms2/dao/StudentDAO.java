@@ -149,6 +149,7 @@ public class StudentDAO {
 		return list;
 	}
 	
+	// 학번으로 학생 찾기
 	public StudentDTO findbyId(String member_id) {
 		
 		StudentDTO dto = null;
@@ -157,7 +158,10 @@ public class StudentDAO {
 		String sql;
 		
 		try {
-			sql = " ";
+			sql = " SELECT m.member_id, name, password, role, TO_CHAR(create_date, 'YYYY-MM-DD') create_date, TO_CHAR(modify_date, 'YYYY-MM-DD') modify_date, avatar, email, phone, birth, addr1, addr2, grade, admission_date, TO_CHAR(admission_date, 'YYYY-MM-DD') admission_date, TO_CHAR(graduate_date, 'YYYY-MM-DD') graduate_date, department_id "
+					+ " FROM member m "
+					+ " JOIN student s ON s.member_id = m.member_id "
+					+ " WHERE m.member_id = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member_id);
@@ -169,10 +173,138 @@ public class StudentDAO {
 				
 				dto.setMember_id(rs.getString("member_id"));
 				dto.setName(rs.getString("name"));
+				dto.setPassword(rs.getString("password"));
+				dto.setRole(rs.getInt("role"));
+				dto.setCreate_date(rs.getString("create_date"));
+				dto.setModify_date(rs.getString("modify_date"));
+				dto.setAvatar(rs.getString("avatar"));
+				dto.setEmail(rs.getString("email"));
+				if(dto.getEmail() != null) {
+					String[] ss = dto.getEmail().split("@");
+					if(ss.length == 2) {
+						dto.setEmail1(ss[0]);
+						dto.setEmail2(ss[1]);
+					}
+				}
+				dto.setPhone(rs.getString("phone"));
+				dto.setBirth(rs.getString("birth"));
+				dto.setAddr1(rs.getString("addr1"));
+				dto.setAddr2(rs.getString("addr2"));
+				dto.setGrade(rs.getInt("grade"));
+				dto.setAdmission_date(rs.getString("admission_date"));
+				dto.setGraduate_date(rs.getString("graduate_date"));
+				dto.setDepartment_id(rs.getString("department_id"));
+				
 			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
 		}
 		
 		return dto;
 	}
+	
+	// 학생 수정(학생이 직접 수정)
+	public void updateStudent(StudentDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql =  " UPDATE member SET password = ? , modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ? "
+					+ " WHERE member_id = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getPassword());
+			pstmt.setString(2, dto.getAvatar());
+			pstmt.setString(3, dto.getEmail());
+			pstmt.setString(4, dto.getPhone());
+			pstmt.setString(5, dto.getBirth());
+			pstmt.setString(6, dto.getAddr1());
+			pstmt.setString(7, dto.getAddr2());
+			pstmt.setString(8, dto.getMember_id());
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(pstmt);
+		}
+		
+	}
+	
+	// 학생 수정(관리자가 직접 수정)
+		public void updateStudentByAdmin(StudentDTO dto) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql;
+			
+			try {
+				sql =  " UPDATE member SET name = ?, password = ?, modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ? "
+						+ " WHERE member_id = ? ";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, dto.getName());
+				pstmt.setString(2, dto.getPassword());
+				pstmt.setString(3, dto.getAvatar());
+				pstmt.setString(4, dto.getEmail());
+				pstmt.setString(5, dto.getPhone());
+				pstmt.setString(6, dto.getBirth());
+				pstmt.setString(7, dto.getAddr1());
+				pstmt.setString(8, dto.getAddr2());
+				pstmt.setString(9, dto.getMember_id());
+				
+				pstmt.executeUpdate();
+				pstmt.close();
+				pstmt = null;
+				
+				sql = " UPDATE student SET grade = ?,  admission_date = TO_DATE(?, 'YYYY-MM-DD'),  graduate_date = TO_DATE(?, 'YYYY-MM-DD'), department_id = ? "
+						+ " WHERE member_id = ? ";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, dto.getGrade());
+				pstmt.setString(2, dto.getAdmission_date());
+				pstmt.setString(3, dto.getGraduate_date());
+				pstmt.setString(4, dto.getDepartment_id());
+				pstmt.setString(5, dto.getMember_id());
+				
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(pstmt);
+			}
+			
+		}
+		
+		// 학생 삭제(관리자가 삭제)
+		public void deleteStudentByAdmin(String member_id) throws SQLException {
+			
+			PreparedStatement pstmt = null;
+			String sql;
+			
+			try {
+				sql = " DELETE FROM student WHERE member_id = ? ";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, member_id);
+				pstmt.executeUpdate();
+				
+				pstmt.close();
+				pstmt = null;
+				
+				sql = " DELETE FROM member WHERE member_id = ? ";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, member_id);
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				DBUtil.close(pstmt);
+			} 
+			
+		}
 
 }
