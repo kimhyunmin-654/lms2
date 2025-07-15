@@ -154,6 +154,9 @@ public class DataController {
 			if(kwd.length() != 0) {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
+			
+			dao.updateHitCount(data_id);
+			
 			//게시물가져오기
 			DataDTO dto = dao.findById(data_id);
 			if(dto == null) {
@@ -342,6 +345,7 @@ public class DataController {
 		
 		DataDAO dao = new DataDAO();
 		
+		String member_id = (String) req.getSession().getAttribute("member_id");
 		String state = "false";
 		
 		try {
@@ -355,7 +359,7 @@ public class DataController {
 				dto.setParent_comment_id(Integer.parseInt(parent_comment_id));
 			}
 			
-			dao.insertComment(dto);
+			dao.insertComment(dto, member_id);
 			state = "true";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -371,6 +375,22 @@ public class DataController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		//리플 삭제
 		
+		DataDAO dao = new DataDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String state = "false";
+		
+		try {
+			int comment_id = Integer.parseInt(req.getParameter("comment_id"));
+			dao.deleteComment(comment_id, info.getMember_id());
+			
+			state = "true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.put("state", state);
 		return model;
 	}
 	

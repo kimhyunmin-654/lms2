@@ -431,13 +431,14 @@ public class DataDAO {
 		}
 	}	
 		//댓글 쓰기
-		public void insertComment(Data_CommentDTO dto) throws SQLException {
+		public void insertComment(Data_CommentDTO dto, String member_id) throws SQLException {
 			PreparedStatement pstmt = null;
 			String sql;
 			
 			try {
-				sql = "INSET INTO data_comment(comment_id, content, reg_date, parent_comment_id, showReply, block, data_id) "
-						+ " VALUES(DATA_SEQ.NEXTVAL, ?, SYSDATE, ?, ?, ?, ?)";
+				sql = "INSERT INTO data_comment(comment_id, content, reg_date, parent_comment_id, showReply, block, data_id, member_id) "
+						+ " VALUES(DATA_COMMENT_SEQ.NEXTVAL, ?, SYSDATE, ?, ?, ?, ?, ?)";
+				
 				pstmt = conn.prepareStatement(sql);
 				
 				pstmt.setString(1, dto.getContent());
@@ -445,6 +446,7 @@ public class DataDAO {
 				pstmt.setInt(3, dto.getShowReply());
 				pstmt.setInt(4, dto.getBlock());
 				pstmt.setInt(5, dto.getData_id());
+				pstmt.setString(6, member_id);
 				
 				pstmt.executeUpdate();
 				
@@ -497,7 +499,7 @@ public class DataDAO {
 			sb.append(" FROM data_comment ");
 			sb.append(" WHERE data_id = ? ");
 			sb.append(" ORDER BY comment_id ASC ");
-			sb.append(" OFFSET ? ROWD FRTCH FIRST ? ROWS ONLY ");
+			sb.append(" OFFSET ? ROWS FRTCH FIRST ? ROWS ONLY ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, data_id);
@@ -527,6 +529,30 @@ public class DataDAO {
 		}
 		
 		return list;
+	}
+	
+	public void deleteComment(int comment_id, String member_id) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "DELETE FROM data_comment WHERE comment_id = ? AND member_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, comment_id);
+			pstmt.setString(2, member_id);
+			
+			int result = pstmt.executeUpdate();
+			
+			if(result == 0) {
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
 	}
 	
 }
