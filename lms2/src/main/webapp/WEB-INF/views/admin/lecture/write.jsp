@@ -6,15 +6,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>강의실 등록</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 	<header>
-		<!--<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />-->
+		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp"/>
+		<!--<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp"/>-->
 			<div class="container" style="margin-left: 240px; margin-top: 70px;">
 				<h2>강의실 등록</h2>
 
@@ -84,7 +84,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th>학점</th>
+							<th>담당교수</th>
 							<td><input type="number" name="member_id"></td>
 						</tr>
 						<!-- 

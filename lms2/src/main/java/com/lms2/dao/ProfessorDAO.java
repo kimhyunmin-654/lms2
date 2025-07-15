@@ -69,7 +69,6 @@ public class ProfessorDAO {
 		}	
 	}
 	
-	/*
 	// 테이블 조인
 	public ProfessorDTO findById(String member_id) {
 		ProfessorDTO dto = null;
@@ -124,11 +123,33 @@ public class ProfessorDAO {
 		List<ProfessorDTO> list = new ArrayList<ProfessorDTO>();
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
 		
+		try {
+			sb.append("");
+			sb.append("");
+			sb.append("");
+			sb.append("");
+			sb.append("");
+			sb.append("");
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			
+			pstmt.setInt(1, offset);
+			pstmt.setInt(2, size);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
 		
 		return list;
 	}
 	
+	/*
 	// 교수 수정
 	public void updateProfessor(ProfessorDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
