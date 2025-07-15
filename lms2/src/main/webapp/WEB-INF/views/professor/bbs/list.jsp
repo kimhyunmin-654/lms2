@@ -22,7 +22,7 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
@@ -88,8 +88,7 @@
 							</div>
 						</form>
 					</div>
-					
-					<!--학생은 안 보이게 할 것 -->
+
 					<div class="col text-end">
 						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/write';">글올리기</button>
 					</div>

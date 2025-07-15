@@ -19,8 +19,8 @@
 		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
-			<div class="container">
-				<div class="body-container row justify-content-center">
+			<div class="container ">
+				<div class="body-container row justify-content-center" style="margin: 100px;">
 					<div class="col-md-10 my-3 p-3">
 					<div class="body-title">
 						<h3>자료실</h3>
@@ -33,7 +33,7 @@
 									<td>제목
 									</td>
 									<td>
-										<input type="text" name="subject" maxlength="100" class="form-control" value="">
+										<input type="text" name="subject" maxlength="100" class="form-control" value="${dto.subject}">
 									</td>
 								</tr>
 								
@@ -41,7 +41,14 @@
 									<td>강의 과목
 									</td>
 									<td>
-										<input type="text">
+										<select name="lesson" id="lesson-select">
+											<option value="a">a</option>
+											<option value="b">b</option>
+											<option value="c">c</option>
+											<option value="d">d</option>
+											<option value="e">e</option>
+											<option value="f">f</option>
+										</select>
 									</td>
 								</tr>
 								
@@ -49,7 +56,7 @@
 									<td>업로드파일
 									</td>
 									<td>
-										<input type="text">
+										<input type="text" disabled>
 									</td>
 								</tr>
 								
@@ -57,7 +64,21 @@
 									<td>내용
 									</td>
 									<td>
-										<textarea name="content" class="form-control"></textarea>
+										<textarea rows="15" name="content" class="form-control" style="resize: none;">${dto.content}</textarea>
+									</td>
+								</tr>
+							</table>
+							
+							<table class="table table-borderless">
+								<tr>
+									<td class="text-center">
+										<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=="update"?"수정완료":"등록완료"}&nbsp;</button>
+										<button type="reset" class="btn btn-light">다시입력</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list';">${mode=="update"?"수정취소":"등록취소"}&nbsp;<i class="bi bi-x"></i></button>
+										<c:if test="${mode=='update'}">
+											<input type="hidden" name="num" value="${dto.num}">
+											<input type="hidden" name="page" value="${page}">
+										</c:if>
 									</td>
 								</tr>
 							</table>
@@ -68,5 +89,29 @@
 			</div>
 		</div>
 	</main>
+	
+	<script type="text/javascript">
+		function sendOk() {
+			const f = document.postForm;
+			let str;
+			
+			str = f.subject.value.trim();
+			if( ! str ) {
+				alert('제목을 입력하세요. ');
+				f.subject.focus();
+				return;
+			}
+	
+			str = f.content.value.trim();
+			if( ! str ) {
+				alert('내용을 입력하세요. ');
+				f.content.focus();
+				return;
+			}
+	
+			f.action = '${pageContext.request.contextPath}/professor/bbs/${mode}';
+			f.submit();
+		}
+	</script>
 </body>
 </html>
