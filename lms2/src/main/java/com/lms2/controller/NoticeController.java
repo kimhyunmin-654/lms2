@@ -156,7 +156,7 @@ public class NoticeController {
 
 		String size = req.getParameter("size");
 		try {
-			NoticeDTO dto = new NoticeDTO();
+			NoticeDTO dto = new NoticeDTO(); 
 			
 			dto.setMember_id(info.getMember_id());
 			if(req.getParameter("notice") != null) {

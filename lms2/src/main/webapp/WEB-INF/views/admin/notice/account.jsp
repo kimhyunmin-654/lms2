@@ -90,7 +90,7 @@ nhn.husky.EZCreator.createInIFrame({
 	sSkinURI: '${pageContext.request.contextPath}/dist/vendor/se2/SmartEditor2Skin.html',
 	fCreator: 'createSEditor2',
 	fOnAppLoad: function(){
-		// 로딩 완료 후
+		// 로딩 완료 후 
 		oEditors.getById['ir1'].setDefaultFont('돋움', 12);
 	},
 });
