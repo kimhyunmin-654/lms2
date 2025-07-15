@@ -38,21 +38,21 @@
                         <c:forEach var="dto" items="${list}">
                             <tr>
                                 <td>
-                                    <c:if test="${dto.notice == 1}">
+                                    <c:if test="${dto.is_notice == 1}">
                                         <span class="badge bg-warning text-dark">공지</span>
                                     </c:if>
-                                    <c:if test="${dto.notice != 1}">
-                                        ${dto.num}
+                                    <c:if test="${dto.is_notice != 1}">
+                                        ${dto.notice_id}
                                     </c:if>
                                 </td>
                                 <td class="text-start">
-                                    <a href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.num}">
+                                    <a href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.notice_id}">
                                         ${dto.subject}
                                     </a>
                                 </td>
-                                <td>${dto.userName}</td>
+                                <td>${dto.name}</td>
                                 <td>${dto.reg_date}</td>
-                                <td>${dto.hitCount}</td>
+                                <td>${dto.hit_count}</td>
                             </tr>
                         </c:forEach>
                         <c:if test="${empty list}">
