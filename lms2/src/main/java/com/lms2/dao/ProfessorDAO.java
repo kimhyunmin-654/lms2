@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lms2.model.DeparmentDTO;
+import com.lms2.model.MemberDTO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
@@ -127,17 +129,34 @@ public class ProfessorDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("");
-			sb.append("");
-			sb.append("");
-			sb.append("");
-			sb.append("");
-			sb.append("");
+			sb.append(" SELECT m.member_id, m.name, m.birth, m.email, m.phone, p.position, d.department_name, p.department_id");
+			sb.append(" FROM member m");
+			sb.append(" JOIN professor p ON p.member_id = m.member_id");
+			sb.append(" JOIN department d ON p.department_id = d.department_id");
+			sb.append(" ORDER BY member_id DESC ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
 			pstmt.setInt(1, offset);
 			pstmt.setInt(2, size);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ProfessorDTO dto = new ProfessorDTO();
+				DeparmentDTO dto2 = new DeparmentDTO();
+				
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setName(rs.getString("name"));
+				dto.setBirth(rs.getString("birth"));
+				dto.setEmail(rs.getString("email"));
+				dto.setPhone(rs.getString("phone"));
+				dto.setPosition(rs.getString("position"));
+				dto2.setDepartment_name(rs.getString("department_name"));
+				dto.setDepartment_id(rs.getString("department_id"));
+				
+				list.add(dto);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

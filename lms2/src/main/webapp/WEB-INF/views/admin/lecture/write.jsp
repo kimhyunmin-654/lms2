@@ -85,7 +85,7 @@
 						</tr>
 						<tr>
 							<th>담당교수</th>
-							<td><input type="number" name="member_id"></td>
+							<td><input type="text" name="member_id"></td>
 						</tr>
 						<!-- 
 						<c:if test="${mode=='update'}">
