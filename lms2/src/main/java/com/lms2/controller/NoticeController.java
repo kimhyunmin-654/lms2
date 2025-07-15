@@ -175,7 +175,7 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/admin/notice/list?size=" + size);
+		return new ModelAndView("redirect:/admin/notice/list");
 				
 	}
 	
