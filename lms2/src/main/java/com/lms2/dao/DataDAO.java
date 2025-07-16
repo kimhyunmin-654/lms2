@@ -17,7 +17,8 @@ public class DataDAO {
 	private Connection conn = DBConn.getConnection();
 
 	// 데이터 추가
-	public void insertData(DataDTO dto) throws SQLException {
+	public int insertData(DataDTO dto) throws SQLException {
+		int dataId = 0;
 		PreparedStatement pstmt = null;
 		String sql;
 
@@ -38,6 +39,8 @@ public class DataDAO {
 		} finally {
 			DBUtil.close(pstmt);
 		}
+		
+		return dataId;
 	}
 
 	// 데이터개수
@@ -499,7 +502,7 @@ public class DataDAO {
 			sb.append(" FROM data_comment ");
 			sb.append(" WHERE data_id = ? ");
 			sb.append(" ORDER BY comment_id ASC ");
-			sb.append(" OFFSET ? ROWS FRTCH FIRST ? ROWS ONLY ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, data_id);
