@@ -14,6 +14,17 @@
 <body>
 	<div class="text-white p-3 position-fixed blackbox2">
 		<div class="accordion accordion-flush" id="sidebarAccordion">
+			<form>
+			   <select name="lesson" id="lesson-select">
+				    <option value="">-- 강의 선택 --</option>
+				    <c:if test="${empty lectureList}">
+					    <div>강의 없음 또는 세션 없음</div>
+					</c:if>
+					<c:forEach var="lecture" items="${lectureList}">
+					    <div>강의명: ${lecture.subject}</div>
+					</c:forEach>
+				</select>
+			</form>
 			<div class="accordion-item">
 				<h2 class="accordion-header">
 					<button class="accordion-button custom-accordion-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -54,9 +65,10 @@
 					<div class="accordion-body custom-submenu">내 정보 관리</div>
 				</div>
 			</div>
-
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
 	</div>
 </body>
+
+
 </html>

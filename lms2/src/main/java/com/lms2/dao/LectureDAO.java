@@ -150,4 +150,24 @@ public class LectureDAO {
 			return result;
 			
 		}
+		
+		public List<LectureDTO> listsidebar(String member_id) {
+		    List<LectureDTO> list = new ArrayList<>();
+		    String sql = "SELECT subject FROM lecture WHERE member_id = ?";
+
+		    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		        pstmt.setString(1, member_id);
+		        try (ResultSet rs = pstmt.executeQuery()) {
+		            while (rs.next()) {
+		                LectureDTO dto = new LectureDTO();
+		                dto.setSubject(rs.getString("subject")); 
+		                list.add(dto);
+		            }
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    return list;
+		}
 }
