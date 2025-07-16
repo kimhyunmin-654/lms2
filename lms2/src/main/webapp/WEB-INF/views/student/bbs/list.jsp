@@ -32,12 +32,12 @@
 					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
 				</div>
 
-				<table class="table table-hover board-list">
+								<table class="table table-hover board-list">
 					<thead class="table-light">
 						<tr>
 							<th width="60">번호</th>
 							<th>제목</th>
-							<th width="100">작성시간</th>
+							<th width="200">등록일</th>
 							<th width="100">첨부파일</th>
 						</tr>
 					</thead>
@@ -48,12 +48,11 @@
 								<td>${dataCount - (page - 1) * size - status.index}</td>
 								<td class="left">
 									<div class="text-wrap">
-										<a href="${articleUrl}&num=${dto.num}" class="text-reset">${dto.subject}</a>
+										<a href="${articleUrl}&num=${dto.data_id}" class="text-reset">${dto.subject}</a>
 									</div>
 								</td>
-								<td>작성자</td>
-								<td>등록일</td>
-								<td>조회수</td>
+								<td>${dto.reg_date}</td>
+								<td>ㅇ</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -63,9 +62,11 @@
 				</div>
 
 				<div class="row board-list-footer">
-					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/student/bbs/list';">새로고침</button>
+					
+					<div class="col text-end">
+						<button type="button" class="btn btn-light"  style="display: none"></button>
 					</div>
+					
 					<div class="col-6 d-flex justify-content-center">
 						<form class="row" name="searchForm">
 							<div class="col-auto p-1">
@@ -78,8 +79,7 @@
 								</select>
 							</div>
 							<div class="col-auto p-1">
-								<input type="text" name="kwd" value="${kwd}"
-									class="form-control">
+								<input type="text" name="kwd" value="${kwd}" class="form-control">
 							</div>
 							<div class="col-auto p-1">
 								<button type="button" class="btn btn-light" onclick="searchList()">
@@ -89,8 +89,8 @@
 						</form>
 					</div>
 					
-					<div class="col text-end">
-						<button type="button" class="btn btn-light"  style="display: none"></button>
+					<div class="col">
+						<button type="button" class="btn btn-light" style="float: right;" onclick="location.href='${pageContext.request.contextPath}/student/bbs/list';">새로고침</button>
 					</div>
 				</div>
 			</div>
