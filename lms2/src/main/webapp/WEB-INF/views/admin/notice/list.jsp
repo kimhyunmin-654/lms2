@@ -68,11 +68,11 @@
                                 <th width="5%">
                                     <input type="checkbox" id="chkAll" class="form-check-input">
                                 </th>
-                                <th width="10%">번호</th>
+                                <th width="7%">번호</th>
                                 <th>제목</th>
-                                <th width="15%">작성자</th>
-                                <th width="15%">등록일</th>
-                                <th width="10%">조회수</th>
+                                <th width="10%">작성자</th>
+                                <th width="14%">등록일</th>
+                                <th width="7%">조회수</th>
                             </tr>
                         </thead>
                         <tbody>
