@@ -11,7 +11,6 @@ import com.lms2.util.DBUtil;
 import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.StudentDTO;
-import com.lms2.model.StudentStatusDTO;
 import com.lms2.util.DBConn;
 
 public class StudentDAO {
@@ -390,8 +389,8 @@ public class StudentDAO {
 			
 		}
 		
-		// 수강 신청한 리스트 (작성중)
-		public List<Course_ApplicationDTO> listCourse(String department_id) {
+		// 수강 신청한 리스트
+		public List<Course_ApplicationDTO> listCourse(String member_id) {
 			List<Course_ApplicationDTO> list = new ArrayList<Course_ApplicationDTO>();
 			
 			PreparedStatement pstmt = null;
@@ -399,14 +398,17 @@ public class StudentDAO {
 			StringBuilder sb = new StringBuilder();
 			
 			try {
-				sb.append(" SELECT l.lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit ");
-				sb.append(" FROM LECTURE l ");
-				sb.append(" JOIN COURSE_APPLICATION c ON c.lecture_code = l.lecture_code ");
-				sb.append(" JOIN STUDENT s ON s.member_id = c.member_id ");
-				sb.append(" WHERE apply_status = '신청' ");
-				sb.append(" ORDER BY course_id DESC ");
+				  sb.append(" SELECT l.member_id, m.name, l.lecture_code, l.subject, l.grade, l.classroom, l.division, ");
+			      sb.append(" l.lecture_year, l.semester, l.capacity, l.credit ");
+			      sb.append(" FROM LECTURE l ");
+			      sb.append(" JOIN COURSE_APPLICATION c ON c.lecture_code = l.lecture_code ");
+			      sb.append(" JOIN PROFESSOR p ON l.member_id = p.member_id ");
+			      sb.append(" JOIN MEMBER m ON m.member_id = p.member_id ");
+			      sb.append(" WHERE c.member_id = ? AND c.apply_status = '신청' ");
+			      sb.append(" ORDER BY c.course_id DESC ");
 				
 				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setString(1, member_id);
 				rs = pstmt.executeQuery();
 				
 				while(rs.next()) {
@@ -421,13 +423,14 @@ public class StudentDAO {
 					lDto.setLecture_year(rs.getInt("lecture_year"));
 					lDto.setSemester(rs.getString("semester"));
 					lDto.setCapacity(rs.getInt("capacity"));
-					lDto.setCredit(rs.getInt("credit"));
-					
+					lDto.setCredit(rs.getDouble("credit"));
+					lDto.setName(rs.getString("name"));
+					cDto.setMember_id(rs.getString("member_id"));
 					cDto.setLecture(lDto);
+					
 					
 					list.add(cDto);
 				}
-				
 				
 			} catch (Exception e) {
 				e.printStackTrace();
