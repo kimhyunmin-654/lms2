@@ -27,8 +27,8 @@ public class StudentDAO {
 		try {
 			conn.setAutoCommit(false);
 			
-			sql = " INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2) "
-					+ " VALUES(?, ?, ?, 1, SYSDATE, SYSDATE, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?) ";
+			sql = " INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip) "
+					+ " VALUES(?, ?, ?, 1, SYSDATE, SYSDATE, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?, ?) ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -41,6 +41,7 @@ public class StudentDAO {
 			pstmt.setString(7, dto.getBirth());
 			pstmt.setString(8, dto.getAddr1());
 			pstmt.setString(9, dto.getAddr2());
+			pstmt.setString(10, dto.getZip());
 			
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -328,7 +329,9 @@ public class StudentDAO {
 			
 			try {
 				sb.append(" SELECT lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, department_id " );
-				sb.append(" FROM LECTURE ");
+				sb.append(" FROM LECTURE l");
+				sb.append(" JOIN STUDENT s ON s.department_id = l.department_id ");
+				// sb.append(" WHERE department_id = ? ");
 				sb.append(" ORDER BY lecture_code DESC ");
 				sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 				
@@ -387,7 +390,7 @@ public class StudentDAO {
 			
 		}
 		
-		// 수강 신청 리스트 (작성중)
+		// 수강 신청한 리스트 (작성중)
 		public List<Course_ApplicationDTO> listCourse(String department_id) {
 			List<Course_ApplicationDTO> list = new ArrayList<Course_ApplicationDTO>();
 			
@@ -396,9 +399,36 @@ public class StudentDAO {
 			StringBuilder sb = new StringBuilder();
 			
 			try {
-				sb.append(" SELECT lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit ");
-				sb.append(" FROM LECTURE");
-				sb.append(" WHERE ");
+				sb.append(" SELECT l.lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit ");
+				sb.append(" FROM LECTURE l ");
+				sb.append(" JOIN COURSE_APPLICATION c ON c.lecture_code = l.lecture_code ");
+				sb.append(" JOIN STUDENT s ON s.member_id = c.member_id ");
+				sb.append(" WHERE apply_status = '신청' ");
+				sb.append(" ORDER BY course_id DESC ");
+				
+				pstmt = conn.prepareStatement(sb.toString());
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					LectureDTO lDto = new LectureDTO();
+					Course_ApplicationDTO cDto = new Course_ApplicationDTO();
+					
+					lDto.setLecture_code(rs.getString("lecture_code"));
+					lDto.setSubject(rs.getString("subject"));
+					lDto.setGrade(rs.getInt("grade"));
+					lDto.setClassroom(rs.getString("classroom"));
+					lDto.setDivision(rs.getString("division"));
+					lDto.setLecture_year(rs.getInt("lecture_year"));
+					lDto.setSemester(rs.getString("semester"));
+					lDto.setCapacity(rs.getInt("capacity"));
+					lDto.setCredit(rs.getInt("credit"));
+					
+					cDto.setLecture(lDto);
+					
+					list.add(cDto);
+				}
+				
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
