@@ -11,6 +11,7 @@ import com.lms2.util.DBUtil;
 import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.StudentDTO;
+import com.lms2.model.StudentStatusDTO;
 import com.lms2.util.DBConn;
 
 public class StudentDAO {
@@ -42,7 +43,6 @@ public class StudentDAO {
 			pstmt.setString(9, dto.getAddr2());
 			
 			pstmt.executeUpdate();
-			
 			pstmt.close();
 			pstmt = null;
 			
@@ -57,6 +57,15 @@ public class StudentDAO {
 			pstmt.setString(4, dto.getGraduate_date());
 			pstmt.setString(5, dto.getDepartment_id());
 			
+			pstmt.executeUpdate();
+			pstmt.close();
+			pstmt = null;
+			
+			sql = " INSERT INTO STUDENT_STATUS(history_id, year, semester, grade, academic_status, reg_date, member_id) "
+					+ " VALUES(STUDENT_STATUS_SEQ.NEXTVAL, SYSDATE, 1, ?, '입학', SYSDATE, ?) ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getGrade());
+			pstmt.setString(2, dto.getMember_id());
 			pstmt.executeUpdate();
 			
 			conn.commit();
@@ -319,7 +328,7 @@ public class StudentDAO {
 			
 			try {
 				sb.append(" SELECT lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, department_id " );
-				sb.append(" FROM FROM LECTURE ");
+				sb.append(" FROM LECTURE ");
 				sb.append(" ORDER BY lecture_code DESC ");
 				sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 				
