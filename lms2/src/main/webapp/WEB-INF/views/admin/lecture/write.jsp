@@ -48,8 +48,8 @@
 							<th>분류</th>
 							<td>
 								<select name="division">
-									<option value="1">전공</option>
-									<option value="2">교양</option>
+									<option value="전공">전공</option>
+									<option value="교양">교양</option>
 								</select>
 							</td>
 						</tr>
