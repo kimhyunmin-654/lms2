@@ -69,7 +69,8 @@
 								</tr>
 								<tr style="border-bottom: 2px solid gray;">
 									<td colspan="2">다음글:
-										<c:if test="${not empty prevDto}">
+										<c:if test="${not empty nextDto}">
+											<a href="${pageContext.request.contextPath}/professor/bbs/article?num=${nextDto.data_id}&${query}">${nextDto.subject}</a>
 										</c:if>
 									</td>
 								</tr>

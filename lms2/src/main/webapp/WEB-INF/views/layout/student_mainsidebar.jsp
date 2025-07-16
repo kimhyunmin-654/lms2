@@ -29,10 +29,10 @@
 				</h2>
 				<div id="collapseOne" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu">수강 과목</div>
-					<div class="accordion-body custom-submenu">성적 관리</div>
-					<div class="accordion-body custom-submenu">출석 관리</div>
-					<div class="accordion-body custom-submenu">수업 일정</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/list">수강 과목</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/rating">성적 관리</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/attendance">출석 관리</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/schedule">수업 일정</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/lecture/list">수강신청</a></div>
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 				</h2>
 				<div id="collapseTwo" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu">과제</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/bbs/homework">과제</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/bbs/list">자료실</a></div>
 				</div>
 			</div>

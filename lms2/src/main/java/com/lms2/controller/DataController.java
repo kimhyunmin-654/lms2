@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpSession;
 public class DataController {
 	
 	@RequestMapping(value = "/professor/bbs/list", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public ModelAndView pList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 리스트
 		ModelAndView mav = new ModelAndView("/professor/bbs/list");
 		
@@ -100,6 +100,82 @@ public class DataController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/student/bbs/list", method = RequestMethod.GET)
+	public ModelAndView sList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//자료실 리스트
+		ModelAndView mav = new ModelAndView("/student/bbs/list");
+		
+		DataDAO dao = new DataDAO();
+		MyUtil util = new MyUtil();
+		
+		try {
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if(page != null) {
+				current_page = Integer.parseInt(page);
+			}
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			int dataCount;
+			if(kwd.length() == 0) {
+				dataCount = dao.dataCount();
+			} else {
+				dataCount = dao.dataCount(schType, kwd);
+			}
+			
+			int size = 10;
+			int total_page = util.pageCount(dataCount, size);
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page - 1) * size;
+			if(offset < 0) offset = 0;
+			
+			List<DataDTO> list = null;
+			if(kwd.length() == 0) {
+				list = dao.listData(offset, size);
+			} else {
+				list = dao.listData(offset, size, schType, kwd);
+			}
+			
+			String query = "";
+			if(kwd.length() != 0) {
+				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+			String cp = req.getContextPath();
+			String listUrl = cp + "/student/bbs/list";
+			String articleUrl = cp + "/student/bbs/article?page=" + current_page;
+			if(query.length() != 0) {
+				listUrl += "?" + query;
+				articleUrl += "&" + query;
+			}
+			
+			String paging = util.paging(current_page, total_page, listUrl);
+			
+			mav.addObject("list", list);
+			mav.addObject("dataCount", dataCount);
+			mav.addObject("size", size);
+			mav.addObject("page", current_page);
+			mav.addObject("total_page", total_page);
+			mav.addObject("articleUrl", articleUrl);
+			mav.addObject("paging", paging);
+			mav.addObject("schType", schType);
+			mav.addObject("kwd", kwd);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mav;
+	}
+	
 	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글쓰기
@@ -138,7 +214,7 @@ public class DataController {
 	}
 	
 	@RequestMapping(value = "/professor/bbs/article", method = RequestMethod.GET)
-	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public ModelAndView pArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//자료실 글보기
 		DataDAO dao = new DataDAO();
 		MyUtil util = new MyUtil();
@@ -189,6 +265,60 @@ public class DataController {
 		}
 		
 		return new ModelAndView("redirect:/professor/bbs/list?" + query);
+	}
+	
+	@RequestMapping(value = "/student/bbs/article", method = RequestMethod.GET)
+	public ModelAndView sArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//자료실 글보기
+		DataDAO dao = new DataDAO();
+		MyUtil util = new MyUtil();
+		
+		String page = req.getParameter("page");
+		String query = "page=" + page;
+		
+		try {
+			int data_id = Integer.parseInt(req.getParameter("num"));
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+			// 조회수 증가
+			dao.updateHitCount(data_id);
+			
+			//게시물가져오기
+			DataDTO dto = dao.findById(data_id);
+			
+			if(dto == null) {
+				return new ModelAndView("redirect:/student/bbs/list?" + query);
+			}
+			dto.setContent(util.htmlSymbols(dto.getContent()));
+			
+			//이전글 다음글
+			DataDTO prevDto = dao.findByPrev(dto.getData_id(), schType, kwd);
+			DataDTO nextDto = dao.findByNext(dto.getData_id(), schType, kwd);
+			
+			ModelAndView mav = new ModelAndView("/student/bbs/article");
+			mav.addObject("dto", dto);
+			mav.addObject("page", page);
+			mav.addObject("query", query);
+			mav.addObject("prevDto", prevDto);
+			mav.addObject("nextDto", nextDto);
+			
+			return mav;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ModelAndView("redirect:/student/bbs/list?" + query);
 	}
 	
 	@RequestMapping(value = "/data/update", method = RequestMethod.GET)
