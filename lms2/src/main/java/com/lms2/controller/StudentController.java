@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
+import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.dao.LectureDAO;
@@ -225,20 +226,19 @@ public class StudentController {
 	@RequestMapping(value = "/student/lecture/account", method = RequestMethod.POST)
 	public ModelAndView lectureSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 수강 신청 (수정중)
+		// 수강 신청
 		StudentDAO dao = new StudentDAO();
 
 		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("student");
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		try {
-			StudentDTO dto = new StudentDTO();
-			String lectureCode = req.getParameter("lectureCode");
+			Course_ApplicationDTO dto = new Course_ApplicationDTO();
+			
 			dto.setMember_id(info.getMember_id());
 			dto.setLecture_code(req.getParameter("lecture_code"));
-			dto.setApply_status("신청");
 
-			// dao.insertCourse(dto);
+			dao.insertCourse(dto);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -246,5 +246,7 @@ public class StudentController {
 
 		return new ModelAndView("redirect:/student/lecture/list");
 	}
+	
+	
 
 }

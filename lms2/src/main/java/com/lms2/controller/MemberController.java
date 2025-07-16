@@ -96,10 +96,7 @@ public class MemberController {
 	    return "professor/main/main"; // JSP 뷰 경로
 	}
 	
-	@RequestMapping(value = "/student/main/main", method = RequestMethod.GET)
-	public String studentMain(HttpServletRequest req, HttpServletResponse resp) {
-	    return "student/main/main"; // JSP 뷰 경로
-	}
+
 	
 
 	
