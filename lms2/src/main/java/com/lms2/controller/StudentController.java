@@ -3,13 +3,14 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
-import com.lms2.dao.LectureDAO;
-import com.lms2.dao.StudentDAO;
 import com.lms2.model.LectureDTO;
+import com.lms2.model.SessionInfo;
+import com.lms2.dao.LectureDAO;
+
+import com.lms2.dao.StudentDAO;
 import com.lms2.model.StudentDTO;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.view.ModelAndView;
@@ -165,6 +166,7 @@ public class StudentController {
 		
 		return mav;
 	}
+
 	
 	@RequestMapping(value = "/student/lecture/list", method = RequestMethod.GET)
 	public ModelAndView lectureList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -214,15 +216,31 @@ public class StudentController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/student/lecture/")
+	@RequestMapping(value = "/student/lecture/account", method = RequestMethod.POST)
 	public ModelAndView lectureSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 수강신청
+		// 수강 신청 (수정중)
+		StudentDAO dao = new StudentDAO();
 		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("student");
 		
+		try {
+			StudentDTO dto = new StudentDTO();
+			String lectureCode = req.getParameter("lectureCode");
+			dto.setMember_id(info.getMember_id());
+			dto.setLecture_code(req.getParameter("lecture_code"));
+			dto.setApply_status("신청");
+
+			dao.insertCourse(dto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		return mav;
+		return new ModelAndView("redirect:/student/lecture/list");
 	}
+
 	
 	
 	
-}
+

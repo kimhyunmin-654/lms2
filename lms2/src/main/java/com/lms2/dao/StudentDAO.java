@@ -116,7 +116,7 @@ public class StudentDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT m.member_id, name, grade, email, admission_date, graduate_date, phone, birth ");
+			sb.append(" SELECT m.member_id, name, grade, admission_date, graduate_date, phone, birth ");
 			sb.append(" FROM member m ");
 			sb.append(" JOIN student s ON m.member_id = s.member_id ");
 			sb.append(" ORDER BY m.member_id DESC ");
@@ -133,7 +133,6 @@ public class StudentDAO {
 				dto.setMember_id(rs.getString("member_id"));
 				dto.setName(rs.getString("name"));
 				dto.setGrade(rs.getInt("grade"));
-				dto.setEmail(rs.getString("email"));
 				dto.setAdmission_date("admission_date");
 				dto.setGraduate_date("graduate_date");
 				dto.setPhone(rs.getString("phone"));
@@ -309,6 +308,7 @@ public class StudentDAO {
 			} 
 			
 		}
+
 		
 		//  강의 리스트 ( 수강신청 하기 위한 리스트)
 		public List<LectureDTO> listLecture(int offset, int size){
@@ -356,7 +356,7 @@ public class StudentDAO {
 		}
 		
 		// 학생 수강신청
-		public void insertCOURSE(Course_ApplicationDTO dto) throws SQLException {
+		public void insertCourse(Course_ApplicationDTO dto) throws SQLException {
 			PreparedStatement pstmt = null;
 			String sql;
 			
@@ -378,7 +378,7 @@ public class StudentDAO {
 			
 		}
 		
-		// 수강 신청 리스트
+		// 수강 신청 리스트 (작성중)
 		public List<Course_ApplicationDTO> listCourse(String department_id) {
 			List<Course_ApplicationDTO> list = new ArrayList<Course_ApplicationDTO>();
 			
@@ -397,5 +397,6 @@ public class StudentDAO {
 			return list;
 			
 		}
+
 
 }
