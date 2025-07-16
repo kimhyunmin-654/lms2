@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lms2.model.Attendance_recordDTO;
-import com.lms2.model.LectureDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
 
@@ -64,9 +63,10 @@ public class AttendanceDAO {
 			sb.append(" SELECT c.course_id, c.member_id, m.name, c.lecture_code ");
 	        sb.append(" FROM COURSE_APPLICATION c ");
 	        sb.append(" JOIN member m ON c.member_id = m.member_id ");
-	        sb.append("  WHERE c.lecture_code = ? AND c.apply_status = '신청' ");
+	        sb.append(" WHERE c.apply_status = '신청' ");
 	        sb.append(" ORDER BY c.member_id DESC ");
 	        sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+	       
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			

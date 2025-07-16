@@ -21,18 +21,26 @@
 				 <form name="postForm" method="post" action="/professor/attendance/write" enctype="multipart/form-data">
 					<table>
 						<tr>
-							<th>강의실 이름</th>
-							<td><input type="text" name="course_id"></td>
+							<th>수강번호</th>
+							<th>학생 ID</th>
+							<th>이름</th>
+							<th>출결 상태</th>
 						</tr>	
-						<tr>
-							<th>상태</th>
-							<td><input type="radio" value="1"  name="status" checked>출석</td>
-							<td><input type="radio" value="0"  name="status">결석</td>
-						</tr>
-					</table>
-					
-					<table>
-						<tr><td><button type="button" onclick="attendanceSubmit(this.form);">등록하기</button></td></tr>
+						<c:forEach var="dto" items="${list}">
+							<tr>
+								<td>
+									${dto.course_id}
+									<input type="hidden" name="course_id" value="${dto.course_id}" />
+								</td>
+								<td>${dto.member_id}</td>
+								<td>${dto.name}</td>
+								<td>
+									<label><input type="radio" name="status_${dto.course_id}" value="1" checked> 출석</label>
+									<label><input type="radio" name="status_${dto.course_id}" value="0"> 결석</label>
+								</td>
+								<td><button type="button" onclick="attendanceSubmit(this.form);">등록하기</button></td>
+							</tr>
+					</c:forEach>
 					</table>
 					</form>
 				</div>
