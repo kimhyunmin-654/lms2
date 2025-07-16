@@ -6,7 +6,9 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.lms2.dao.NoticeDAO;
 import com.lms2.model.NoticeDTO;
@@ -186,6 +188,9 @@ public class NoticeController {
 		NoticeDAO dao = new NoticeDAO();
 		MyUtil util = new MyUtil();
 		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
 		String page = req.getParameter("page");
 		String size = req.getParameter("size");
 		String query = "page=" + page + "&size=" + size;
@@ -205,7 +210,11 @@ public class NoticeController {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
 			
-			dao.updateHitCount(notice_id);
+	        @SuppressWarnings("unchecked")
+	        Set<Long> viewed = (Set<Long>) session.getAttribute("viewedNotice");
+	        if (viewed == null) {
+	            viewed = new HashSet<>();
+	        }
 			
 			NoticeDTO dto = dao.findById(notice_id);
 			if(dto == null) {
@@ -453,7 +462,14 @@ public class NoticeController {
 		String pathname = root + "uploads" + File.separator + "notice";
 
 		String page = req.getParameter("page");
+		if (page == null || page.equals("") || page.equals("null")) {
+			page = "1";
+		}
+
 		String size = req.getParameter("size");
+		if (size == null || size.equals("") || size.equals("null")) {
+			size = "10";
+		}
 		String query = "size=" + size + "&page=" + page;
 
 		try {

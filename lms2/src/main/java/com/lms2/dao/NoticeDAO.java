@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lms2.model.AdminDTO;
 import com.lms2.model.NoticeDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
@@ -102,12 +101,15 @@ public class NoticeDAO {
 		
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) FROM notice n "
-					+ " JOIN admin a ON n.member_id = a.member_id ";
+					+ " JOIN admin a ON n.member_id = a.member_id "
+					+ " JOIN member m ON a.member_id = m.member_id ";
 			if (schType.equals("all")) {
-				sql += "  WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ";
-			} else if (schType.equals("reg_date")) {
+				sql += "  WHERE INSTR(n.subject, ?) >= 1 OR INSTR(n.content, ?) >= 1 ";
+			} else if (schType.equals("n.reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
 				sql += "  WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
+			} else if (schType.equals("name")) {
+				sql += " WHERE INSTR(m.name, ?) >= 1";
 			} else {
 				sql += "  WHERE INSTR(" + schType + ", ?) >= 1 ";
 			}
@@ -299,9 +301,10 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = " SELECT notice_id, is_notice, subject, content, hit_count, reg_date, modify_date, is_visible, n.member_id "
+			sql = " SELECT n.notice_id, n.is_notice, n.subject, n.content, n.hit_count, n.reg_date, n.modify_date, n.is_visible, n.member_id, m.name "
 			    + " FROM notice n "
 			    + " JOIN admin a ON n.member_id = a.member_id "
+			    + " JOIN member m ON a.member_id = m.member_id "
 			    + " WHERE notice_id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -322,6 +325,7 @@ public class NoticeDAO {
 				dto.setModify_date(rs.getString("modify_date"));
 				dto.setIs_visible(rs.getInt("is_visible"));
 				dto.setMember_id(rs.getString("member_id"));
+				dto.setName(rs.getString("name"));
 			}
 			
 		} catch (Exception e) {
@@ -573,7 +577,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT file_id, file_size, save_Filename, original_Filename, notice_num "
+			sql = "SELECT file_num, file_size, save_filename, original_filename, notice_num "
 					+ " FROM notice_file WHERE notice_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -584,10 +588,10 @@ public class NoticeDAO {
 			while (rs.next()) {
 				NoticeDTO dto = new NoticeDTO();
 
-				dto.setFile_id(rs.getLong("file_id"));
+				dto.setFile_id(rs.getLong("file_num"));
 				dto.setFile_size(rs.getInt("file_size"));
-				dto.setSave_filename(rs.getString("save_Filename"));
-				dto.setOriginal_filename(rs.getString("original_Filename"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
 				dto.setNotice_id(rs.getInt("notice_num"));
 				
 				list.add(dto);
@@ -609,7 +613,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT file_id, file_size, save_Filename, original_Filename, notice_num "
+			sql = "SELECT file_num, file_size, save_filename, original_filename, notice_num "
 					+ " FROM notice_file WHERE file_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -620,10 +624,10 @@ public class NoticeDAO {
 			if (rs.next()) {
 				dto = new NoticeDTO();
 
-				dto.setFile_id(rs.getLong("file_id"));
+				dto.setFile_id(rs.getLong("file_num"));
 				dto.setFile_size(rs.getInt("file_size"));
-				dto.setSave_filename(rs.getString("save_Filename"));
-				dto.setOriginal_filename(rs.getString("original_Filename"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
 				dto.setNotice_id(rs.getInt("notice_num"));
 			}
 		} catch (SQLException e) {
@@ -642,9 +646,9 @@ public class NoticeDAO {
 
 		try {
 			if (mode.equals("all")) {
-				sql = "DELETE FROM notice_file WHERE notice_id = ?";
+				sql = "DELETE FROM notice_file WHERE notice_num = ?";
 			} else {
-				sql = "DELETE FROM notice_file WHERE file_id = ?";
+				sql = "DELETE FROM notice_file WHERE file_num = ?";
 			}
 			
 			pstmt = conn.prepareStatement(sql);
