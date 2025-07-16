@@ -36,27 +36,27 @@
 						<table class="table board-article">
 							<thead>
 								<tr style="border-top: 3px solid black;">
-									<td width="80px;" align="justify">제   목</td>
+									<td width="150px" align="justify">제   목</td>
 									<td align="left">${dto.subject}</td>
 								</tr>
 							</thead>
 
 							<tbody>
 								<tr>
-									<td width="80px;" align="justify">강의 과목</td>
+									<td width="150px" align="justify">강의 과목</td>
 									<td align="left">${dto.lecture_code} 얘도 join join 해야하는 군</td>
 								</tr>
 								<tr>
-									<td width="80px;" align="justify">조회수</td>
+									<td width="150px" align="justify">조회수</td>
 									<td align="left">${dto.hit_count}</td>
 								</tr>
 
 								<tr>
-									<td colspan="2" valign="top" height="200" style="padding: 20px;">${dto.content}</td>
+									<td colspan="2" valign="top" height="200" style="padding: 20px; min-height:200px;">${dto.content}</td>
 								</tr>
 
 								<tr>
-									<td width="80px;" align="justify">파일명</td>
+									<td width="150px" align="justify">파일명</td>
 									<td align="left">첨부파일이름.pdf</td>
 								</tr>
 
@@ -80,7 +80,7 @@
 							<tr>
 								<td width="50%"><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/update?num=${dto.data_id}&page=${page}';">수정</button>
 								<td class="text-end">
-									<button type="button" class="btn btn-light" 	onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?${query}';">리스트</button>
+									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?${query}';">리스트</button>
 								</td>
 							</tr>
 						</table>
