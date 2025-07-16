@@ -8,9 +8,10 @@ import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.LectureDTO;
+import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.dao.LectureDAO;
-
+import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.StudentDAO;
 import com.lms2.model.StudentDTO;
 import com.lms2.mvc.annotation.Controller;
@@ -246,7 +247,50 @@ public class StudentController {
 
 		return new ModelAndView("redirect:/student/lecture/list");
 	}
+
+	@RequestMapping(value = "/student/main/main", method = RequestMethod.GET)
+	public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		StudentDAO dao = new StudentDAO();
+		NoticeDAO noticeDao = new NoticeDAO();
+		ModelAndView mav = new ModelAndView("student/main/main");
+
+		try {
+			// 수강 과목
+			List<Course_ApplicationDTO> list = dao.listCourse(info.getMember_id());
+			mav.addObject("list", list);
+			
+			// 공지사항
+			List<NoticeDTO> listNotice = noticeDao.listNotice();
+			mav.addObject("listNotice", listNotice);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mav;
+	}
 	
-	
+	@RequestMapping(value = "/student/lecture/compList", method = RequestMethod.GET)
+	public ModelAndView studentCompList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		StudentDAO dao = new StudentDAO();
+		ModelAndView mav = new ModelAndView("student/lecture/compList");
+
+		try {
+			List<Course_ApplicationDTO> list = dao.listCourse(info.getMember_id());
+
+			mav.addObject("list", list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mav;
+	}
 
 }
