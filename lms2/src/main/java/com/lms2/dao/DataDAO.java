@@ -22,6 +22,8 @@ public class DataDAO {
 		PreparedStatement pstmt = null;
 		String sql;
 
+		
+		
 		try {
 			sql = "INSERT INTO data(data_id, subject, content, hit_count, reg_date, modify_date, lecture_code)"
 					+ " VALUES(DATA_SEQ.NEXTVAL, ?, ?, 0, SYSDATE, SYSDATE, ?)";
