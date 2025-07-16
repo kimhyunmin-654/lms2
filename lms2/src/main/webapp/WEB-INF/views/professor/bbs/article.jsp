@@ -6,13 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>자료실</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 </head>
 <body>
 	<header>
@@ -61,15 +57,20 @@
 
 								<tr>
 									<td width="80px;" align="justify">파일명</td>
-									<td align="left">자바의 이해.pdf</td>
+									<td align="left">첨부파일이름.pdf</td>
 								</tr>
 
 								<tr>
-									<td colspan="2">이전글:때문인가
+									<td colspan="2">이전글:
+										<c:if test="${not empty prevDto}">
+											<a href="${pageContext.request.contextPath}/professor/bbs/article?num=${prevDto.data_id}&${query}">${prevDto.subject}</a>
+										</c:if>
 									</td>
 								</tr>
 								<tr  style="border-bottom: 2px solid gray;">
-									<td colspan="2">다음글:때문인가
+									<td colspan="2">다음글:
+										<c:if test="${not empty prevDto}">
+										</c:if>
 									</td>
 								</tr>
 							</tbody>
@@ -88,5 +89,46 @@
 			</div>
 		</div>
 	</main>
+	
+	<script type="text/javascript">
+		function login() {
+			location.href = '${pageContext.request.contextPath}/member/login';
+		}
+		
+		function sendAjaxRequest(url, method, params, responseType, fn, file = false) {
+			const settings = {
+				type: method,
+				data: params,
+				dataType: responseType,
+				success: function(data) {
+					fn(data);	
+				},
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('AJAX', true);
+				},
+				complete: function() {
+				},
+				error: function(xhr) {
+					if (xhr.status === 403) {
+						login();
+						return false;
+					} else if (xhr.status === 406) {
+						alert('요청 처리가 실패했습니다.');
+						return false;
+					}
+					
+					console.log(xhr.responseText);
+				}
+			};
+			
+			if (file) {
+				settings.processData = false;
+				settings.contentType = false;
+			}
+			
+			$.ajax(url, settings);
+	
+		}
+	</script>
 </body>
 </html>
