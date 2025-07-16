@@ -16,14 +16,16 @@
 		<div class="accordion accordion-flush" id="sidebarAccordion">
 			<form>
 			   <select name="lesson" id="lesson-select">
-				    <option value="">-- 강의 선택 --</option>
-				    <c:if test="${empty lectureList}">
-					    <div>강의 없음 또는 세션 없음</div>
-					</c:if>
-					<c:forEach var="lecture" items="${lectureList}">
-					    <div>강의명: ${lecture.subject}</div>
-					</c:forEach>
-				</select>
+			    <option value="">-- 강의 선택 --</option>
+			    
+			    <c:if test="${empty lectureList}">
+			        <option disabled>강의 없음 또는 세션 없음</option>
+			    </c:if>
+			    
+			    <c:forEach var="lecture" items="${lectureList}">
+			        <option value="${lecture.subject}">${lecture.subject}</option>
+			    </c:forEach>
+			</select>
 			</form>
 			<div class="accordion-item">
 				<h2 class="accordion-header">

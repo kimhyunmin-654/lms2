@@ -151,6 +151,7 @@ public class LectureDAO {
 			
 		}
 		
+		// 사이드바
 		public List<LectureDTO> listsidebar(String member_id) {
 		    List<LectureDTO> list = new ArrayList<>();
 		    String sql = "SELECT subject FROM lecture WHERE member_id = ?";
