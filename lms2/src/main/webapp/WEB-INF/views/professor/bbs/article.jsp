@@ -67,7 +67,7 @@
 										</c:if>
 									</td>
 								</tr>
-								<tr  style="border-bottom: 2px solid gray;">
+								<tr style="border-bottom: 2px solid gray;">
 									<td colspan="2">다음글:
 										<c:if test="${not empty prevDto}">
 										</c:if>
