@@ -364,7 +364,7 @@ public class DataController {
 				dto.setParent_comment_id(Integer.parseInt(parent_comment_id));
 			}
 			
-			dao.insertComment(dto);
+			dao.insertComment(dto, parent_comment_id);
 			state = "true";
 		} catch (Exception e) {
 			e.printStackTrace();
