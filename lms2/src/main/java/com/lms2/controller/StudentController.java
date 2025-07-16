@@ -295,9 +295,23 @@ public class StudentController {
 	
 	@RequestMapping(value = "/student/study/list", method = RequestMethod.GET)
 	public ModelAndView studentNowStudy(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-	
-		return null;
+		// 강의 정보 페이지
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		StudentDAO dao = new StudentDAO();
+		ModelAndView mav = new ModelAndView("student/study/list");
+
+		try {
+			List<Course_ApplicationDTO> list = dao.listCourse(info.getMember_id());
+
+			mav.addObject("list", list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mav;
 	}
 
 }
