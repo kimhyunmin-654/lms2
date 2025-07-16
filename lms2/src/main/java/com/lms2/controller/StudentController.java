@@ -292,5 +292,12 @@ public class StudentController {
 
 		return mav;
 	}
+	
+	@RequestMapping(value = "/student/study/list", method = RequestMethod.GET)
+	public ModelAndView studentNowStudy(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+	
+		return null;
+	}
 
 }
