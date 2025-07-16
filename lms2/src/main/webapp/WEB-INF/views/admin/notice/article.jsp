@@ -20,10 +20,17 @@
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
     <div class="container" style="margin-left: 220px; padding: 30px;">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" style="margin: 100px;">
             <div class="col-md-10">
-
-                <h3 class="mb-4 mt-5">공지사항</h3>
+				<div class="body-title">
+					<table class="table" style="margin-bottom: 30px;">
+						<tr>
+							<td width="130px;" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항</td>
+							<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+							<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						</tr>
+					</table>
+				</div>
 
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">제목</div>
