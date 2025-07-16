@@ -25,8 +25,8 @@ public class ProfessorDAO {
 		try {
 			conn.setAutoCommit(false);
 
-			sql = "INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2) "
-				    + "VALUES(?,?,?,51,SYSDATE,SYSDATE,?,?,?,TO_DATE(?,'YYYY-MM-DD'),?,?)";
+			sql = "INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip) "
+				    + "VALUES(?,?,?,51,SYSDATE,SYSDATE,?,?,?,TO_DATE(?,'YYYY-MM-DD'),?,?,?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -39,6 +39,7 @@ public class ProfessorDAO {
 			pstmt.setString(7, dto.getBirth());
 			pstmt.setString(8, dto.getAddr1());
 			pstmt.setString(9, dto.getAddr2());
+			pstmt.setString(10, dto.getZip());
 			
 			pstmt.executeUpdate();
 			

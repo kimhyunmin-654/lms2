@@ -31,7 +31,7 @@
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
 					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
 				</div>
-				
+				<!--  
 				<form method="get" action="${pageContext.request.contextPath}/professor/attendance/list">
 				    <label>강의 선택:</label>
 				    <select name="lectureCode" onchange="this.form.submit()">
@@ -43,7 +43,7 @@
 				        </c:forEach>
 				    </select>
 				</form>
-
+-->
 				
 				<table class="table table-hover board-list">
 					<thead class="table-light">
@@ -76,7 +76,7 @@
 					</div>
 
 					<div class="col text-end">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/attendance/write';">글올리기</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/attendance/write';">출석관리</button>
 					</div>
 					
 					<div class="col text-end">
