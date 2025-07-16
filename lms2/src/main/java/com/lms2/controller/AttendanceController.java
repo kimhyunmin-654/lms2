@@ -49,7 +49,20 @@ public class AttendanceController {
 	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("professor/attendance/write");
-		mav.addObject("mode", "write");
+		AttendanceDAO dao = new AttendanceDAO();
+		
+		try {
+			int offset = 0;
+			int size = 100;
+			
+			 List<Attendance_recordDTO> list = dao.listapplication(offset, size);
+
+			 mav.addObject("list", list);
+			 mav.addObject("mode", "write");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return mav;
 	}
 	
@@ -58,14 +71,28 @@ public class AttendanceController {
 			throws ServletException, IOException {
 		AttendanceDAO dao = new AttendanceDAO();
 		try {
-			Attendance_recordDTO dto = new Attendance_recordDTO();
+			String[] courseIds = req.getParameterValues("course_id");
 
-			dto.setStatus(Integer.parseInt(req.getParameter("status")));
-			
-			dto.setCourse_id(Integer.parseInt(req.getParameter("course_id")));
-			
-			dao.insertAttendance(dto);
-			
+			if (courseIds != null) {
+				for (String courseIdStr : courseIds) {
+					int courseId = Integer.parseInt(courseIdStr);
+
+					// 개별 학생의 출석 상태 파라미터는 "status_수강번호"
+					String paramName = "status_" + courseId;
+					String statusStr = req.getParameter(paramName);
+
+					if (statusStr == null) continue; // 선택 안 한 경우는 건너뛴다
+
+					int status = Integer.parseInt(statusStr);
+
+					Attendance_recordDTO dto = new Attendance_recordDTO();
+					dto.setCourse_id(courseId);
+					dto.setStatus(status);
+
+					dao.insertAttendance(dto);
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

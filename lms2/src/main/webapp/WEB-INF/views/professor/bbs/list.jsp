@@ -26,8 +26,7 @@
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
-			<div class="body-container row justify-content-center bbs-header"
-				style="margin: 100px;">
+			<div class="body-container row justify-content-center bbs-header" style="margin: 100px;">
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
 					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
 				</div>

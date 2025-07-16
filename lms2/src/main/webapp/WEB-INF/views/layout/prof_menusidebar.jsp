@@ -14,13 +14,6 @@
 <body>
 	<div class="text-white p-3 position-fixed blackbox2">
 		<div class="accordion accordion-flush" id="sidebarAccordion">
-			<form >
-				<select name="lesson" id="lesson-select">
-					<option value="${}">${}</option>
-					<option value="${}">${}</option>
-					<option value="${}">${}</option>
-				</select>
-			</form>
 			<div class="accordion-item">
 				<h2 class="accordion-header">
 					<button class="accordion-button custom-accordion-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
