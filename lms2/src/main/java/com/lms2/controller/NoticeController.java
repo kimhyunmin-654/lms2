@@ -453,7 +453,14 @@ public class NoticeController {
 		String pathname = root + "uploads" + File.separator + "notice";
 
 		String page = req.getParameter("page");
+		if (page == null || page.equals("") || page.equals("null")) {
+			page = "1";
+		}
+
 		String size = req.getParameter("size");
+		if (size == null || size.equals("") || size.equals("null")) {
+			size = "10";
+		}
 		String query = "size=" + size + "&page=" + page;
 
 		try {
