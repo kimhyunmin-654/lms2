@@ -14,10 +14,11 @@
 <body>
 	<div class="blackbox">
 		<div class="text-center mb-4">
+		
 			<img src="${pageContext.request.contextPath}/dist/images/profile.png"
 				alt="프로필" class="rounded-circle profile-img">
 			<div class="username" style="font-size: 18px;">${sessionScope.member.name}(${sessionScope.member.member_id})</div>
-			<div class="department" style="font-size: 12px;">>>학과자리<<</div>
+			<div class="department" style="font-size: 12px;">>>학과자리</div>
 		</div>
 
 		<div class="accordion accordion-flush" id="sidebarAccordion">

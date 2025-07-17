@@ -15,11 +15,11 @@
 	href="${pageContext.request.contextPath}/dist/css/main2.css">
 </head>
 <header>
-	<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
+	<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 </header>
 <body>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/student_mainsidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 

@@ -4,17 +4,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.lms2.mvc.annotation.RequestMapping;
-import com.lms2.mvc.annotation.RequestMethod;
+import com.lms2.dao.LectureDAO;
+import com.lms2.dao.NoticeDAO;
+import com.lms2.dao.StudentDAO;
 import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
-import com.lms2.dao.LectureDAO;
-import com.lms2.dao.NoticeDAO;
-import com.lms2.dao.StudentDAO;
 import com.lms2.model.StudentDTO;
 import com.lms2.mvc.annotation.Controller;
+import com.lms2.mvc.annotation.RequestMapping;
+import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
 import com.lms2.util.MyUtil;
 
@@ -313,5 +313,27 @@ public class StudentController {
 
 		return mav;
 	}
+	
+	// ⚠️⚠️ 파일 충돌 날까봐 임시로 이곳에 지정. 나중에 SidebarController로 이동해야 함 - 하은
+	@RequestMapping(value = "/layout/student_menusidebar", method = RequestMethod.GET)
+    public ModelAndView lectureListSidebar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession session = req.getSession();
+        SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+        if (info == null) {
+            return new ModelAndView("redirect:/member/login");
+        }
+        
+        StudentDAO dao = new StudentDAO();
+        		
+        List<Course_ApplicationDTO> lectureList = dao.listCourse(info.getMember_id());
+
+        ModelAndView mav = new ModelAndView("/layout/student_menusidebar");
+        mav.addObject("lectureList", lectureList);
+        
+        return mav;
+    }
+	
 
 }

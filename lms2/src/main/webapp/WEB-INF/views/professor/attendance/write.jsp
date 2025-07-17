@@ -13,11 +13,13 @@
 		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
 	</header>
 	<main>
-		<!--<jsp:include page="/WEB-INF/views/layout/student_mainsidebar.jsp"/>-->
+		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp"/>
 			<div class="container" style="margin-left: 240px; margin-top: 70px;">
-				<h2>출석 관리</h2>
+				<h2>${param.week}주차 출석 관리</h2>
 		
 				<div>
+				
+				
 				 <form name="postForm" method="post" action="/professor/attendance/write" enctype="multipart/form-data">
 					<table>
 						<tr>

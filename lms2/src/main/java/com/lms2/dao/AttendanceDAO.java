@@ -96,4 +96,40 @@ public class AttendanceDAO {
 		return list;
 	}
 	
+	// 출석 개수
+	public int dataCount(String member_id, int status) {
+	    int result = 0;
+
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    StringBuilder sb = new StringBuilder();
+
+	    try {
+	        sb.append(" SELECT COUNT(*) ");
+	        sb.append(" FROM Attendance_record a ");
+	        sb.append(" JOIN COURSE_APPLICATION c ON a.course_id = c.course_id ");
+	        sb.append(" WHERE c.member_id = ? ");
+	        sb.append(" AND a.status = ? ");
+
+	        pstmt = conn.prepareStatement(sb.toString());
+	        pstmt.setString(1, member_id);
+	        pstmt.setInt(2, status);
+
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            result = rs.getInt(1);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
+
+	    return result;
+	}
+
+	
 }

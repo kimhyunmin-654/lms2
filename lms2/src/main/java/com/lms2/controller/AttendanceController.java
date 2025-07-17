@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lms2.dao.AttendanceDAO;
 import com.lms2.dao.LectureDAO;
+import com.lms2.dao.StudentDAO;
 import com.lms2.model.Attendance_recordDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.SessionInfo;
@@ -73,7 +74,7 @@ public class AttendanceController {
 	        }
 
 	        int offset = 0;
-	        int size = 100;
+	        int size = 10;
 
 	        List<Attendance_recordDTO> list = dao.listapplication(offset, size);
 	        mav.addObject("list", list);
@@ -119,6 +120,37 @@ public class AttendanceController {
 		return new ModelAndView("redirect:/professor/attendance/list");
 	}
 	
-	
+	// 출석 개수
+	@RequestMapping(value = "/student/study/attendance", method = RequestMethod.GET)
+	public ModelAndView studentAttendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    // 출석관리
+	    HttpSession session = req.getSession();
+	    SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+	    StudentDAO dao = new StudentDAO();
+	    AttendanceDAO aDao = new AttendanceDAO();
+	    ModelAndView mav = new ModelAndView("student/study/attendance");
+
+	    try {
+	        String member_id = info.getMember_id();
+
+	        List<Attendance_recordDTO> list = dao.listAttendance(member_id);
+	        mav.addObject("list", list);
+
+	        int present = aDao.dataCount(member_id, 1);   // 출석
+	        int absent = aDao.dataCount(member_id, 0);    // 결석
+	        int late = aDao.dataCount(member_id, 2);      // 지각
+
+	        mav.addObject("present", present);
+	        mav.addObject("absent", absent);
+	        mav.addObject("late", late);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return mav;
+	}
+
 	
 }
