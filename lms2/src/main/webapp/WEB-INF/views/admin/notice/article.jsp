@@ -19,44 +19,42 @@
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-    <div class="container">
-        <div class="row justify-content-center" style="margin: 100px;">
+    <div class="container" style="margin-left: 220px; padding: 30px;">
+        <div class="row justify-content-center">
             <div class="col-md-10">
-				<div class="body-title row">
-					<table class="table" style="margin-bottom: 30px;">
-						<tr>
-							<td width="130px;" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항</td>
-							<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
-							<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
-						</tr>
-					</table>
-				</div>
 
-                <div class="row border-bottom board-article" style="border-top: 3px solid black;">
-                    <div class="col-sm-2 d-flex align-items-center fw-bold py-2">제목</div>
-                    <div class="col-sm-10 py-2">${dto.subject}</div>
+                <h3 class="mb-4 mt-5">공지사항</h3>
+
+                <div class="row border-bottom">
+                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">제목</div>
+                    <div class="col-sm-10 bg-white py-3">${dto.subject}</div>
                 </div>
 
                 <div class="row border-bottom">
-                    <div class="col-sm-2 d-flex align-items-center fw-bold py-2">작성자</div>
-                    <div class="col-sm-10 bg-white py-2">${dto.name}</div>
+                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">작성자</div>
+                    <div class="col-sm-10 bg-white py-3">${dto.name}</div>
                 </div>
 
                 <div class="row border-bottom">
-                    <div class="col-sm-2 d-flex align-items-center fw-bold py-2">등록일</div>
-                    <div class="col-sm-10 py-2">${dto.reg_date}</div>
+                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">등록일</div>
+                    <div class="col-sm-10 bg-white py-3">${dto.reg_date}</div>
                 </div>
 
                 <div class="row border-bottom">
-                    <div class="col-sm-2 d-flex align-items-center fw-bold py-2">조회수</div>
-                    <div class="col-sm-10 py-2">${dto.hit_count}</div>
+                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">조회수</div>
+                    <div class="col-sm-10 bg-white py-3">${dto.hit_count}</div>
+                </div>
+
+                <div class="row border-bottom">
+                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">내용</div>
+                    <div class="col-sm-10 bg-white py-3" style="min-height:200px;">${dto.content}</div>
                 </div>
 
                 <!-- 첨부파일 -->
                 <c:if test="${not empty listFile}">
                     <div class="row border-bottom">
-                        <div class="col-sm-2 d-flex align-items-center fw-bold py-2">첨부파일</div>
-                        <div class="col-sm-10 py-2">
+                        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">첨부파일</div>
+                        <div class="col-sm-10 bg-white py-3">
                             <c:forEach var="vo" items="${listFile}" varStatus="status">
                                 <a href="${pageContext.request.contextPath}/admin/notice/download?fileNum=${vo.file_id}">
                                     ${vo.original_filename}
@@ -67,11 +65,7 @@
                     </div>
                 </c:if>
 
-                <div class="row" style="border-bottom: 2px solid gray;">
-                    <div class="col-sm-12 d-flex py-2" style="min-height:200px; padding:20px">${dto.content}</div>
-                </div>
-
-				<div class="mt-4 border-top pt-3 row">
+				<div class="mt-4 border-top pt-3">
 				    <div class="d-flex justify-content-between">
 				        <div>
 				            <strong>이전글:</strong>

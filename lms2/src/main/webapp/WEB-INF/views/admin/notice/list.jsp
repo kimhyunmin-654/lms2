@@ -9,7 +9,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/board.css">
 </head>
 <body>
 
@@ -22,17 +21,9 @@
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
     <div class="container" style="margin-left: 220px; padding: 30px;">
-        <div class="body-container row justify-content-center bbs-header" style="margin: 100px;">
+        <div class="row">
             <div class="col">
-                <div class="body-title">
-					<table class="table" style="margin-bottom: 30px;">
-						<tr>
-							<td width="130px;" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항</td>
-							<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
-							<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
-						</tr>
-					</table>
-				</div>
+                <h3 class="mb-4" style="margin-top: 50px;">공지사항</h3>
 
                 <!-- 상단: 삭제/페이지 선택/글쓰기 -->
                 <div class="d-flex justify-content-between mb-2 align-items-center">
@@ -62,17 +53,17 @@
 
                 <!-- 공지사항 목록 -->
                 <form id="noticeListForm" name="listForm" method="post">
-                    <table class="table table-hover board-list text-center align-middle">
+                    <table class="table table-bordered table-hover text-center align-middle">
                         <thead class="table-light">
                             <tr>
                                 <th width="5%">
                                     <input type="checkbox" id="chkAll" class="form-check-input">
                                 </th>
-                                <th width="7%">번호</th>
+                                <th width="10%">번호</th>
                                 <th>제목</th>
-                                <th width="10%">작성자</th>
-                                <th width="14%">등록일</th>
-                                <th width="7%">조회수</th>
+                                <th width="15%">작성자</th>
+                                <th width="15%">등록일</th>
+                                <th width="10%">조회수</th>
                             </tr>
                         </thead>
                         <tbody>

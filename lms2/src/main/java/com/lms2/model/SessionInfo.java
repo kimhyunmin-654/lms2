@@ -5,6 +5,7 @@ public class SessionInfo {
 	private String name;
 	private int role;
 	private String avatar; // profile photo
+	private String division;
 	
 	public String getMember_id() {
 		return member_id;
@@ -30,6 +31,14 @@ public class SessionInfo {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+	public String getDivision() {
+		return division;
+	}
+	public void setDivision(String division) {
+		this.division = division;
+	}
+	
+	
 	
 	
 
