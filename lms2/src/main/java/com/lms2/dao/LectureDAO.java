@@ -152,13 +152,13 @@ public class LectureDAO {
 		}
 		
 		// 사이드바
-		public List<LectureDTO> listsidebar(String member_id) {
+		public List<LectureDTO> listsidebar(String member_id) throws SQLException {
 			List<LectureDTO> list = new ArrayList<>();
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 
 			try {
-				String sql = "SELECT subject FROM lecture WHERE member_id = ?";
+				String sql = "SELECT lecture_code, subject, member_id FROM LECTURE WHERE member_id = ?";
 
 				pstmt = conn.prepareStatement(sql);
 
@@ -166,9 +166,11 @@ public class LectureDAO {
 				rs = pstmt.executeQuery();
 
 				while (rs.next()) {
-					LectureDTO dto = new LectureDTO();
-					dto.setSubject(rs.getString("subject"));
-					list.add(dto);
+				    LectureDTO dto = new LectureDTO();
+				    dto.setLecture_code(rs.getString("lecture_code"));
+				    dto.setSubject(rs.getString("subject"));
+				    dto.setMember_id(rs.getString("member_id"));
+				    list.add(dto);
 				}
 
 			} catch (Exception e) {
@@ -177,4 +179,6 @@ public class LectureDAO {
 
 			return list;
 		}
+		
+		
 }

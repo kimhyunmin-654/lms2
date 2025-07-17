@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import com.lms2.dao.AttendanceDAO;
+import com.lms2.dao.LectureDAO;
 import com.lms2.model.Attendance_recordDTO;
+import com.lms2.model.LectureDTO;
+import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
@@ -13,57 +16,73 @@ import com.lms2.mvc.view.ModelAndView;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AttendanceController {
+	@RequestMapping(value = "/professor/attendance/list", method = RequestMethod.GET)
+	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    AttendanceDAO dao = new AttendanceDAO();
+	    LectureDAO lectureDao = new LectureDAO();
+	    ModelAndView mav = new ModelAndView("professor/attendance/list");
 
-    @RequestMapping(value = "/professor/attendance/list", method = RequestMethod.GET)
-    public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AttendanceDAO dao = new AttendanceDAO();
-        ModelAndView mav = new ModelAndView("professor/attendance/list");
+	    try {
+	        HttpSession session = req.getSession(false);
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        if (info != null) {
+	            String memberId = String.valueOf(info.getMember_id());
+	            List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+	            mav.addObject("lectureList", lectures);
+	        }
 
-        try {
-            String page = req.getParameter("page");
-            int current_page = 1;
-            if (page != null) {
-                current_page = Integer.parseInt(page);
-            }
+	        String page = req.getParameter("page");
+	        int current_page = 1;
+	        if (page != null) {
+	            current_page = Integer.parseInt(page);
+	        }
 
-            int pageSize = 10; // 한 페이지에 보여줄 항목 수
-            int offset = (current_page - 1) * pageSize;
+	        int pageSize = 10;
+	        int offset = (current_page - 1) * pageSize;
 
-            List<Attendance_recordDTO> list = dao.listapplication(offset, pageSize);
+	        List<Attendance_recordDTO> list = dao.listapplication(offset, pageSize);
+	        mav.addObject("list", list);
+	        mav.addObject("page", current_page);
 
-            mav.addObject("list", list);
-            mav.addObject("page", current_page);  // 숫자 값으로 넘기기
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return mav;
-    }
+	    return mav;
+	}
 
 	
 	@RequestMapping(value = "/professor/attendance/write", method = RequestMethod.GET)
 	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		ModelAndView mav = new ModelAndView("professor/attendance/write");
-		AttendanceDAO dao = new AttendanceDAO();
-		
-		try {
-			int offset = 0;
-			int size = 100;
-			
-			 List<Attendance_recordDTO> list = dao.listapplication(offset, size);
+	        throws ServletException, IOException {
+	    ModelAndView mav = new ModelAndView("professor/attendance/write");
+	    AttendanceDAO dao = new AttendanceDAO();
+	    LectureDAO lectureDao = new LectureDAO();
 
-			 mav.addObject("list", list);
-			 mav.addObject("mode", "write");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mav;
+	    try {
+	        HttpSession session = req.getSession(false);
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        if (info != null) {
+	            String memberId = String.valueOf(info.getMember_id());
+	            List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+	            mav.addObject("lectureList", lectures);
+	        }
+
+	        int offset = 0;
+	        int size = 100;
+
+	        List<Attendance_recordDTO> list = dao.listapplication(offset, size);
+	        mav.addObject("list", list);
+	        mav.addObject("mode", "write");
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return mav;
 	}
 	
 	@RequestMapping(value = "/professor/attendance/write", method = RequestMethod.POST)

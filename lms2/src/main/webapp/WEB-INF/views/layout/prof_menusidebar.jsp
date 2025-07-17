@@ -22,9 +22,9 @@
 			        <option disabled>강의 없음 또는 세션 없음</option>
 			    </c:if>
 			
-			    <c:forEach var="dto" items="${list}">
-			        <option value="${dto.lecture_code}">${dto.subject}</option>
-			    </c:forEach>
+			    <c:forEach var="dto" items="${lectureList}">
+				    <option value="${dto.lecture_code}">${dto.subject}</option>
+				</c:forEach>
 			</select>
 			</form>
 			<div class="accordion-item">
