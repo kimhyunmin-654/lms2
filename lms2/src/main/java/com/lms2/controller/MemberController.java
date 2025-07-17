@@ -93,10 +93,12 @@ public class MemberController {
 	    return "admin/home/frame"; // JSP 뷰 경로
 	}
 	
+	/* professorController로 잠시 이동
 	@RequestMapping(value = "/professor/main/main", method = RequestMethod.GET)
 	public String professorMain(HttpServletRequest req, HttpServletResponse resp) {
 	    return "professor/main/main"; // JSP 뷰 경로
 	}
+	*/
 	
 	/* 파일 충돌 날거같아서 주석처리 후 studentController로 잠시 이동
 	@RequestMapping(value = "/student/main/main", method = RequestMethod.GET)
