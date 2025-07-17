@@ -8,13 +8,14 @@ public class DataDTO {
 	private String reg_date; // 등록 날짜
 	private String modify_date; // 수정일
 	private String lecture_code; // 강의 코드
+	private String lecture_subject; // 강의명
 	private String member_id;
 	
 	private int file_id; // 파일 번호
 	private String save_filename; // 저장된 파일 이름
 	private String original_filename; // 원본 파일 이름
 	private int file_size; // 파일 크기
-	
+
 	public String getMember_id() {
 		return member_id;
 	}
@@ -87,6 +88,10 @@ public class DataDTO {
 	public void setFile_size(int file_size) {
 		this.file_size = file_size;
 	}
-	
-	
+	public String getLecture_subject() {
+	    return lecture_subject;
+	}
+	public void setLecture_subject(String lecture_subject) {
+	    this.lecture_subject = lecture_subject;
+	}
 }

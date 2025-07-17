@@ -82,7 +82,6 @@ public class DataDAO {
 
 		try {
 			sql = "SELECT COUNT(*) FROM DATA WHERE 1 = 1";
-			// WHERE 없이 AND 쓰면 안 되용...
 			if (schType.equals("all")) {
 				sql += " AND (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ";
 			} else if (schType.equals("reg_date")) {
@@ -237,10 +236,13 @@ public class DataDAO {
 		String sql;
 
 		try {
-			sql = "SELECT d.data_id, d.subject, d.content, d.hit_count, TO_CHAR(d.reg_date, 'YYYYMMDD') reg_date, l.subject AS lecture_subject  " 
-					+ " FROM DATA d"
-					+ " JOIN LECTURE l ON d.lecture_code = l.lecture_code "	
-					+ " WHERE d.data_id = ?";
+			sql = "SELECT d.data_id, d.subject, d.content, d.hit_count, "
+				    + "TO_CHAR(d.reg_date, 'YYYYMMDD') reg_date, "
+				    + "TO_CHAR(d.modify_date, 'YYYYMMDD') modify_date, "
+				    + "NVL(l.subject, '강의 없음') AS lecture_subject "
+				    + "FROM DATA d "
+				    + "LEFT JOIN LECTURE l ON d.lecture_code = l.lecture_code "
+				    + "WHERE d.data_id = ?";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -255,7 +257,7 @@ public class DataDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setReg_date(rs.getString("reg_date"));
-				dto.setLecture_code(rs.getString("lecture_subject"));
+				dto.setLecture_subject(rs.getString("lecture_subject"));
 
 			}
 		} catch (Exception e) {
@@ -560,4 +562,32 @@ public class DataDAO {
 		}
 	}
 	
+	// 강의코드 - 강의명
+	public List<DataDTO> listLectureByMember(String member_id) {
+		List<DataDTO> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "SELECT lecture_code, subject FROM lecture WHERE member_id = ?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member_id);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				DataDTO dto = new DataDTO();
+				dto.setLecture_code(rs.getString("lecture_code"));
+				dto.setSubject(rs.getString("subject"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+
+		return list;
+	}
 }

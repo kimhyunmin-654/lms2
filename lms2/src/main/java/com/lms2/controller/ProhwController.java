@@ -70,8 +70,8 @@ public class ProhwController {
 			}
 			
 			String cp = req.getContextPath();
-			String listUrl = cp + "/hw/list";
-			String articleUrl = cp + "/hw/article?page=" + current_page;
+			String listUrl = cp + "/professor/hw/list";
+			String articleUrl = cp + "/professor/hw/article?page=" + current_page;
 			if(query.length() != 0) {
 				listUrl += "?" + query;
 				articleUrl += "&" + query;
@@ -93,7 +93,7 @@ public class ProhwController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/hw/write", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/hw/write", method = RequestMethod.GET)
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글쓰기 폼
 		ModelAndView mav = new ModelAndView("professor/hw/write");
@@ -101,7 +101,7 @@ public class ProhwController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/hw/write", method = RequestMethod.POST)
+	@RequestMapping(value = "/professor/hw/write", method = RequestMethod.POST)
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글쓰기 완료
 		Pro_hwDAO dao = new Pro_hwDAO();
@@ -122,10 +122,10 @@ public class ProhwController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/hw/list");
+		return new ModelAndView("redirect:/professor/hw/list");
 	}
 	
-	@RequestMapping(value = "/hw/article", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/hw/article", method = RequestMethod.GET)
 	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글보기
 		Pro_hwDAO dao = new Pro_hwDAO();
@@ -153,14 +153,14 @@ public class ProhwController {
 			//과제게시물 가져오기
 			Pro_hwDTO dto = dao.findById(homework_id);
 			if(dto == null) {
-				return new ModelAndView("redirect:/hw/list?" + query);
+				return new ModelAndView("redirect:/professor/hw/list?" + query);
 			}
 			dto.setContent(util.htmlSymbols(dto.getContent()));
 			
 			Pro_hwDTO prevDto = dao.findByPrev(dto.getHomework_id(), schType, kwd);
 			Pro_hwDTO nextDto = dao.findByNext(dto.getHomework_id(), schType, kwd);
 			
-			ModelAndView mav = new ModelAndView("hw/article");
+			ModelAndView mav = new ModelAndView("/professor/hw/article");
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
@@ -174,7 +174,7 @@ public class ProhwController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/hw/list?" + query);
+		return new ModelAndView("redirect:/professor/hw/list?" + query);
 	}
 	
 	@RequestMapping(value = "/hw/update", method = RequestMethod.GET)
@@ -193,11 +193,11 @@ public class ProhwController {
 			Pro_hwDTO dto = dao.findById(homework_id);
 			
 			if(dto == null) {
-				return new ModelAndView("redirect:/hw/list?page=" + page);
+				return new ModelAndView("redirect:/professor/hw/list?page=" + page);
 			}
 			
 			if(! dto.getMember_id().equals(info.getMember_id())) {
-				return new ModelAndView("redirect:/hw.list?page=" + page);
+				return new ModelAndView("redirect:/professor/hw.list?page=" + page);
 			}
 			
 			ModelAndView mav = new ModelAndView("hw/write");
@@ -210,7 +210,7 @@ public class ProhwController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/hw/list?page=" + page);
+		return new ModelAndView("redirect:/professor/hw/list?page=" + page);
 	}
 	
 	@RequestMapping(value = "/hw/update", method = RequestMethod.POST)
@@ -237,10 +237,10 @@ public class ProhwController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/hw/list?page=" + page);
+		return new ModelAndView("redirect:/professor/hw/list?page=" + page);
 	}
 	
-	@RequestMapping(value = "/hw/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/hw/delete", method = RequestMethod.GET)
 	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글삭제
 		Pro_hwDAO dao = new Pro_hwDAO();
@@ -273,7 +273,7 @@ public class ProhwController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/hw/list?" + query);
+		return new ModelAndView("redirect:/professor/hw/list?" + query);
 		
 	}
 		
