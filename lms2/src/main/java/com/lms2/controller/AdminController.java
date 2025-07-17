@@ -10,6 +10,7 @@ import java.util.Map;
 import com.lms2.dao.AdminDAO;
 import com.lms2.model.AdminDTO;
 import com.lms2.model.MemberDTO;
+import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
@@ -44,32 +45,62 @@ public class AdminController {
 				current_page = Integer.parseInt(page);
 			}
 			
-			int dataCount = dao.dataCount();
+			page = String.valueOf(current_page);
 			
-			int size = 10;
-			int total_page = util.pageCount(dataCount, size);
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			String pageSize = req.getParameter("size");
+			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+			
+			int dataCount, total_page;
+
+			dataCount = dao.dataCount();
+			
+			total_page = util.pageCount(dataCount, size);
+			
 			if(current_page > total_page) {
 				current_page = total_page;
 			}
-			
+	
 			int offset = (current_page - 1) * size;
 			if(offset < 0) offset = 0;
 			
-			List<AdminDTO> list = dao.listAdmin(offset, size);
+			List<AdminDTO> list;
+			if(kwd.length() != 0) {
+				list = dao.listAdmin(offset, size, schType, kwd);
+			} else {
+				list = dao.listAdmin(offset, size);
+			}
+			
 			
 			String cp = req.getContextPath();
-			String listUrl = cp + "/admin/admin/list";
-			String articleUrl = cp + "admin/article?page=" + current_page;
+			String query = "size=" + size;
+			String listUrl;
+			String articleUrl;
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			listUrl = cp + "/admin/admin/list?" + query;
+			articleUrl = cp + "/admin/admin/article?page=" + current_page + "&" + query;
 			
 			String paging = util.paging(current_page, total_page, listUrl);
 			
 			mav.addObject("list", list);
+			mav.addObject("articleUrl", articleUrl);
 			mav.addObject("dataCount", dataCount);
 			mav.addObject("size", size);
-			mav.addObject("page", page);
+			mav.addObject("page", current_page);
 			mav.addObject("total_page", total_page);
-			mav.addObject("articleUrl", articleUrl);
 			mav.addObject("paging", paging);
+			mav.addObject("schType", schType);
+			mav.addObject("kwd", kwd);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -149,6 +180,54 @@ public class AdminController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/admin/admin/article", method = RequestMethod.GET)
+	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 관리자 상세보기
+		AdminDAO dao = new AdminDAO();;
+		MyUtil util = new MyUtil();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+		
+		try {
+			String member_id = req.getParameter("member_id");
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+			AdminDTO dto = dao.findById(member_id);
+			if(dto == null) {
+				return new ModelAndView("redirect:/admin/admin/list?" + query); 
+			}
+			
+			ModelAndView mav = new ModelAndView("admin/admin/article");
+			
+			mav.addObject("dto", dto);
+			mav.addObject("query", query);
+			mav.addObject("page", page);
+			mav.addObject("size", size);
+			
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:/admin/admin/list?" + query);
+	}
+	
+	
 	@ResponseBody // Map을 JSON 형식의 문자열로 변환하여 응답
 	@RequestMapping(value = "/admin/admin/userIdCheck", method = RequestMethod.POST)
 	public Map<String, Object> memberIdCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -223,6 +302,25 @@ public class AdminController {
 		return new ModelAndView("redirect:/admin/admin/list");
 	}
 	
+	@RequestMapping(value = "/admin/admin/update", method = RequestMethod.GET)
+	public ModelAndView updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    String member_id = req.getParameter("member_id");
+	    AdminDAO dao = new AdminDAO();
+	    AdminDTO dto = dao.findById(member_id);
+
+	    if (dto == null) {
+	        return new ModelAndView("redirect:/admin/admin/list");
+	    }
+
+	    ModelAndView mav = new ModelAndView("admin/admin/account");
+	    mav.addObject("dto", dto);
+	    
+	    mav.addObject("page", req.getParameter("page"));
+	    mav.addObject("size", req.getParameter("size"));
+
+	    return mav;
+	}
+	
 	
 	@RequestMapping(value = "/admin/admin/update", method = RequestMethod.POST)
 	public ModelAndView updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -252,10 +350,10 @@ public class AdminController {
 			dto.setAddr1(req.getParameter("addr1"));
 			dto.setAddr2(req.getParameter("addr2"));
 			
-			dto.setPosition(req.getParameter("postion"));
+			dto.setPosition(req.getParameter("position"));
 			dto.setDivision(req.getParameter("division"));
 			
-			dto.setAvatar(req.getParameter("avartar"));
+			dto.setAvatar(req.getParameter("avatar"));
 			Part p = req.getPart("selectFile");
 			MyMultipartFile multilPart = fileManager.doFileUpload(p, pathname);
 			if(multilPart != null) {
@@ -318,6 +416,55 @@ public class AdminController {
 		model.put("state", state);
 		
 		return model;
+	}
+	
+	@RequestMapping(value = "/admin/admin/delete", method = RequestMethod.GET)
+	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 관리자 삭제
+	    AdminDAO dao = new AdminDAO();
+	    FileManager fileManager = new FileManager();
+	    MyUtil util = new MyUtil();
+
+	    HttpSession session = req.getSession();
+
+	    String root = session.getServletContext().getRealPath("/");
+	    String pathname = root + "uploads" + File.separator + "member";
+
+	    String page = req.getParameter("page");
+	    String size = req.getParameter("size");
+	    String query = "page=" + page + "&size=" + size;
+
+	    try {
+	        String member_id = req.getParameter("member_id");
+
+	        String schType = req.getParameter("schType");
+	        String kwd = req.getParameter("kwd");
+	        if (schType == null) {
+	            schType = "all";
+	            kwd = "";
+	        }
+	        kwd = util.decodeUrl(kwd);
+	        if (kwd.length() != 0) {
+	            query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+	        }
+
+	        AdminDTO dto = dao.findById(member_id);
+	        if (dto == null) {
+	            return new ModelAndView("redirect:/admin/admin/list?" + query);
+	        }
+
+	        // 프로필 이미지 삭제
+	        if (dto.getAvatar() != null && !dto.getAvatar().equals("")) {
+	            fileManager.doFiledelete(pathname, dto.getAvatar());
+	        }
+
+	        dao.deleteAdmin(member_id, dto.getRole());
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return new ModelAndView("redirect:/admin/admin/list?" + query);
 	}
 	
 }

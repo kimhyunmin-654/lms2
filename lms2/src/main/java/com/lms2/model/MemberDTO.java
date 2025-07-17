@@ -18,6 +18,7 @@ public class MemberDTO {
 	private String zip; // 우편번호
 	private String addr1; // 주소
 	private String addr2; // 상세 주소
+	private String position;
 	private String division;
 	
 	public String getMember_id() {
@@ -122,6 +123,12 @@ public class MemberDTO {
 	}
 	public void setDivision(String division) {
 		this.division = division;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	

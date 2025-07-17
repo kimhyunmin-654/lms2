@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lms2.model.AdminDTO;
+import com.lms2.model.NoticeDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
 
@@ -77,7 +78,7 @@ public class AdminDAO {
 		String sql;
 		
 		try {
-			sql = " SELECT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD') birth, addr1, addr2, zip "
+			sql = " SELECT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD') birth, addr1, addr2, zip, a.position, a.division "
 					+ " FROM member m "
 					+ " LEFT OUTER JOIN admin a ON m.member_id = a.member_id "
 					+ " WHERE m.member_id = ?";
@@ -109,6 +110,9 @@ public class AdminDAO {
 				dto.setAddr1(rs.getString("addr1"));
 				dto.setAddr2(rs.getString("addr2"));
 				dto.setZip(rs.getString("zip"));
+				
+				dto.setPosition(rs.getString("position"));
+				dto.setDivision(rs.getString("division"));
 			}
 			
 			
@@ -178,9 +182,8 @@ public class AdminDAO {
 		try {
 			if(role == 99) {
 				conn.setAutoCommit(false);
-				
-				sql = " DELETE FROM member WHERE  member_id = ?";
-				
+								
+				sql = " DELETE FROM admin WHERE member_id = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, member_id);
 				
@@ -188,7 +191,7 @@ public class AdminDAO {
 				pstmt.close();
 				pstmt = null;
 				
-				sql = " DELETE FROM admin WHERE member_id = ?";
+				sql = " DELETE FROM member WHERE  member_id = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, member_id);
 				
@@ -281,6 +284,10 @@ public class AdminDAO {
 			} else if(schType.equals("reg_date")) { // 등록일자 검색(YYYYMMDD 형식)
 				kwd = kwd.replaceAll("(\\-|\\.|\\/)", "");
 				sql += "AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
+			} else if (schType.equals("name")) {
+				sql += " WHERE INSTR(m.name, ?) >= 1";
+			} else if (schType.equals("division")) {
+				sql += " WHERE INSTR(a.division, ?) >= 1";		
 			} else { // 기타 email, phone, birth, addr 등
 				sql += " AND INSTR(" + schType + ", ?) >= 1" ; 
 			}
@@ -310,6 +317,8 @@ public class AdminDAO {
 		return result;
 	}
 	
+	
+	
 	// 관리자 리스트
 	public List<AdminDTO> listAdmin(int offset, int size) {
 		List<AdminDTO> list = new ArrayList<AdminDTO>();
@@ -330,6 +339,76 @@ public class AdminDAO {
 			pstmt.setInt(1, offset);
 			pstmt.setInt(2, size);
 			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				AdminDTO dto = new AdminDTO();
+				
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setName(rs.getString("name"));
+				dto.setBirth(rs.getString("birth"));
+				dto.setEmail(rs.getString("email"));
+				dto.setPhone(rs.getString("phone"));
+				dto.setPosition(rs.getString("position"));
+				dto.setDivision(rs.getString("division"));
+				
+				list.add(dto);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return list;
+	}
+	
+	// 검색에서 관리자 리스트
+	public List<AdminDTO> listAdmin(int offset, int size, String schType, String kwd) {
+		List<AdminDTO> list = new ArrayList<AdminDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(" SELECT m.member_id, m.name, TO_CHAR(m.birth, 'YYYY-MM-DD') birth, m.email, m.phone, a.position, a.division ");
+			sb.append(" FROM member m ");
+			sb.append(" JOIN admin a ON m.member_id = a.member_id");
+			sb.append(" WHERE role = 99");			
+			if(schType.equals("all")) { // 교번 또는 이름
+				sb.append(" AND ( INSTR(m.member_id, ?) >= 1 OR INSTR(m.name, ?) >= 1 ) ");
+			} else if(schType.equals("reg_date")) { // 등록일자 검색(YYYYMMDD 형식)
+				kwd = kwd.replaceAll("(\\-|\\.|\\/)", "");
+				sb.append("AND TO_CHAR(m.create_date, 'YYYYMMDD') = ? ");
+			} else if (schType.equals("name")) {
+				sb.append(" AND INSTR(m.name, ?) >= 1");
+			} else if (schType.equals("division")) {
+				sb.append(" AND INSTR(a.division, ?) >= 1");		
+			} else { // 기타 email, phone, birth, addr 등
+				sb.append(" AND INSTR(" + schType + ", ?) >= 1") ; 
+			}
+								
+			sb.append(" ORDER BY m.member_id ASC");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+
+		
+
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			
+			if(schType.equals("all")) {
+				pstmt.setString(1, kwd);
+				pstmt.setString(2, kwd);
+				pstmt.setInt(3, offset);
+				pstmt.setInt(4, size);
+			} else {
+				pstmt.setString(1, kwd);
+				pstmt.setInt(2, offset);
+				pstmt.setInt(3, size);
+			}
+						
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

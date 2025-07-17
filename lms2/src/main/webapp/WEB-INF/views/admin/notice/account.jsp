@@ -33,7 +33,7 @@
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">제목</div>
 				        <div class="col-sm-10 bg-white py-3">
-				            <input type="text" class="form-control" name="subject" required>
+				            <input type="text" class="form-control" name="subject" value="${dto.subject}" required>
 				        </div>
 				    </div>
 				
@@ -49,7 +49,7 @@
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">내용</div>
 				        <div class="col-sm-10 bg-white py-3">
-				            <textarea class="form-control" id="ir1" name="content" rows="10" required></textarea>
+				            <textarea class="form-control" id="ir1" name="content" rows="10" required>${dto.content}</textarea>
 				        </div>
 				    </div>
 				
@@ -82,12 +82,15 @@
 				            <button type="reset" class="btn btn-warning me-2">다시 입력</button>
 				            <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-secondary">목록</a>
 				
-				            <c:if test="${mode=='update'}">
-				                <input type="hidden" name="num" value="${dto.notice_id}">
-				                <input type="hidden" name="page" value="${page}">
-				                <input type="hidden" name="saveFilename" value="${dto.saveFilename}">
-				                <input type="hidden" name="originalFilename" value="${dto.originalFilename}">
-				            </c:if>
+							<c:if test="${mode=='update'}">
+							    <input type="hidden" name="num" value="${dto.notice_id}">
+							    <input type="hidden" name="page" value="${page}">
+							    
+							    <c:forEach var="file" items="${listFile}">
+							        <input type="hidden" name="saveFilename" value="${file.save_filename}">
+							        <input type="hidden" name="originalFilename" value="${file.original_filename}">
+							    </c:forEach>
+							</c:if>
 				        </div>
 				    </div>
 				
@@ -116,7 +119,7 @@ function check() {
 		return false;
 	}
 	
-	f.action = '${pageContext.request.contextPath}/admin/notice/account';
+	f.action = '${pageContext.request.contextPath}/admin/notice/${mode}';
 	
 	return true;
 	

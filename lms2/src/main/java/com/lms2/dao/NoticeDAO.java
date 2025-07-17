@@ -204,6 +204,8 @@ public class NoticeDAO {
 			} else if (schType.equals("reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
 				sb.append(" WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ?");
+			} else if (schType.equals("name")) {
+				sb.append( " WHERE INSTR(m.name, ?) >= 1");
 			} else {
 				sb.append(" WHERE INSTR(" + schType + ", ?) >= 1 ");
 			}
