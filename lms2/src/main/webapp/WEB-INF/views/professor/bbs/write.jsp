@@ -55,7 +55,7 @@
 								</tr>
 								
 								<tr>
-								<td class="bg-light col-sm-2" scope="row">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+								<td>첨부 파일</td>
 								<td> 
 									<input type="file" name="selectFile" class="form-control">
 								</td>

@@ -212,16 +212,8 @@ public class DataController {
 	    String pathname = root + "uploads" + File.separator + "lecture";
 
 	    try {
-	        Part p = req.getPart("selectFile"); // ★ Part 먼저 받아와야 파일 정보 확인 가능
-
-	        System.out.println("=== 게시글 등록 디버깅 ===");
-	        System.out.println("작성자 ID: " + info.getMember_id());
-	        System.out.println("제목: " + req.getParameter("subject"));
-	        System.out.println("내용: " + req.getParameter("content"));
-	        System.out.println("강의코드: " + req.getParameter("lesson"));
-	        System.out.println("업로드 파일명: " + (p != null ? p.getSubmittedFileName() : "null"));
-	        System.out.println("업로드 파일 사이즈: " + (p != null ? p.getSize() : "null"));
-
+	        Part p = req.getPart("selectFile"); 
+	        
 	        DataDTO dto = new DataDTO();
 	        dto.setMember_id(info.getMember_id());
 	        dto.setSubject(req.getParameter("subject"));

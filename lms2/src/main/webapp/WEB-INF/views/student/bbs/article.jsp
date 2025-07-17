@@ -8,6 +8,7 @@
 <title>자료실</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 </head>
 <body>
@@ -15,7 +16,7 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
 		
 		<div class="container">
 			<div class="body-container row justify-content-center" style="margin: 100px;">
@@ -32,7 +33,6 @@
 					</div>
 
 					<div class="body-main">
-
 						<table class="table board-article">
 							<thead>
 								<tr style="border-top: 3px solid black;">
@@ -43,10 +43,6 @@
 
 							<tbody>
 								<tr>
-									<td width="150px" align="justify">강의 과목</td>
-									<td align="left">${dto.lecture_subject}</td>
-								</tr>
-								<tr>
 									<td width="150px" align="justify">조회수</td>
 									<td align="left">${dto.hit_count}</td>
 								</tr>
@@ -56,21 +52,28 @@
 								</tr>
 
 								<tr>
+								<c:if test="${not empty dto.save_filename}">
 									<td width="150px" align="justify">파일명</td>
-									<td align="left">첨부파일이름.pdf</td>
+									<td>
+										<div>
+											<i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
+										</div>
+									</td>
+									</c:if>
+								
 								</tr>
 
-								<tr> <!-- contain? -->
+								<tr>
 									<td colspan="2">이전글:
 										<c:if test="${not empty prevDto}">
-											<a href="${pageContext.request.contextPath}/student/bbs/article?num=${prevDto.data_id}&${query}">${prevDto.subject}</a>
+											<a href="${pageContext.request.contextPath}/professor/bbs/article?num=${prevDto.data_id}&${query}">${prevDto.subject}</a>
 										</c:if>
 									</td>
 								</tr>
 								<tr style="border-bottom: 2px solid gray;">
 									<td colspan="2">다음글:
 										<c:if test="${not empty nextDto}">
-											<a href="${pageContext.request.contextPath}/student/bbs/article?num=${nextDto.data_id}&${query}">${nextDto.subject}</a>
+											<a href="${pageContext.request.contextPath}/professor/bbs/article?num=${nextDto.data_id}&${query}">${nextDto.subject}</a>
 										</c:if>
 									</td>
 								</tr>

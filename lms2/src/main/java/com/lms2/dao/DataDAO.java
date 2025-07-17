@@ -138,16 +138,18 @@ public class DataDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT data_id, subject, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, hit_count ");
-			sb.append(" FROM DATA");
-			sb.append(" ORDER BY data_id DESC ");
+			sb.append(" SELECT d.data_id, d.subject, TO_CHAR(d.reg_date, 'YYYY-MM-DD') reg_date, d.hit_count, ");
+			sb.append(" f.save_filename, f.original_filename ");
+			sb.append(" FROM DATA d ");
+			sb.append(" LEFT JOIN data_file f ON d.data_id = f.data_id ");
+			sb.append(" ORDER BY d.data_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
-
-			pstmt = conn.prepareStatement(sb.toString());
 			
+			pstmt = conn.prepareStatement(sb.toString());
+
 			pstmt.setInt(1, offset);
 			pstmt.setInt(2, size);
-			
+
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -157,6 +159,8 @@ public class DataDAO {
 				dto.setSubject(rs.getString("subject"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHit_count(rs.getInt("hit_count"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
 
 				list.add(dto);
 			}
@@ -178,31 +182,27 @@ public class DataDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT data_id, subject, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, hit_count ");
-			sb.append(" FROM DATA ");
+			sb.append(" SELECT d.data_id, d.subject, TO_CHAR(d.reg_date, 'YYYY-MM-DD') reg_date, d.hit_count, ");
+			sb.append(" f.save_filename, f.original_filename ");
+			sb.append(" FROM DATA d ");
+			sb.append(" LEFT JOIN DATA_FILE f ON d.data_id = f.data_id ");
+
 			if (schType.equals("all")) {
-				sb.append(" WHERE INSTR(subject, ?) >= 1 ");
+				sb.append(" WHERE INSTR(d.subject, ?) >= 1 ");
 			} else if (schType.equals("reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\.|\\/)", "");
-				sb.append(" WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ? ");
+				sb.append(" WHERE TO_CHAR(d.reg_date, 'YYYYMMDD') = ? ");
 			} else {
-				sb.append(" WHERE INSTR(" + schType + ", ?) >= 1 ");
+				sb.append(" WHERE INSTR(d." + schType + ", ?) >= 1 ");
 			}
 
-			sb.append(" ORDER BY data_id DESC ");
+			sb.append(" ORDER BY d.data_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
 			pstmt = conn.prepareStatement(sb.toString());
-
-			if (schType.equals("all")) {
-				pstmt.setString(1, kwd);
-				pstmt.setInt(2, offset);
-				pstmt.setInt(3, size);
-			} else {
-				pstmt.setString(1, kwd);
-				pstmt.setInt(2, offset);
-				pstmt.setInt(3, size);
-			}
+			pstmt.setString(1, kwd);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 
 			rs = pstmt.executeQuery();
 
@@ -213,6 +213,8 @@ public class DataDAO {
 				dto.setSubject(rs.getString("subject"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHit_count(rs.getInt("hit_count"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
 
 				list.add(dto);
 			}
@@ -225,7 +227,6 @@ public class DataDAO {
 
 		return list;
 	}
-
 	// 조회수 증가
 	public void updateHitCount(int data_id) throws SQLException {
 		PreparedStatement pstmt = null;

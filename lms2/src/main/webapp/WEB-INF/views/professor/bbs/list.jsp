@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/board.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style type="text/css">
 .bbs-header img {
 	height: 50px;
@@ -34,7 +35,7 @@
 				<table class="table table-hover board-list">
 					<thead class="table-light">
 						<tr>
-							<th width="60">번호</th>
+							<th width="80">번호</th>
 							<th>제목</th>
 							<th width="200">등록일</th>
 							<th width="100">첨부파일</th>
@@ -75,7 +76,6 @@
 							<div class="col-auto p-1">
 								<select name="schType" class="form-select">
 									<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
-									<option value="userName" ${schType=="userName"?"selected":""}>작성자</option>
 									<option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
 									<option value="subject" ${schType=="subject"?"selected":""}>제목</option>
 									<option value="content" ${schType=="content"?"selected":""}>내용</option>

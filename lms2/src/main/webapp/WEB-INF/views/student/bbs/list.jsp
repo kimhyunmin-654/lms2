@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/board.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style type="text/css">
 .bbs-header img {
 	height: 50px;
@@ -22,20 +23,19 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
-			<div class="body-container row justify-content-center bbs-header"
-				style="margin: 100px;">
+			<div class="body-container row justify-content-center bbs-header" style="margin: 100px;">
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
 					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
 				</div>
 
-								<table class="table table-hover board-list">
+				<table class="table table-hover board-list">
 					<thead class="table-light">
 						<tr>
-							<th width="60">번호</th>
+							<th width="80">번호</th>
 							<th>제목</th>
 							<th width="200">등록일</th>
 							<th width="100">첨부파일</th>
@@ -52,7 +52,13 @@
 									</div>
 								</td>
 								<td>${dto.reg_date}</td>
-								<td>ㅇ</td>
+								<td>
+									<c:if test="${not empty dto.save_filename}">
+										<div>
+											<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}"><i class="fa-solid fa-floppy-disk"></i></a>
+										</div>
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -72,7 +78,6 @@
 							<div class="col-auto p-1">
 								<select name="schType" class="form-select">
 									<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
-									<option value="userName" ${schType=="userName"?"selected":""}>작성자</option>
 									<option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
 									<option value="subject" ${schType=="subject"?"selected":""}>제목</option>
 									<option value="content" ${schType=="content"?"selected":""}>내용</option>
