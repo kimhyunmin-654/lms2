@@ -153,22 +153,28 @@ public class LectureDAO {
 		
 		// 사이드바
 		public List<LectureDTO> listsidebar(String member_id) {
-		    List<LectureDTO> list = new ArrayList<>();
-		    String sql = "SELECT subject FROM lecture WHERE member_id = ?";
+			List<LectureDTO> list = new ArrayList<>();
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
 
-		    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-		        pstmt.setString(1, member_id);
-		        try (ResultSet rs = pstmt.executeQuery()) {
-		            while (rs.next()) {
-		                LectureDTO dto = new LectureDTO();
-		                dto.setSubject(rs.getString("subject")); 
-		                list.add(dto);
-		            }
-		        }
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
+			try {
+				String sql = "SELECT subject FROM lecture WHERE member_id = ?";
 
-		    return list;
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, member_id);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					LectureDTO dto = new LectureDTO();
+					dto.setSubject(rs.getString("subject"));
+					list.add(dto);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return list;
 		}
 }
