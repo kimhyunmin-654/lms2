@@ -16,7 +16,8 @@ public class Pro_hwDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	//과제 등록
-	public void inserthw(Pro_hwDTO dto) throws SQLException {
+	public int inserthw(Pro_hwDTO dto) throws SQLException {
+		int hwId = 0;
 		PreparedStatement pstmt = null;
 		String sql;
 		
@@ -37,6 +38,7 @@ public class Pro_hwDAO {
 		} finally {
 			DBUtil.close(pstmt);
 		}
+		return hwId;
 	}
 	
 	//데이터개수
