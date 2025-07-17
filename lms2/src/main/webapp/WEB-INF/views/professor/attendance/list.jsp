@@ -39,42 +39,30 @@
 						src="${pageContext.request.contextPath}/dist/images/sangyong_logo2.png">
 					출석 관리
 				</div>
-				<!--  
-				<form method="get" action="${pageContext.request.contextPath}/professor/attendance/list">
-				    <label>강의 선택:</label>
-				    <select name="lectureCode" onchange="this.form.submit()">
-				        <option value="">-- 강의 선택 --</option>
-				        <c:forEach var="lec" items="${lectureList}">
-				            <option value="${lec.lecture_code}" ${lec.lecture_code == selectedLecture ? "selected" : ""}>
-				                ${lec.subject}
-				            </option>
-				        </c:forEach>
-				    </select>
-				</form>
--->
 
+				<!-- 주차 선택 폼 -->
 				<form id="weekForm" method="get"
 					action="${pageContext.request.contextPath}/professor/attendance/write">
 					<select class="form-select" name="week" id="week-select">
-						<option value="">-- 주차 선택 --</option>
 						<c:forEach var="i" begin="1" end="15">
-							<option value="${i}">${i}주차</option>
+						    <option value="${i}" ${i == 1 ? "selected" : ""}>${i}주차</option>
 						</c:forEach>
 					</select>
 					<div class="col text-end mt-2">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/attendance/list';">새로고침</button>
+						<button type="button" class="btn btn-light"
+							onclick="location.href='${pageContext.request.contextPath}/professor/attendance/list';">새로고침</button>
 					</div>
 					<div class="col text-end mt-2">
 						<button type="submit" class="btn btn-light">출석관리</button>
 					</div>
 				</form>
 
-
-				<table class="table table-hover board-list">
+				<table class="table table-hover board-list mt-4">
 					<thead class="table-light">
 						<tr>
 							<th>학번</th>
 							<th>이름</th>
+							<th>출결상태</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -82,14 +70,31 @@
 							<tr>
 								<td>${dto.member_id}</td>
 								<td>${dto.name}</td>
+								<td><c:choose>
+										<c:when test="${dto.status == 0}">
+											<div
+												style="width: 50px; height: 30px; background-color: red; border-radius: 3px;">결석</div>
+										</c:when>
+										<c:when test="${dto.status == 1}">
+											<div
+												style="width: 50px; height: 20px; background-color: green; border-radius: 3px;">출석</div>
+										</c:when>
+										<c:when test="${dto.status == 2}">
+											<div
+												style="width: 50px; height: 20px; background-color: yellow; border-radius: 3px;">지각</div>
+										</c:when>
+										<c:otherwise>
+											<div
+												style="width: 50px; height: 20px; background-color: black; border-radius: 3px;">미체크</div>
+										</c:otherwise>
+									</c:choose></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-				<!-- <div class="page-navigation">${dataCount == 0 ? "등록된 학생이 없습니다." : paging} -->
 			</div>
 
-			
+
 
 		</div>
 

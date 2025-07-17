@@ -27,7 +27,7 @@
 				</h2>
 				<div id="collapseOne" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu">강의 목록</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/lecture/compList">강의 목록</a>강의 목록</div>
 					<div class="accordion-body custom-submenu">수업 일정</div>
 				</div>
 			</div>

@@ -22,13 +22,14 @@ public class AttendanceDAO {
 		try {
 			conn.setAutoCommit(false);
 			
-			sql = "INSERT INTO ATTENDANCE_RECORD(attend_id, attend_date, checkin_time, checkout_time, status, course_id)"
+			sql = "INSERT INTO ATTENDANCE_RECORD(attend_id, attend_date, checkin_time, checkout_time, status, course_id, week)"
 					+ " VALUES(ATTENDANCE_RECORD_SEQ.NEXTVAL, SYSDATE, SYSDATE, SYSDATE, ?, ?)";
 		
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, dto.getStatus());
 			pstmt.setInt(2, dto.getCourse_id());
+			pstmt.setInt(2, dto.getWeek());
 			
 			pstmt.executeUpdate();
 			
@@ -97,7 +98,7 @@ public class AttendanceDAO {
 	}
 	
 	// 출석 개수
-	public int dataCount(String member_id, int status) {
+	public int dataCount(String member_id, int status, int week) {
 	    int result = 0;
 
 	    PreparedStatement pstmt = null;
@@ -110,10 +111,12 @@ public class AttendanceDAO {
 	        sb.append(" JOIN COURSE_APPLICATION c ON a.course_id = c.course_id ");
 	        sb.append(" WHERE c.member_id = ? ");
 	        sb.append(" AND a.status = ? ");
+	        sb.append(" AND a.week = ? ");
 
 	        pstmt = conn.prepareStatement(sb.toString());
 	        pstmt.setString(1, member_id);
 	        pstmt.setInt(2, status);
+	        pstmt.setInt(3, week);
 
 	        rs = pstmt.executeQuery();
 
@@ -130,6 +133,25 @@ public class AttendanceDAO {
 
 	    return result;
 	}
+	
+	// 전체 주차 (학생용)
+	public int dataCount(String member_id, int status) {
+	    int result = 0;
+	    String sql = "SELECT COUNT(*) FROM attendance_record WHERE member_id=? AND status=?";
+	    
+	    try (Connection conn = DBConn.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, member_id);
+	        pstmt.setInt(2, status);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) result = rs.getInt(1);
+	        rs.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return result;
+	}
+
 
 	
 }

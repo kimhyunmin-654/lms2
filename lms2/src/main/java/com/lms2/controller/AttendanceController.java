@@ -120,7 +120,7 @@ public class AttendanceController {
 		return new ModelAndView("redirect:/professor/attendance/list");
 	}
 	
-	// 출석 개수
+	// 출석 개수 (학생용)
 	@RequestMapping(value = "/student/study/attendance", method = RequestMethod.GET)
 	public ModelAndView studentAttendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    // 출석관리
@@ -151,6 +151,9 @@ public class AttendanceController {
 
 	    return mav;
 	}
+	
+	
+	
 
 	
 }

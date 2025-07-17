@@ -98,9 +98,10 @@ public class ProfessorController {
 		ModelAndView mav = new ModelAndView("professor/lecture/compList");
 
 		try {
+			// 강의목록
 			List<LectureDTO> list = dao.plistLecture(info.getMember_id());
-
 			mav.addObject("list", list);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,6 +109,38 @@ public class ProfessorController {
 
 		return mav;
 	}
+	
+	
+	@RequestMapping(value = "/professor/lecture/main1", method = RequestMethod.GET)
+	public ModelAndView lectureDetail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    ProfessorDAO dao = new ProfessorDAO();
+	    
+	    String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+
+	    try {
+	        String lecture_code = req.getParameter("lecture_code");
+
+	        ModelAndView mav = new ModelAndView("professor/lecture/main1");
+	        
+	        LectureDTO dto = dao.findById1(lecture_code);
+	        
+	        mav.addObject("dto", dto);
+			mav.addObject("query", query);
+			mav.addObject("page", page);
+			mav.addObject("size", size);
+			
+			return mav;
+	       
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return new ModelAndView("redirect:/professor/lecture/compList?" + query);
+	}
+	
+	
 	
 
 	
