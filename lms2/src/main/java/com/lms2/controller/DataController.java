@@ -487,7 +487,10 @@ public class DataController {
 	public Map<String, Object> insertComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Map<String, Object> model = new HashMap<String, Object>();
 		//리플 등록
-		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		String member_id = info.getMember_id();
+
 		DataDAO dao = new DataDAO();
 		
 		String state = "false";
@@ -503,7 +506,7 @@ public class DataController {
 				dto.setParent_comment_id(Integer.parseInt(parent_comment_id));
 			}
 			
-			dao.insertComment(dto);
+			dao.insertComment(dto, member_id);
 			state = "true";
 		} catch (Exception e) {
 			e.printStackTrace();
