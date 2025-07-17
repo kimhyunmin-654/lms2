@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lms2.model.DeparmentDTO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.util.DBConn;
@@ -166,6 +167,43 @@ public class ProfessorDAO {
 			DBUtil.close(pstmt);
 		}
 		
+		return list;
+	}
+	
+	public List<LectureDTO> plistLecture(String member_id) {
+		List<LectureDTO> list = new ArrayList<LectureDTO>();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+
+		try {
+			sb.append(" SELECT lecture_code, grade, subject, classroom, division, capacity ");
+			sb.append(" FROM LECTURE ");
+			sb.append(" WHERE member_id = ? ");
+			sb.append(" ORDER BY Lecture_year DESC ");
+
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1, member_id);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				
+				dto.setLecture_code(rs.getString("lecture_code"));
+				dto.setGrade(rs.getInt("grade"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setClassroom(rs.getString("classroom"));
+				dto.setDivision(rs.getString("division")); // 분류
+				dto.setCapacity(rs.getInt("capacity")); // 수강정원
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return list;
 	}
 	

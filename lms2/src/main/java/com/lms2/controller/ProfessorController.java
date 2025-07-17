@@ -3,10 +3,15 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.lms2.dao.DataDAO;
+import com.lms2.dao.LectureDAO;
+import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.ProfessorDAO;
-import com.lms2.model.DataDTO;
+import com.lms2.dao.StudentDAO;
+import com.lms2.model.Course_ApplicationDTO;
+import com.lms2.model.LectureDTO;
+import com.lms2.model.NoticeDTO;
 import com.lms2.model.ProfessorDTO;
+import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
@@ -14,10 +19,9 @@ import com.lms2.mvc.view.ModelAndView;
 import com.lms2.util.MyUtil;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ProfessorController {
@@ -63,4 +67,49 @@ public class ProfessorController {
 
 		return new ModelAndView("redirect:/admin/professor/list");
 	}
+	
+	@RequestMapping(value = "/professor/main/main", method = RequestMethod.GET)
+	public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		ProfessorDAO dao = new ProfessorDAO();
+		ModelAndView mav = new ModelAndView("professor/main/main");
+
+		try {
+			// 강의목록
+			List<LectureDTO> list = dao.plistLecture(info.getMember_id());
+			mav.addObject("list", list);
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mav;
+	}
+	
+	@RequestMapping(value = "/professor/lecture/compList", method = RequestMethod.GET)
+	public ModelAndView studentCompList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		ProfessorDAO dao = new ProfessorDAO();
+		ModelAndView mav = new ModelAndView("professor/lecture/compList");
+
+		try {
+			List<LectureDTO> list = dao.plistLecture(info.getMember_id());
+
+			mav.addObject("list", list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mav;
+	}
+	
+
+	
+	
 }

@@ -22,7 +22,69 @@
 			<div class="body-container row justify-content-center"
 				style="margin: 100px;">
 				<h3 style="font-size: 29px;">교수 메인페이지</h3>
-					내용
+					<!-- 강의목록 -->
+				<div class="col-md-6 p-1">
+					<div>
+						<div class="fw-semibold pt-2 pb-1">
+							<i class="bi bi-book-half">강의목록</i>
+						</div>
+						<div class="border px-2">
+						    <c:forEach var="dto" items="${list}">
+						        <div class="text-truncate px-2 subject-list">
+						            <a href="${pageContext.request.contextPath}/professor/lecture/compList?lecture_code=${dto.lecture_code}">
+						                ${dto.subject}
+						            </a>
+						        </div>
+						    </c:forEach>
+						    <c:forEach var="n" begin="${list.size() + 1}" end="5">
+						        <div class="text-truncate px-2 subject-list">&nbsp;</div>
+						    </c:forEach>
+						</div>
+						<div class="pt-2 text-end">
+							<a href="${pageContext.request.contextPath}/professor/lecture/compList"
+								class="text-reset">더보기</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- 학기일정 -->
+				<div class="col-md-6 p-1">
+					<div>
+						<div class="fw-semibold pt-2 pb-1">
+							<i class="bi bi-book-half">학기일정</i>
+
+						</div>
+						<div class="border px-2">
+							
+						</div>
+					</div>
+				</div>
+				
+				<!-- 공지사항 -->
+				<div class="col-md-12 p-1">
+					<div>
+						<div class="fw-semibold pt-2 pb-1">
+							<i class="bi bi-book-half">공지사항</i>
+						</div>
+						<div class="border px-2">
+							<c:forEach var="dto" items="${listNotice}" varStatus="status">
+								<div class="text-truncate px-2 subject-list">
+									<a href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.notice_id}">
+										${dto.subject}
+									</a>
+								</div>
+							</c:forEach>
+							
+							<c:forEach var="n" begin="${listNotice.size() + 1}" end="5">
+								<div class="text-truncate px-2 subject-list">&nbsp;</div>
+							</c:forEach>
+						</div>
+						<div class="pt-2 text-end">
+							<a href="${pageContext.request.contextPath}/admin/notice/list"
+								class="text-reset">더보기</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>
