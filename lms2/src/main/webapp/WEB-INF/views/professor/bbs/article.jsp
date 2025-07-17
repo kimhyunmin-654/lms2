@@ -32,7 +32,6 @@
 					</div>
 
 					<div class="body-main">
-
 						<table class="table board-article">
 							<thead>
 								<tr style="border-top: 3px solid black;">
@@ -57,7 +56,13 @@
 
 								<tr>
 									<td width="150px" align="justify">파일명</td>
-									<td align="left">첨부파일이름.pdf</td>
+									<td>
+									<c:if test="${not empty dto.save_filename}">
+										<p class="border text-secondary mb-1 p-2">
+											<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
+										</p>
+									</c:if>
+								</td>
 								</tr>
 
 								<tr>

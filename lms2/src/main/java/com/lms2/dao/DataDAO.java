@@ -20,28 +20,55 @@ public class DataDAO {
 	public int insertData(DataDTO dto) throws SQLException {
 		int dataId = 0;
 		PreparedStatement pstmt = null;
-		String sql;
+		ResultSet rs = null;
 
-		
-		
 		try {
-			sql = "INSERT INTO data(data_id, subject, content, hit_count, reg_date, modify_date, lecture_code)"
-					+ " VALUES(DATA_SEQ.NEXTVAL, ?, ?, 0, SYSDATE, SYSDATE, ?)";
-		 	
-			pstmt = conn.prepareStatement(sql);
+			String seqSql = "SELECT DATA_SEQ.NEXTVAL FROM dual";
+			pstmt = conn.prepareStatement(seqSql);
+			rs = pstmt.executeQuery();
 
-			pstmt.setString(1, dto.getSubject());
-			pstmt.setString(2, dto.getContent());
-			pstmt.setString(3, dto.getLecture_code());
+			if (rs.next()) {
+				dataId = rs.getInt(1); // 시퀀스 값 추출
+			}
+
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+
+			// 2. 자료 등록
+			String insertSql = "INSERT INTO data(data_id, subject, content, hit_count, reg_date, modify_date, lecture_code, member_id)"
+					+ " VALUES(?, ?, ?, 0, SYSDATE, SYSDATE, ?, ?)";
+
+			pstmt = conn.prepareStatement(insertSql);
+			pstmt.setInt(1, dataId);
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getLecture_code());
+			pstmt.setString(5, dto.getMember_id());
 
 			pstmt.executeUpdate();
+			DBUtil.close(pstmt);
+
+			// 3. 첨부파일 등록 (있을 때만)
+			if (dto.getSave_filename() != null && dto.getOriginal_filename() != null) {
+				String fileSql = "INSERT INTO data_file(file_id, save_filename, original_filename, file_size, data_id, reg_date)"
+						+ " VALUES(DATA_FILE_SEQ.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
+				pstmt = conn.prepareStatement(fileSql);
+				pstmt.setString(1, dto.getSave_filename());
+				pstmt.setString(2, dto.getOriginal_filename());
+				pstmt.setInt(3, dto.getFile_size());
+				pstmt.setInt(4, dataId);
+
+				pstmt.executeUpdate();
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
+			DBUtil.close(rs);
 			DBUtil.close(pstmt);
 		}
-		
+
 		return dataId;
 	}
 

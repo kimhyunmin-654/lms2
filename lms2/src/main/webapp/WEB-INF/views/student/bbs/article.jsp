@@ -44,7 +44,7 @@
 							<tbody>
 								<tr>
 									<td width="150px" align="justify">강의 과목</td>
-									<td align="left">${dto.lecture_code}</td>
+									<td align="left">${dto.lecture_subject}</td>
 								</tr>
 								<tr>
 									<td width="150px" align="justify">조회수</td>
