@@ -15,15 +15,15 @@
 	<div class="text-white p-3 position-fixed blackbox2">
 		<div class="accordion accordion-flush" id="sidebarAccordion">
 			<form>
-			   <select name="lesson" id="lesson-select">
+			<select name="lesson" id="lesson-select">
 			    <option value="">-- 강의 선택 --</option>
-			    
-			    <c:if test="${empty lectureList}">
+			
+			    <c:if test="${empty list}">
 			        <option disabled>강의 없음 또는 세션 없음</option>
 			    </c:if>
-			    
-			    <c:forEach var="lecture" items="${lectureList}">
-			        <option value="${lecture.subject}">${lecture.subject}</option>
+			
+			    <c:forEach var="dto" items="${list}">
+			        <option value="${dto.lecture_code}">${dto.subject}</option>
 			    </c:forEach>
 			</select>
 			</form>
@@ -48,7 +48,7 @@
 				</h2>
 				<div id="collapseTwo" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu">과제</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/hw/list">과제</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/bbs/list">자료실</a></div>
 					<div class="accordion-body custom-submenu">수강생 관리</div>
 					<div class="accordion-body custom-submenu">성적 관리</div>
