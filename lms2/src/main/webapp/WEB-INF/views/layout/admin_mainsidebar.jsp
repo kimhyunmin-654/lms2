@@ -32,7 +32,7 @@
 
 		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/admin/lecture/list">강의 관리</a></div>
 		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/admin/notice/list">공지사항 관리</a></div>
-		<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
+		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/admin/admin/pwd">내 정보 관리</a></div>
 		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 	</div>
 </div>
