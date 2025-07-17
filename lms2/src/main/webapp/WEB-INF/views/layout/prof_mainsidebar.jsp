@@ -40,7 +40,7 @@
 				</h2>
 				<div id="collapseTwo" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu">과제</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/hw/list">과제</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/bbs/list">자료실</a></div>
 					<div class="accordion-body custom-submenu">수강생 관리</div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/attendance/list">성적 관리</a></div>
