@@ -22,12 +22,16 @@
 			<div class="container ">
 				<div class="body-container row justify-content-center" style="margin: 100px;">
 					<div class="col-md-10 my-3 p-3">
-					<div class="body-title">
-						<h3>자료실</h3>
-					</div>
-					<c:out value="${lectureList}" />
+						<table class="table" style="margin-bottom: 30px;">
+							<tr>
+								<td width="100px;" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">자료실</td>
+								<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+								<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+							</tr>
+						</table>
 					<div class="body-main">
-						<form name="bbsForm" action="${pageContext.request.contextPath}/professor/bbs/write" method="post">
+					
+						<form name="bbsForm" action="${pageContext.request.contextPath}/professor/bbs/write" method="post" enctype="multipart/form-data">
 							<table class="table">
 								<tr>
 									<td>제목
@@ -51,12 +55,25 @@
 								</tr>
 								
 								<tr>
-									<td>업로드파일
-									</td>
-									<td>
-										<input type="text" disabled>
+								<td class="bg-light col-sm-2" scope="row">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+								<td>
+									<input type="file" name="selectFile" class="form-control">
+								</td>
+							</tr>
+							<c:if test="${mode=='update'}">
+								<tr>
+									<td class="bg-light col-sm-2" scope="row">첨부파일</td>
+									<td> 
+										<p class="form-control-plaintext">
+											<c:if test="${not empty dto.save_filename}">
+												<a href="javascript:deleteFile('${dto.data_num}');"></a>
+												${dto.original_filename}
+											</c:if>
+											&nbsp;
+										</p>
 									</td>
 								</tr>
+							</c:if>
 								
 								<tr>
 									<td>내용
