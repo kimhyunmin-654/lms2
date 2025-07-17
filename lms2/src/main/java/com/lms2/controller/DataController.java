@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hs.dao.LectureDAO;
-import com.hs.model.LectureDTO;
 import com.lms2.dao.DataDAO;
 import com.lms2.model.DataDTO;
 import com.lms2.model.Data_CommentDTO;

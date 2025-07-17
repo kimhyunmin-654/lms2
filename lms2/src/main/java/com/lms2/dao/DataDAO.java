@@ -16,60 +16,49 @@ import com.lms2.util.DBUtil;
 public class DataDAO {
 	private Connection conn = DBConn.getConnection();
 
-	// 데이터 추가
 	public int insertData(DataDTO dto) throws SQLException {
-		int dataId = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+	    int dataId = 0;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql;
 
-		try {
-			String seqSql = "SELECT DATA_SEQ.NEXTVAL FROM dual";
-			pstmt = conn.prepareStatement(seqSql);
-			rs = pstmt.executeQuery();
+	    try {
+	        sql = "INSERT INTO data(data_id, subject, content, hit_count, reg_date, modify_date, lecture_code) "
+	            + "VALUES(DATA_SEQ.NEXTVAL, ?, ?, 0, SYSDATE, SYSDATE, ?)";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, dto.getSubject());
+	        pstmt.setString(2, dto.getContent());
+	        pstmt.setString(3, dto.getLecture_code());
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        sql = "SELECT DATA_SEQ.CURRVAL FROM dual";
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            dataId = rs.getInt(1);
+	        }
+	        pstmt.close();
 
-			if (rs.next()) {
-				dataId = rs.getInt(1); // 시퀀스 값 추출
-			}
+	        if (dto.getOriginal_filename() != null && dto.getSave_filename() != null) {
+	            sql = "INSERT INTO data_file(file_id, save_filename, original_filename, file_size, data_id) "
+	                + "VALUES(DATA_FILE_SEQ.NEXTVAL, ?, ?, ?, ?)";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, dto.getSave_filename());
+	            pstmt.setString(2, dto.getOriginal_filename());
+	            pstmt.setInt(3, dto.getFile_size());
+	            pstmt.setInt(4, dataId);
+	            pstmt.executeUpdate();
+	        }
 
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+	    } finally {
+	        DBUtil.close(pstmt);
+	    }
 
-			// 2. 자료 등록
-			String insertSql = "INSERT INTO data(data_id, subject, content, hit_count, reg_date, modify_date, lecture_code, member_id)"
-					+ " VALUES(?, ?, ?, 0, SYSDATE, SYSDATE, ?, ?)";
-
-			pstmt = conn.prepareStatement(insertSql);
-			pstmt.setInt(1, dataId);
-			pstmt.setString(2, dto.getSubject());
-			pstmt.setString(3, dto.getContent());
-			pstmt.setString(4, dto.getLecture_code());
-			pstmt.setString(5, dto.getMember_id());
-
-			pstmt.executeUpdate();
-			DBUtil.close(pstmt);
-
-			// 3. 첨부파일 등록 (있을 때만)
-			if (dto.getSave_filename() != null && dto.getOriginal_filename() != null) {
-				String fileSql = "INSERT INTO data_file(file_id, save_filename, original_filename, file_size, data_id, reg_date)"
-						+ " VALUES(DATA_FILE_SEQ.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
-				pstmt = conn.prepareStatement(fileSql);
-				pstmt.setString(1, dto.getSave_filename());
-				pstmt.setString(2, dto.getOriginal_filename());
-				pstmt.setInt(3, dto.getFile_size());
-				pstmt.setInt(4, dataId);
-
-				pstmt.executeUpdate();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
-		}
-
-		return dataId;
+	    return dataId;
 	}
 
 	// 데이터개수
