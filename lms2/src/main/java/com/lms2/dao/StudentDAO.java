@@ -450,7 +450,7 @@ public class StudentDAO {
 			StringBuilder sb = new StringBuilder();
 			
 			try {
-				sb.append(" SELECT attend_date, checkin_time, checkout_time, a.status, c.member_id, week ");
+				sb.append(" SELECT attend_date, checkin_time, checkout_time, a.status, c.member_id, week, ");
 				sb.append(" CASE a.status WHEN 0 THEN '결석' WHEN 1 THEN '출석' WHEN 2 THEN '지각' ELSE '미체크' END AS attendance_status ");
 				sb.append(" FROM Attendance_record a ");
 				sb.append(" JOIN COURSE_APPLICATION c ON a.course_id = c.course_id ");
@@ -475,6 +475,9 @@ public class StudentDAO {
 				
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
 			}
 			
 			return list;
