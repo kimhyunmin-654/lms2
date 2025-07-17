@@ -22,8 +22,8 @@ public class AdminDAO {
 		try {
 			conn.setAutoCommit(false);
 			
-			sql = " INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2) "
-					+ " VALUES(?, ?, ?, 1, SYSDATE, SYSDATE, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?) ";
+			sql = " INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip) "
+					+ " VALUES(?, ?, ?, 99, SYSDATE, SYSDATE, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?, ?) ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -36,6 +36,7 @@ public class AdminDAO {
 			pstmt.setString(7, dto.getBirth());
 			pstmt.setString(8, dto.getAddr1());
 			pstmt.setString(9, dto.getAddr2());
+			pstmt.setString(10, dto.getZip());
 			
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -76,7 +77,7 @@ public class AdminDAO {
 		String sql;
 		
 		try {
-			sql = " SELECLT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD) birth, addr1, addr2 "
+			sql = " SELECT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD') birth, addr1, addr2, zip "
 					+ " FROM member m "
 					+ " LEFT OUTER JOIN admin a ON m.member_id = a.member_id "
 					+ " WHERE m.member_id = ?";
@@ -107,6 +108,7 @@ public class AdminDAO {
 				dto.setBirth(rs.getString("birth"));
 				dto.setAddr1(rs.getString("addr1"));
 				dto.setAddr2(rs.getString("addr2"));
+				dto.setZip(rs.getString("zip"));
 			}
 			
 			
@@ -130,7 +132,7 @@ public class AdminDAO {
 		try {
 			conn.setAutoCommit(false);
 
-			sql = "UPDATE member SET name = ?, password = ?, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ? "
+			sql = "UPDATE member SET name = ?, password = ?, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ?, zip = ? "
 					+ "WHERE member_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getName());
@@ -141,7 +143,8 @@ public class AdminDAO {
 			pstmt.setString(6, dto.getBirth());
 			pstmt.setString(7, dto.getAddr1());
 			pstmt.setString(8, dto.getAddr2());
-			pstmt.setString(9, dto.getMember_id());
+			pstmt.setString(9, dto.getZip());
+			pstmt.setString(10, dto.getMember_id());
 			pstmt.executeUpdate();
 			pstmt.close();
 

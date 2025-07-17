@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.rmi.ServerException;
 
 import com.lms2.dao.MemberDAO;
+import com.lms2.model.AdminDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
@@ -46,6 +47,7 @@ public class MemberController {
 			info.setName(dto.getName());
 			info.setRole(dto.getRole());
 			info.setAvatar(dto.getAvatar());
+			info.setDivision(dto.getDivision());
 			
 			session.setAttribute("member", info);
 			
@@ -96,7 +98,10 @@ public class MemberController {
 	    return "professor/main/main"; // JSP 뷰 경로
 	}
 	
-
+	@RequestMapping(value = "/student/main/main", method = RequestMethod.GET)
+	public String studentMain(HttpServletRequest req, HttpServletResponse resp) {
+	    return "student/main/main"; // JSP 뷰 경로
+	}
 	
 
 	

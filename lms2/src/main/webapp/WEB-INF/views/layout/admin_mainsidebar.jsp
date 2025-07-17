@@ -2,11 +2,13 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout.css">
+
 <div class="blackbox">
 	<div class="text-center mb-4">
 		<img src="${pageContext.request.contextPath}/dist/images/profile.png" alt="프로필" class="rounded-circle profile-img">
-		<div class="username" style="font-size:18px;">김관리자</div>
-		<div class="department" style="font-size:12px;">행정실</div>
+		<div class="username" style="font-size:18px;">${sessionScope.member.name}</div>
+		<div class="department" style="font-size:12px;">${sessionScope.member.division}</div>
 	</div>
 
 	<div class="accordion accordion-flush" id="sidebarAccordion">
