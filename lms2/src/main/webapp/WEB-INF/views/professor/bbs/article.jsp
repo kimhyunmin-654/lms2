@@ -8,6 +8,7 @@
 <title>자료실</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 </head>
 <body>
@@ -55,14 +56,15 @@
 								</tr>
 
 								<tr>
+								<c:if test="${not empty dto.save_filename}">
 									<td width="150px" align="justify">파일명</td>
 									<td>
-									<c:if test="${not empty dto.save_filename}">
-										<p class="border text-secondary mb-1 p-2">
-											<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
-										</p>
+										<div>
+											<i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
+										</div>
+									</td>
 									</c:if>
-								</td>
+								
 								</tr>
 
 								<tr>

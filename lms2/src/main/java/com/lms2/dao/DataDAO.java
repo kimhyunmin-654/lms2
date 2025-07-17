@@ -38,6 +38,7 @@ public class DataDAO {
 	        if (rs.next()) {
 	            dataId = rs.getInt(1);
 	        }
+	        rs.close();
 	        pstmt.close();
 
 	        if (dto.getOriginal_filename() != null && dto.getSave_filename() != null) {
@@ -56,6 +57,7 @@ public class DataDAO {
 	        throw e;
 	    } finally {
 	        DBUtil.close(pstmt);
+	        DBUtil.close(rs);
 	    }
 
 	    return dataId;
@@ -252,14 +254,16 @@ public class DataDAO {
 		String sql;
 
 		try {
-			sql = "SELECT d.data_id, d.subject, d.content, d.hit_count, "
+			 sql = "SELECT d.data_id, d.subject, d.content, d.hit_count, "
 				    + "TO_CHAR(d.reg_date, 'YYYYMMDD') reg_date, "
 				    + "TO_CHAR(d.modify_date, 'YYYYMMDD') modify_date, "
-				    + "NVL(l.subject, '강의 없음') AS lecture_subject "
+				    + "NVL(l.subject, '강의 없음') AS lecture_subject, "
+				    + "f.save_filename, f.original_filename, f.file_size "
 				    + "FROM DATA d "
 				    + "LEFT JOIN LECTURE l ON d.lecture_code = l.lecture_code "
+				    + "LEFT JOIN data_file f ON d.data_id = f.data_id "
 				    + "WHERE d.data_id = ?";
-
+			 
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setLong(1, data_id);
@@ -274,6 +278,9 @@ public class DataDAO {
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setLecture_subject(rs.getString("lecture_subject"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
+				dto.setFile_size(rs.getInt("file_size"));
 
 			}
 		} catch (Exception e) {

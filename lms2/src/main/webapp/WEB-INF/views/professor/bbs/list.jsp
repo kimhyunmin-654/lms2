@@ -51,7 +51,13 @@
 									</div>
 								</td>
 								<td>${dto.reg_date}</td>
-								<td>ㅇ</td>
+								<td>
+									<c:if test="${not empty dto.save_filename}">
+										<div>
+											<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}"><i class="fa-solid fa-floppy-disk"></i></a>
+										</div>
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
