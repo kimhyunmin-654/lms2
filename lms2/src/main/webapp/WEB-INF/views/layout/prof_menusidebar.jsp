@@ -15,17 +15,21 @@
 	<div class="text-white p-3 position-fixed blackbox2">
 		<div class="accordion accordion-flush" id="sidebarAccordion">
 			<form>
-			<select name="lesson" id="lesson-select">
-			    <option value="">-- 강의 선택 --</option>
+			    <select name="lesson" id="lesson-select" onchange="location.href=this.value;">
+			        <option value="">-- 강의 선택 --</option>
 			
-			    <c:if test="${empty list}">
-			        <option disabled>강의 없음 또는 세션 없음</option>
-			    </c:if>
+			        <c:if test="${empty lectureList}">
+			            <option disabled>강의 없음 또는 세션 없음</option>
+			        </c:if>
 			
-			    <c:forEach var="dto" items="${lectureList}">
-				    <option value="${dto.lecture_code}">${dto.subject}</option>
-				</c:forEach>
-			</select>
+			        <c:forEach var="dto" items="${lectureList}">
+			            <option 
+			                value="${pageContext.request.contextPath}/professor/lecture/main1?lecture_code=${dto.lecture_code}" 
+			                <c:if test="${dto.lecture_code == param.lecture_code}">selected</c:if>>
+			                ${dto.subject}
+			            </option>
+			        </c:forEach>
+			    </select>
 			</form>
 			<div class="accordion-item">
 				<h2 class="accordion-header">

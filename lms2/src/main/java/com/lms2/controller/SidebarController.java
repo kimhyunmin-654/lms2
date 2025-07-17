@@ -17,26 +17,26 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class SidebarController {
 
-    @RequestMapping(value = "/layout/prof_menusidebar", method = RequestMethod.GET)
-    public ModelAndView profMenuSidebar(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	@RequestMapping(value = "/layout/prof_menusidebar", method = RequestMethod.GET)
+	public ModelAndView profMenuSidebar(HttpServletRequest req) {
+	    HttpSession session = req.getSession();
+	    SessionInfo info = (SessionInfo) session.getAttribute("member");
 
-        LectureDAO dao = new LectureDAO(); 
-        ModelAndView mav = new ModelAndView("layout/prof_menusidebar");
+	    LectureDAO dao = new LectureDAO(); 
+	    ModelAndView mav = new ModelAndView("layout/prof_menusidebar");
 
-        try {
-            if (info != null) {
-                String memberId = String.valueOf(info.getMember_id()); // int → String 변환
-                List<LectureDTO> list = dao.listsidebar(memberId);
-                mav.addObject("list", list);
-            } else {
-                System.out.println("세션에 사용자 정보 없음");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	    try {
+	        if (info != null) {
+	            String memberId = String.valueOf(info.getMember_id());
+	            List<LectureDTO> lectureList = dao.listsidebar(memberId); // 이름 수정!
+	            mav.addObject("lectureList", lectureList); // 'list' → 'lectureList'
+	        } else {
+	            System.out.println("세션에 사용자 정보 없음");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
-        return mav;
-    }
+	    return mav;
+	}
 }
