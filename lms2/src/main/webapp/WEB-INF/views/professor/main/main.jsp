@@ -31,7 +31,7 @@
 						<div class="border px-2">
 						    <c:forEach var="dto" items="${list}">
 						        <div class="text-truncate px-2 subject-list">
-						            <a href="${pageContext.request.contextPath}/professor/lecture/compList?lecture_code=${dto.lecture_code}">
+						            <a href="${pageContext.request.contextPath}/professor/lecture/main1?lecture_code=${dto.lecture_code}">
 						                ${dto.subject}
 						            </a>
 						        </div>

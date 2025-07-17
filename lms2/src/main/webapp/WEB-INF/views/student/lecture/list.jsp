@@ -53,22 +53,23 @@
 					</thead>
 
 					<tbody>
-					    <c:forEach var="dto" items="${list}" varStatus="status">
-					        <tr>
-					            <td>${dataCount - (page - 1) * size - status.index}</td>
-					            <td class="left">${dto.subject}</td>
-					            <td>${dto.name}</td>
-					            <td>${dto.grade}</td>
-					            <td>${dto.classroom}</td>
-					            <td>${dto.credit}</td>
-					            <td>
-					                <form method="post" action="${pageContext.request.contextPath}/student/lecture/account">
-					                    <input type="hidden" name="lecture_code" value="${dto.lecture_code}">
-					                    <button type="submit" class="btn btn-light" onclick="okSend()">신청</button>
-					                </form>
-					            </td>
-					        </tr>
-					    </c:forEach>
+					  <c:forEach var="dto" items="${list}" varStatus="status">
+					    <tr>
+					      <td>${status.index + 1}</td>
+					      <td>
+					        <a href="${pageContext.request.contextPath}/professor/lecture/main1?lecture_code=${dto.lecture_code}">
+					          ${dto.subject}
+					        </a>
+					      </td>
+					      <td>${dto.name}</td>
+					      <td>${dto.grade}</td>
+					      <td>${dto.classroom}</td>
+					      <td>${dto.credit}</td>
+					      <td>
+					        <button class="btn btn-sm btn-primary" onclick="okSend()">신청</button>
+					      </td>
+					    </tr>
+					  </c:forEach>
 					</tbody>
 					
 				</table>

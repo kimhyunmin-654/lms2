@@ -11,6 +11,7 @@ import java.util.List;
 import com.lms2.model.DeparmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
+import com.lms2.model.NoticeDTO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
@@ -205,6 +206,80 @@ public class ProfessorDAO {
 		}
 
 		return list;
+	}
+	
+	// lecture로 옮겨야함 
+	public List<LectureDTO> lectureDetail() {
+	    List<LectureDTO> list = new ArrayList<LectureDTO>();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        String sql = "SELECT lecture_code, grade, subject, classroom, division, capacity "
+	                   + "FROM LECTURE WHERE lecture_code = ?";
+
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	        	
+	            LectureDTO dto = new LectureDTO();
+	            
+	            dto.setLecture_code(rs.getString("lecture_code"));
+	            dto.setGrade(rs.getInt("grade"));
+	            dto.setSubject(rs.getString("subject"));
+	            dto.setClassroom(rs.getString("classroom"));
+	            dto.setDivision(rs.getString("division"));
+	            dto.setCapacity(rs.getInt("capacity"));
+	            
+	            list.add(dto);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+
+	    return list;
+	}
+	
+	// lecture로 옮겨야함(임시)
+	public LectureDTO findById1(String lecture_code) {
+		LectureDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			  sql = "SELECT lecture_code, grade, subject, classroom, division, capacity "
+	                   + "FROM LECTURE WHERE lecture_code = ?";
+			  
+			  pstmt = conn.prepareStatement(sql);
+			  
+			  pstmt.setString(1, lecture_code);
+			  
+			  rs = pstmt.executeQuery();
+			  
+			  if(rs.next()) {
+				  dto = new LectureDTO();
+				  
+		          dto.setLecture_code(rs.getString("lecture_code"));
+		          dto.setGrade(rs.getInt("grade"));
+		          dto.setSubject(rs.getString("subject"));
+		          dto.setClassroom(rs.getString("classroom"));
+		          dto.setDivision(rs.getString("division"));
+		          dto.setCapacity(rs.getInt("capacity"));
+			  }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return dto;
 	}
 	
 	/*
