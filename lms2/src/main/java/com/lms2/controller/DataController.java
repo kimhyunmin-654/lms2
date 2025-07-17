@@ -8,6 +8,7 @@ import java.util.Map;
 import com.lms2.dao.DataDAO;
 import com.lms2.model.DataDTO;
 import com.lms2.model.Data_CommentDTO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
@@ -178,9 +179,17 @@ public class DataController {
 	
 	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//자료실 글쓰기
+		// 자료실 글 쓰기 
 		ModelAndView mav = new ModelAndView("/professor/bbs/write");
 		mav.addObject("mode", "write");
+
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		DataDAO dao = new DataDAO();
+		List<DataDTO> lectureList = dao.listLectureByMember(info.getMember_id());
+		mav.addObject("lectureList", lectureList);
+	
 		return mav;
 	}
 	
@@ -494,7 +503,7 @@ public class DataController {
 				dto.setParent_comment_id(Integer.parseInt(parent_comment_id));
 			}
 			
-			dao.insertComment(dto, parent_comment_id);
+			dao.insertComment(dto);
 			state = "true";
 		} catch (Exception e) {
 			e.printStackTrace();

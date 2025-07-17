@@ -25,7 +25,7 @@
 					<div class="body-title">
 						<h3>자료실</h3>
 					</div>
-					
+					<c:out value="${lectureList}" />
 					<div class="body-main">
 						<form name="bbsForm" action="${pageContext.request.contextPath}/professor/bbs/write" method="post">
 							<table class="table">
@@ -41,13 +41,11 @@
 									<td>강의 과목
 									</td>
 									<td>
-										<select name="lesson" id="lesson-select">
-											<option value="CS01">a</option>
-											<option value="CS02">b</option>
-											<option value="CS03">c</option>
-											<option value="CS04">d</option>
-											<option value="CS05">e</option>
-											<option value="CS06">f</option>
+										<select name="lesson" class="form-select">
+											<option value="">-- 강의를 선택하세요 --</option>
+											<c:forEach var="lec" items="${lectureList}">
+												<option value="${lec.lecture_code}">${lec.subject}</option>
+											</c:forEach>
 										</select>
 									</td>
 								</tr>
