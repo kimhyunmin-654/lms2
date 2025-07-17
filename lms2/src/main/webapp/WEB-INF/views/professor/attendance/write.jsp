@@ -37,6 +37,7 @@
 								<td>
 									<label><input type="radio" name="status_${dto.course_id}" value="1" checked> 출석</label>
 									<label><input type="radio" name="status_${dto.course_id}" value="0"> 결석</label>
+									<label><input type="radio" name="status_${dto.course_id}" value="2"> 지각</label>
 								</td>
 								<td><button type="button" onclick="attendanceSubmit(this.form);">등록하기</button></td>
 							</tr>
