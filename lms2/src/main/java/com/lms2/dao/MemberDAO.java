@@ -18,7 +18,7 @@ public class MemberDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT  m1.member_id, name, m1.password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2 "
+			sql = "SELECT  m1.member_id, name, m1.password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip, a1.division "
 					+ " FROM member m1 "
 					+ " LEFT OUTER JOIN student s1 ON m1.member_id = s1.member_id "
 					+ " LEFT OUTER JOIN professor p1 ON m1.member_id = p1.member_id "
@@ -47,6 +47,8 @@ public class MemberDAO {
 				dto.setBirth(rs.getString("birth"));
 				dto.setAddr1(rs.getString("addr1"));
 				dto.setAddr2(rs.getString("addr2"));
+				dto.setZip(rs.getString("zip"));
+				dto.setDivision(rs.getString("division"));
 				
 				
 			}
