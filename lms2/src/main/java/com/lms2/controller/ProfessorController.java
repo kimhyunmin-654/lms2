@@ -3,7 +3,6 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.lms2.dao.AdminDAO;
 import com.lms2.dao.DataDAO;
 import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
@@ -83,8 +82,8 @@ public class ProfessorController {
 				if(kwd.length() != 0) {
 					query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 				}
-				listUrl = cp + "/admin/admin/list?" + query;
-				articleUrl = cp + "/admin/admin/article?page=" + current_page + "&" + query;
+				listUrl = cp + "/admin/professor/list?" + query;
+				articleUrl = cp + "/admin/professor/article?page=" + current_page + "&" + query;
 				
 				String paging = util.paging(current_page, total_page, listUrl);
 				
