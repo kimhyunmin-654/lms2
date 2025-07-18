@@ -16,6 +16,8 @@
 		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
 		<div class="container" style="margin-left: 240px; margin-top: 70px;">
 			<form method="post" action="${pageContext.request.contextPath}/professor/attendance/write">
+				<input type="hidden" name="lecture_code" value="${lecture_code}" />
+				
 				<label for="week">주차 선택</label> <select class="form-select"
 					name="week" id="week-select">
 					<c:forEach var="i" begin="1" end="15">
@@ -28,28 +30,29 @@
 						<th>학번</th>
 						<th>이름</th>
 						<th>출결 상태</th>
-						<th>등록</th>
 					</tr>
 
 					<c:forEach var="dto" items="${list}">
 						<tr>
-							<td>${dto.member_id} <input type="hidden" name="course_id"
-								value="${dto.course_id}" /> <input type="hidden"
-								name="member_id" value="${dto.member_id}" />
+							<td>${dto.member_id} <input type="hidden" name="member_id"
+								value="${dto.member_id}" /> <input type="hidden"
+								name="course_id" value="${dto.course_id}" />
 							</td>
 							<td>${dto.name}</td>
 							<td><label><input type="radio"
-									name="status_${dto.course_id}" value="1" checked> 출석</label> <label><input
-									type="radio" name="status_${dto.course_id}" value="0">
+									name="status_${dto.member_id}" value="1" checked> 출석</label> <label><input
+									type="radio" name="status_${dto.member_id}" value="0">
 									결석</label> <label><input type="radio"
-									name="status_${dto.course_id}" value="2"> 지각</label></td>
-							<td>
-								<button type="button" onclick="attendanceSubmit(this.form);">등록하기</button>
-							</td>
+									name="status_${dto.member_id}" value="2"> 지각</label></td>
 						</tr>
 					</c:forEach>
 				</table>
+
+				<div class="text-end mt-2">
+					<button type="submit" class="btn btn-light">출석관리 등록</button>
+				</div>
 			</form>
+
 		</div>
 	</main>
 

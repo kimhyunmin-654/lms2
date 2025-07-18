@@ -40,21 +40,23 @@
 					출석 관리
 				</div>
 
-				<!-- 주차 선택 폼 -->
-				<form id="weekForm" method="get"
-					action="${pageContext.request.contextPath}/professor/attendance/write">
-					<select class="form-select" name="week" id="week-select">
-						<c:forEach var="i" begin="1" end="15">
-						    <option value="${i}" ${i == 1 ? "selected" : ""}>${i}주차</option>
-						</c:forEach>
-					</select>
+				<form id="weekForm" method="get" action="${pageContext.request.contextPath}/professor/attendance/write">
+					<input type="hidden" name="lecture_code" value="${lecture_code}" />
+					
 					<div class="col text-end mt-2">
 						<button type="button" class="btn btn-light"
-							onclick="location.href='${pageContext.request.contextPath}/professor/attendance/list';">새로고침</button>
+							onclick="location.href='${pageContext.request.contextPath}/professor/attendance/list?lecture_code=${lecture_code}'">새로고침</button>
 					</div>
 					<div class="col text-end mt-2">
 						<button type="submit" class="btn btn-light">출석관리</button>
 					</div>
+
+					<select class="form-select" name="week" id="week-select">
+						<c:forEach var="i" begin="1" end="15">
+							<option value="${i}" ${i == 1 ? "selected" : ""}>${i}주차</option>
+						</c:forEach>
+					</select>
+
 				</form>
 
 				<table class="table table-hover board-list mt-4">

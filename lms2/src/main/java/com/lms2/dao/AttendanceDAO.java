@@ -53,7 +53,7 @@ public class AttendanceDAO {
 		}
 	}
 	
-	public List<Attendance_recordDTO> listapplication(int offset, int size){
+	public List<Attendance_recordDTO> listapplication(int offset, int size, String member_id, String lecture_code){
 		List<Attendance_recordDTO> list = new ArrayList<Attendance_recordDTO>();
 		
 		PreparedStatement pstmt = null;
@@ -65,14 +65,16 @@ public class AttendanceDAO {
 	        sb.append(" FROM COURSE_APPLICATION c ");
 	        sb.append(" JOIN member m ON c.member_id = m.member_id ");
 	        sb.append(" WHERE c.apply_status = '신청' ");
+	        sb.append(" AND c.member_id = ? ");
 	        sb.append(" ORDER BY c.member_id DESC ");
 	        sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 	       
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
-			pstmt.setInt(1, offset);
-			pstmt.setInt(2, size);
+			pstmt.setString(1, member_id);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {

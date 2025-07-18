@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AttendanceController {
+	
 	@RequestMapping(value = "/professor/attendance/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    AttendanceDAO dao = new AttendanceDAO();
@@ -44,8 +45,13 @@ public class AttendanceController {
 
 	        int pageSize = 10;
 	        int offset = (current_page - 1) * pageSize;
+	        
+	        String lecture_code = req.getParameter("lecture_code");
+	        if(lecture_code != null) {
+	        	mav.addObject("lecture_code", lecture_code);
+	        }
 
-	        List<Attendance_recordDTO> list = dao.listapplication(offset, pageSize);
+	        List<Attendance_recordDTO> list = dao.listapplication(offset, pageSize, info.getMember_id(), lecture_code);
 	        mav.addObject("list", list);
 	        mav.addObject("page", current_page);
 
@@ -75,8 +81,10 @@ public class AttendanceController {
 
 	        int offset = 0;
 	        int size = 10;
-
-	        List<Attendance_recordDTO> list = dao.listapplication(offset, size);
+	        
+	        String lecture_code = req.getParameter("lecture_code");
+	        
+	        List<Attendance_recordDTO> list = dao.listapplication(offset, size, info.getMember_id(), lecture_code);
 	        mav.addObject("list", list);
 	        mav.addObject("mode", "write");
 
@@ -87,9 +95,10 @@ public class AttendanceController {
 	}
 	
 	@RequestMapping(value = "/professor/attendance/write", method = RequestMethod.POST)
-	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		AttendanceDAO dao = new AttendanceDAO();
+		String lecture_code = req.getParameter("lecture_code");
 		try {
 			String[] courseIds = req.getParameterValues("course_id");
 
@@ -104,6 +113,8 @@ public class AttendanceController {
 					if (statusStr == null) continue; // 선택 안 한 경우는 건너뛴다
 
 					int status = Integer.parseInt(statusStr);
+					
+					
 
 					Attendance_recordDTO dto = new Attendance_recordDTO();
 					dto.setCourse_id(courseId);
@@ -117,7 +128,7 @@ public class AttendanceController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/professor/attendance/list");
+		return new ModelAndView("redirect:/professor/attendance/list?lecture_code=" + lecture_code);
 	}
 	
 	// 출석 개수 (학생용)

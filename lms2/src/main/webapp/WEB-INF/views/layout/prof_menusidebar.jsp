@@ -56,7 +56,7 @@
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/bbs/list">자료실</a></div>
 					<div class="accordion-body custom-submenu">수강생 관리</div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}">성적 관리</a></div>
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/attendance/list">출석 관리</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/attendance/list?lecture_code=${lecture_code}">출석 관리</a></div>
 				</div>
 			</div>
 			
