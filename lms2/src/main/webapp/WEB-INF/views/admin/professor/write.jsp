@@ -22,7 +22,7 @@
 <div class="container mt-5" style="margin-left:240px;">
 	<h3 class="mb-4"><i class="bi bi-person-circle"></i> 교수 ${mode=="update" ? "수정" : "등록"}</h3>
 
-	<form name="insertForm" method="post" enctype="multipart/form-data">
+	<form name="insertForm" method="post" action="${pageContext.request.contextPath}/admin/professor/write" enctype="multipart/form-data">
 
 	
 		<div class="d-flex align-items-center mb-4">
@@ -121,27 +121,53 @@
 				<input type="text" name="addr2" id="addr2" class="form-control" value="${dto.addr2}" placeholder="상세주소">
 			</div>
 		</div>
-
 		
+		
+
 		<div class="row mt-3">
+			<div class="col-md-6">
+				<label class="form-label">직책</label>
+				<input type="text" name="position" class="form-control" value="${dto.position}">
+			</div>
+			
 			<div class="col-md-6">
 		        <label class="form-label">학과</label>
 		        <select name="department_id" class="form-control">
 		            <option value="" selected disabled>학과 선택</option>
-		            <c:forEach var="department" items="${listDepartment}">
-		                <option value="${dto.department_id}" 
-		                        ${dto.department_id == dto.department_id ? 'selected' : ''}>
-		                    ${dto.department_name}
-		                </option>
-		            </c:forEach>
+		           <c:forEach var="department" items="${listDepartment}">
+					    <option value="${department.department_id}" 
+					        <c:if test="${dto.department_id == department.department_id}">selected</c:if>>
+					        ${department.department_name}
+					    </option>
+					</c:forEach>
 		        </select>
 		    </div>
 		</div>
 	
+		<div class="text-end mt-4">
+		    <table class="table table-borderless">
+		        <tr>
+		            <td class="text-center">
+		                <button type="button" class="btn btn-primary me-2" onclick="submitContents(this.form);">
+				                ${mode == 'update' ? '수정' : '등록'}
+				            </button>
 		
-
-	</form>
-</div>
+		                <button type="reset" class="btn btn-light">다시입력</button>
+		
+		                <button type="button" class="btn btn-light"
+		                    onclick="location.href='${pageContext.request.contextPath}/admin/professor/list?${query}';">
+		                    ${mode == 'update' ? '수정취소' : '등록취소'} <i class="bi bi-x"></i>
+		                </button>
+		
+		                <c:if test="${mode == 'update'}">
+		                    <input type="hidden" name="member_id" value="${dto.member_id}">
+		                    <input type="hidden" name="page" value="${page}">
+		                    <input type="hidden" name="size" value="${size}">
+		                </c:if>
+		            </td>
+		        </tr>
+		    </table>
+		</div>
 </main>
 
 
@@ -157,7 +183,7 @@ window.addEventListener('DOMContentLoaded', ev => {
 	
 	let avatar;
 	if( img ) {
-		avartar = '${pageContext.request.contextPath}/uploads/member/' + img;
+		avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
 		avatarEL.src = avatar;
 	}
 	
@@ -305,7 +331,7 @@ function sendOk() {
     }
 
 	
-	f.action = '${pageContext.request.contextPath}/admin/professor/${mode}';
+	f.action = '${pageContext.request.contextPath}/admin/professor/list/${mode}';
 	f.submit();
 }
 

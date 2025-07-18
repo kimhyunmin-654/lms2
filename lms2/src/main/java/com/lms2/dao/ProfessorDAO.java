@@ -434,6 +434,7 @@ public class ProfessorDAO {
 		return dto;
 	}
 	
+	// 강의
 	public List<DeparmentDTO> listDepartment(){
 		List<DeparmentDTO> list = new ArrayList<DeparmentDTO>();
 		PreparedStatement pstmt = null;
@@ -452,7 +453,7 @@ public class ProfessorDAO {
 				DeparmentDTO dto = new DeparmentDTO();
 				
 				dto.setDepartment_id(rs.getString("department_id"));
-				dto.setDepartment_id(rs.getString("department_name"));
+				dto.setDepartment_name(rs.getString("department_name"));
 				
 				list.add(dto);
 				

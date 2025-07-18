@@ -78,7 +78,7 @@
                 
 				<div class="text-end mt-4">
 				    <c:choose>
-				        <c:when test="${sessionScope.member.member_id == 'professor'}">
+				        <c:when test="${sessionScope.member.member_id == 'admin'}">
 				            <button type="button" class="btn btn-light"
 				                    onclick="location.href='${pageContext.request.contextPath}/admin/professor/update?member_id=${dto.member_id}&page=${page}&size=${size}';">수정</button>
 				            <button type="button" class="btn btn-outline-danger" onclick="deleteOk();">삭제</button>
