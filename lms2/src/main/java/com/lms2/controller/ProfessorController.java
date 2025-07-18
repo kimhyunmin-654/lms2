@@ -1,12 +1,16 @@
 package com.lms2.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
+import com.lms2.dao.AdminDAO;
 import com.lms2.dao.DataDAO;
 import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.ProfessorDAO;
+import com.lms2.model.AdminDTO;
 import com.lms2.model.DataDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.NoticeDTO;
@@ -16,12 +20,15 @@ import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
+import com.lms2.util.FileManager;
+import com.lms2.util.MyMultipartFile;
 import com.lms2.util.MyUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class ProfessorController {
@@ -114,31 +121,66 @@ public class ProfessorController {
 	
 	// 교수 등록
 	@RequestMapping(value = "/admin/professor/write", method = RequestMethod.POST)
-	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	public ModelAndView accountAdminSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 관리자 등록
 		ProfessorDAO dao = new ProfessorDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "member";
+		
+		String message = "";
+		
 		try {
 			ProfessorDTO dto = new ProfessorDTO();
-
+			
 			dto.setMember_id(req.getParameter("member_id"));
 			dto.setName(req.getParameter("name"));
 			dto.setPassword(req.getParameter("password"));
-			dto.setAvatar(req.getParameter("avatar"));
-			dto.setEmail(req.getParameter("email"));
+			String e1 = req.getParameter("email1");
+			String e2 = req.getParameter("email2");
+			dto.setEmail(e1 + "@" + e2);
 			dto.setPhone(req.getParameter("phone"));
 			dto.setBirth(req.getParameter("birth"));
 			dto.setAddr1(req.getParameter("addr1"));
 			dto.setAddr2(req.getParameter("addr2"));
-
+			dto.setZip(req.getParameter("zip"));
+			
 			dto.setPosition(req.getParameter("position"));
 			dto.setDepartment_id(req.getParameter("department_id"));
-
+			
+			Part P = req.getPart("selectFile");
+			MyMultipartFile multiPart = fileManager.doFileUpload(P, pathname);
+			if(multiPart != null) {
+				dto.setAvatar(multiPart.getSaveFilename());
+			}
+			
 			dao.insertProfessor(dto);
+			
+			session.setAttribute("mode", "write");
+			
+			return new ModelAndView("redirect:/admin/professor/list");
+			
+		} catch (SQLException e) {
+			if(e.getErrorCode() == 1) {
+				message = "이미 등록된 교번입니다.";
+			} else if(e.getErrorCode() == 1840 || e.getErrorCode() == 1861) {
+				message = "날짜 형식이 올바르지 않습니다.";
+			} else {
+				message = "교수 등록에 실패했습니다.";
+			}
 		} catch (Exception e) {
+			message = "교수 등록에 실패했습니다.";
 			e.printStackTrace();
 		}
-
-		return new ModelAndView("redirect:/admin/professor/list");
+		
+		ModelAndView mav = new ModelAndView("admin/professor/write");
+		mav.addObject("mode", "write");
+		mav.addObject("message", message);
+		
+		return mav;
 	}
 	
 	// 교수 메인페이지

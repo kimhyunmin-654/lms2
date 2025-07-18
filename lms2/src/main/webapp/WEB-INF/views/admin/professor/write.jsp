@@ -51,7 +51,7 @@
     </div>
     <c:if test="${mode=='account'}">
         <small class="form-text text-muted help-block">
-            사번은 4자 이내로 입력하세요. 숫자여야 합니다.
+            교번은 6자 이내로 입력하세요. 숫자여야 합니다.
         </small>
     </c:if>
 </div>
@@ -130,7 +130,7 @@
 			</div>
 			<div class="col-md-6">
 				<label class="form-label">학과</label>
-				<input type="text" name="department_id" class="form-control" value="${dto.division}">
+				<input type="text" name="department_id" class="form-control" value="${dto.department_id}">
 			</div>
 		</div>
 	
@@ -239,7 +239,7 @@ function sendOk() {
 	const f = document.insertForm;
 	let str, p;
 	
-	p = /^[0-9]{4}$/;
+	p = /^[0-9]{6}$/;
 	str = f.member_id.value;
 	if( ! p.test(str) ) { 
 		alert('아이디를 다시 입력 하세요. ');
@@ -325,7 +325,7 @@ function userIdCheck() {
 		return;
 	}
 	
-	let url = '${pageContext.request.contextPath}/admin/admin/userIdCheck';
+	let url = '${pageContext.request.contextPath}/admin/professor/userIdCheck';
 	let params = 'member_id=' + member_id;
 	
 	$.ajax({ 
