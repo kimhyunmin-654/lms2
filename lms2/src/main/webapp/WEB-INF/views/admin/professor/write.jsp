@@ -125,23 +125,20 @@
 		
 		<div class="row mt-3">
 			<div class="col-md-6">
-				<label class="form-label">직책</label>
-				<input type="text" name="position" class="form-control" value="${dto.position}">
-			</div>
-			<div class="col-md-6">
-				<label class="form-label">학과</label>
-				<input type="text" name="department_id" class="form-control" value="${dto.department_id}">
-			</div>
+		        <label class="form-label">학과</label>
+		        <select name="department_id" class="form-control">
+		            <option value="" selected disabled>학과 선택</option>
+		            <c:forEach var="department" items="${listDepartment}">
+		                <option value="${dto.department_id}" 
+		                        ${dto.department_id == dto.department_id ? 'selected' : ''}>
+		                    ${dto.department_name}
+		                </option>
+		            </c:forEach>
+		        </select>
+		    </div>
 		</div>
 	
-		<div class="text-center mt-4">
-			<button type="button" name="submitBtn" class="btn btn-primary" onclick="sendOk();">${mode=="update"?"정보수정":"등록완료"}</button>
-			<button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/admin/professor/list'; ">취소</button>
-			<input type="hidden" name="userIdValid" id="userIdValid" value="false">
-			<c:if test="${mode == 'update'}">
-    			<input type="hidden" name="profile_photo" value="${dto.avatar}">
-		</c:if>
-		</div>
+		
 
 	</form>
 </div>

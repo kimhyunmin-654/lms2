@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lms2.model.DeparmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.util.DBConn;
@@ -431,6 +432,40 @@ public class ProfessorDAO {
 		}
 		
 		return dto;
+	}
+	
+	public List<DeparmentDTO> listDepartment(){
+		List<DeparmentDTO> list = new ArrayList<DeparmentDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(" SELECT department_id, department_name ");
+			sb.append(" FROM DEPARTMENT");
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				DeparmentDTO dto = new DeparmentDTO();
+				
+				dto.setDepartment_id(rs.getString("department_id"));
+				dto.setDepartment_id(rs.getString("department_name"));
+				
+				list.add(dto);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return list;
 	}
 	
 	

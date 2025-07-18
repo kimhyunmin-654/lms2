@@ -13,6 +13,7 @@ import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.ProfessorDAO;
 import com.lms2.model.DataDTO;
+import com.lms2.model.DeparmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.NoticeDTO;
@@ -118,8 +119,14 @@ public class ProfessorController {
 	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("admin/professor/write");
-		mav.addObject("mode", "write");
-		return mav;
+		ProfessorDAO professorDao = new ProfessorDAO();
+		
+		 List<DeparmentDTO> listDepartment = professorDao.listDepartment();
+		    
+		 mav.addObject("listDepartment", listDepartment);
+		 mav.addObject("mode", "write");
+		    
+		 return mav;
 	}
 	
 	// 교수 등록
