@@ -40,33 +40,63 @@
 				</div>
 
 				<div class="container mt-4">
-					<h3 class="mb-4">강의 목록</h3>
-					
-					<div class="row border-bottom">
-                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">제목</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.subject}</div>
+					<h3 class="mb-4">${dto.subject}</h3>
                 </div>
-
-                <div class="row border-bottom">
-                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">작성자</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.classroom}</div>
-                </div>
-
-                <div class="row border-bottom">
-                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">등록일</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.division}</div>
-                </div>
-
-                <div class="row border-bottom">
-                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">조회수</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.capacity}</div>
-                </div>
-
-                <div class="row border-bottom">
-                    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">내용</div>
-                    <div class="col-sm-10 bg-white py-3" style="min-height:200px;">${dto.credit}</div>
-                </div>
-			</div>
+				<hr>
+				
+				<!-- 공지사항 -->
+				<div class="col-md-12 p-1">
+					<div>
+						<div class="fw-semibold pt-2 pb-1">
+							<i class="bi bi-book-half">공지사항</i>
+						</div>
+						<div class="border px-2">
+							<c:forEach var="dto" items="${listNotice}" varStatus="status">
+								<div class="text-truncate px-2 subject-list">
+									<a href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.notice_id}">
+										${dto.subject}
+									</a>
+								</div>
+							</c:forEach>
+							
+							<c:forEach var="n" begin="${listNotice.size() + 1}" end="5">
+								<div class="text-truncate px-2 subject-list">&nbsp;</div>
+							</c:forEach>
+						</div>
+						<div class="pt-2 text-end">
+							<a href="${pageContext.request.contextPath}/admin/notice/list"
+								class="text-reset">더보기</a>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 자료실 -->
+				<div class="col-md-12 p-1">
+				    <div>
+				        <div class="fw-semibold pt-2 pb-1">
+				            <i class="bi bi-book-half">자료실</i>
+				        </div>
+				        <div class="border px-2">
+				            <c:forEach var="dto" items="${listData}">
+				                <div class="text-truncate px-2 subject-list">
+				                    <a href="${pageContext.request.contextPath}/professor/lecture/article?data_id=${dto.data_id}">
+				                        ${dto.subject}
+				                    </a>
+				                </div>
+				            </c:forEach>
+				
+				           <c:forEach var="n" begin="${listData.size() + 1}" end="5">
+								<div class="text-truncate px-2 subject-list">&nbsp;</div>
+							</c:forEach>
+				        </div>
+				        <div class="pt-2 text-end">
+				            <div class="accordion-body custom-submenu">
+				                <a href="${pageContext.request.contextPath}/professor/bbs/list?lecture_code=${dto.lecture_code}">더보기</a>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+				
 
 				<div class="row board-list-footer">
 					<div class="col">

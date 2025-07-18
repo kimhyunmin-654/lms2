@@ -3,11 +3,11 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.lms2.dao.DataDAO;
 import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.ProfessorDAO;
-import com.lms2.dao.StudentDAO;
-import com.lms2.model.Course_ApplicationDTO;
+import com.lms2.model.DataDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.NoticeDTO;
 import com.lms2.model.ProfessorDTO;
@@ -16,7 +16,6 @@ import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
-import com.lms2.util.MyUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,12 +25,14 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class ProfessorController {
 
+	// 교수 목록
 	@RequestMapping(value = "/admin/professor/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("admin/professor/list");
 		return mav;
 	}
-
+	
+	// 교수 등록 폼
 	@RequestMapping(value = "/admin/professor/write", method = RequestMethod.GET)
 	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -39,7 +40,8 @@ public class ProfessorController {
 		mav.addObject("mode", "write");
 		return mav;
 	}
-
+	
+	// 교수 등록
 	@RequestMapping(value = "/admin/professor/write", method = RequestMethod.POST)
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -68,11 +70,13 @@ public class ProfessorController {
 		return new ModelAndView("redirect:/admin/professor/list");
 	}
 	
+	// 교수 메인페이지
 	@RequestMapping(value = "/professor/main/main", method = RequestMethod.GET)
 	public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
+		NoticeDAO noticeDao = new NoticeDAO();
 		ProfessorDAO dao = new ProfessorDAO();
 		ModelAndView mav = new ModelAndView("professor/main/main");
 
@@ -80,6 +84,10 @@ public class ProfessorController {
 			// 강의목록
 			List<LectureDTO> list = dao.plistLecture(info.getMember_id());
 			mav.addObject("list", list);
+			
+			// 공지사항
+			List<NoticeDTO> listNotice = noticeDao.listNotice();
+			mav.addObject("listNotice", listNotice);
 			
 
 		} catch (Exception e) {
@@ -89,6 +97,7 @@ public class ProfessorController {
 		return mav;
 	}
 	
+	// 강의 목록
 	@RequestMapping(value = "/professor/lecture/compList", method = RequestMethod.GET)
 	public ModelAndView studentCompList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
@@ -125,32 +134,47 @@ public class ProfessorController {
 	    HttpSession session = req.getSession();
 	    SessionInfo info = (SessionInfo) session.getAttribute("member");
 	    LectureDAO lectureDao = new LectureDAO();
-	    
+	    NoticeDAO noticeDao = new NoticeDAO();
+	    DataDAO dataDao = new DataDAO();
+
 	    String page = req.getParameter("page");
-		String size = req.getParameter("size");
-		String query = "page=" + page + "&size=" + size;
+	    String size = req.getParameter("size");
+	    String query = "page=" + page + "&size=" + size;
+
+	    if (page == null) page = "1";
+	    if (size == null) size = "10";
+
 
 	    try {
-	    	    	
 	        String lecture_code = req.getParameter("lecture_code");
 
 	        ModelAndView mav = new ModelAndView("professor/lecture/main1");
-	        
+
+	        // 강의 정보 조회
 	        LectureDTO dto = dao.findById1(lecture_code);
-	        
+
+	        // 공지사항 목록 조회
+	        List<NoticeDTO> listNotice = noticeDao.listNotice();
+	        mav.addObject("listNotice", listNotice);
+
+	        // 자료실 목록 조회 
+	        List<DataDTO> listData = dataDao.listData(lecture_code); 
+	        mav.addObject("listData", listData);
+
+	        // 교수의 강의 목록 조회 (사이드바)
 	        if (info != null) {
 	            String memberId = String.valueOf(info.getMember_id());
 	            List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
 	            mav.addObject("lectureList", lectures);
 	        }
-	        
+
 	        mav.addObject("dto", dto);
-			mav.addObject("query", query);
-			mav.addObject("page", page);
-			mav.addObject("size", size);
-			
-			return mav;
-	       
+	        mav.addObject("query", query);
+	        mav.addObject("page", page);
+	        mav.addObject("size", size);
+
+	        return mav;
+
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
