@@ -25,7 +25,7 @@
 
 			<div class="body-container row justify-content-center"
 				style="margin: 100px;">
-				<h3 style="font-size: 29px;">학생 메인페이지</h3>
+				<h3 style="font-size: 29px;">관리자 메인페이지</h3>
 				
 				<!-- 수강과목 -->
 				<div class="col-md-6 p-1">
