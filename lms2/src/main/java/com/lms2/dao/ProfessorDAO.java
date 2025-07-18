@@ -80,8 +80,8 @@ public class ProfessorDAO {
 		
 		try {
 			sql = " SELECT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD') birth, addr1, addr2, zip, p.position, p.department_id "
-					+ " FROM professor p "
-					+ " LEFT OUTER JOIN professor a ON m.member_id = p.member_id "
+					+ " FROM member m "
+					+ " LEFT OUTER JOIN professor p ON m.member_id = p.member_id "
 					+ " WHERE m.member_id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
