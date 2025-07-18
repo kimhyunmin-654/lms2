@@ -447,13 +447,7 @@ public class DataDAO {
 		String sql;
 		
 		try {
-			sql = "DELETE FROM DATA WHERE data_id = ? AND member_id = ?";
-			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, data_id);
-			pstmt.setString(2, member_id);
-			
-			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

@@ -345,7 +345,7 @@ public class DataController {
 		return new ModelAndView("redirect:/student/bbs/list?" + query);
 	}
 
-	@RequestMapping(value = "/data/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/bbs/update", method = RequestMethod.GET)
 	public ModelAndView updateForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// 자료실 글수정 폼
@@ -369,7 +369,7 @@ public class DataController {
 				return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 			}
 
-			ModelAndView mav = new ModelAndView("/professor/write");
+			ModelAndView mav = new ModelAndView("/professor/bbs/write");
 
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
@@ -383,7 +383,7 @@ public class DataController {
 		return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 	}
 
-	@RequestMapping(value = "/data/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/professor/bbs/update", method = RequestMethod.POST)
 	public ModelAndView updateSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// 자료실 글수정 완료
