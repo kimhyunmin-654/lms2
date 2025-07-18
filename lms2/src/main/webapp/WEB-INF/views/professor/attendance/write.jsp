@@ -15,13 +15,13 @@
 	<main>
 		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
 		<div class="container" style="margin-left: 240px; margin-top: 70px;">
-			<form method="post" action="${pageContext.request.contextPath}/professor/attendance/write">
+			<form method="post" action="${pageContext.request.contextPath}/professor/attendance/write" name="submitForm">
 				<input type="hidden" name="lecture_code" value="${lecture_code}" />
 				
-				<label for="week">주차 선택</label> <select class="form-select"
-					name="week" id="week-select">
+				<label for="week">주차 선택</label> 
+				<select class="form-select" name="week" id="week-select">
 					<c:forEach var="i" begin="1" end="15">
-						<option value="${i}" ${i == 1 ? "selected" : ""}>${i}주차</option>
+						<option value="${i}" ${i == selectedWeek ? "selected" : ""}>${i}주차</option>
 					</c:forEach>
 				</select>
 
@@ -34,22 +34,21 @@
 
 					<c:forEach var="dto" items="${list}">
 						<tr>
-							<td>${dto.member_id} <input type="hidden" name="member_id"
-								value="${dto.member_id}" /> <input type="hidden"
-								name="course_id" value="${dto.course_id}" />
+							<td>${dto.member_id}
+								<input type="hidden" name="course_id" value="${dto.course_id}" />
 							</td>
 							<td>${dto.name}</td>
-							<td><label><input type="radio"
-									name="status_${dto.member_id}" value="1" checked> 출석</label> <label><input
-									type="radio" name="status_${dto.member_id}" value="0">
-									결석</label> <label><input type="radio"
-									name="status_${dto.member_id}" value="2"> 지각</label></td>
+							<td>
+								<label><input type="radio" name="status_${dto.course_id}" value="1" ${dto.status == 1 ? "checked" : ""} checked> 출석</label> 
+								<label><input type="radio" name="status_${dto.course_id}" value="0" ${dto.status == 0 ? "checked" : ""}> 결석</label>
+								<label><input type="radio" name="status_${dto.course_id}" value="2" ${dto.status == 2 ? "checked" : ""}> 지각</label>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
 
 				<div class="text-end mt-2">
-					<button type="submit" class="btn btn-light">출석관리 등록</button>
+					<button type="submit" class="btn btn-light" onclick="okSend()">출석 등록</button>
 				</div>
 			</form>
 
@@ -57,9 +56,19 @@
 	</main>
 
 	<script type="text/javascript">
-		function attendanceSubmit(form) {
-			form.submit();
+	// 출석하기
+	function okSend() {
+		const f = document.submitForm;
+		
+		
+		
+		if (! confirm('출석 처리 하시겠습니까?')) {
+			return false;
 		}
+
+		f.action = '${pageContext.request.contextPath}/professor/attendance/write';
+		f.submit();
+	}
 	</script>
 </body>
 </html>

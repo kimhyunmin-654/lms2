@@ -21,86 +21,109 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AttendanceController {
-	
+
 	@RequestMapping(value = "/professor/attendance/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    AttendanceDAO dao = new AttendanceDAO();
-	    LectureDAO lectureDao = new LectureDAO();
-	    ModelAndView mav = new ModelAndView("professor/attendance/list");
+		AttendanceDAO dao = new AttendanceDAO();
+		LectureDAO lectureDao = new LectureDAO();
+		ModelAndView mav = new ModelAndView("professor/attendance/list");
 
-	    try {
-	        HttpSession session = req.getSession(false);
-	        SessionInfo info = (SessionInfo) session.getAttribute("member");
-	        if (info != null) {
-	            String memberId = String.valueOf(info.getMember_id());
-	            List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
-	            mav.addObject("lectureList", lectures);
-	        }
+		try {
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
 
-	        String page = req.getParameter("page");
-	        int current_page = 1;
-	        if (page != null) {
-	            current_page = Integer.parseInt(page);
-	        }
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if (page != null) {
+				current_page = Integer.parseInt(page);
+			}
 
-	        int pageSize = 10;
-	        int offset = (current_page - 1) * pageSize;
-	        
-	        String lecture_code = req.getParameter("lecture_code");
-	        if(lecture_code != null) {
-	        	mav.addObject("lecture_code", lecture_code);
-	        }
+			String lecture_code = req.getParameter("lecture_code");
+			if (lecture_code != null) {
+				mav.addObject("lecture_code", lecture_code);
+			}
+			
+			String weekStr = req.getParameter("week");
+			int selectedWeek = 1;
+			if(weekStr != null) {
+				selectedWeek = Integer.parseInt(weekStr);
+			}
+			mav.addObject("selectedWeek", selectedWeek);
 
-	        List<Attendance_recordDTO> list = dao.listapplication(offset, pageSize, info.getMember_id(), lecture_code);
-	        mav.addObject("list", list);
-	        mav.addObject("page", current_page);
+			List<Attendance_recordDTO> list = dao.listAttendanceByWeek(lecture_code, selectedWeek);
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			mav.addObject("list", list);
+			mav.addObject("page", current_page);
 
-	    return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mav;
 	}
 
-	
 	@RequestMapping(value = "/professor/attendance/write", method = RequestMethod.GET)
 	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp)
-	        throws ServletException, IOException {
-	    ModelAndView mav = new ModelAndView("professor/attendance/write");
-	    AttendanceDAO dao = new AttendanceDAO();
-	    LectureDAO lectureDao = new LectureDAO();
+			throws ServletException, IOException {
+		ModelAndView mav = new ModelAndView("professor/attendance/write");
+		AttendanceDAO dao = new AttendanceDAO();
+		LectureDAO lectureDao = new LectureDAO();
 
-	    try {
-	        HttpSession session = req.getSession(false);
-	        SessionInfo info = (SessionInfo) session.getAttribute("member");
-	        if (info != null) {
-	            String memberId = String.valueOf(info.getMember_id());
-	            List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
-	            mav.addObject("lectureList", lectures);
-	        }
+		try {
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
 
-	        int offset = 0;
-	        int size = 10;
-	        
-	        String lecture_code = req.getParameter("lecture_code");
-	        
-	        List<Attendance_recordDTO> list = dao.listapplication(offset, size, info.getMember_id(), lecture_code);
-	        mav.addObject("list", list);
-	        mav.addObject("mode", "write");
+			int offset = 0;
+			int size = 10;
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return mav;
+			String lecture_code = req.getParameter("lecture_code");
+			
+			String weekStr = req.getParameter("week");
+			int selectedWeek = 1;
+			if(weekStr != null) {
+				selectedWeek = Integer.parseInt(weekStr);
+			}
+			mav.addObject("selectedWeek", selectedWeek);
+
+			List<Attendance_recordDTO> list = dao.listapplication(offset, size, lecture_code);
+			mav.addObject("list", list);
+			mav.addObject("mode", "write");
+			mav.addObject("lecture_code", lecture_code);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mav;
 	}
-	
+
 	@RequestMapping(value = "/professor/attendance/write", method = RequestMethod.POST)
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		AttendanceDAO dao = new AttendanceDAO();
 		String lecture_code = req.getParameter("lecture_code");
+		String weekStr = req.getParameter("week");
+		int week = 1;
+		if(weekStr != null) {
+			week = Integer.parseInt(weekStr);
+		}
+		
+		 System.out.println("=== 출석 등록 시작 ===");
+		    System.out.println("lecture_code: " + lecture_code);
+		    System.out.println("week: " + week);
+		
 		try {
 			String[] courseIds = req.getParameterValues("course_id");
+			  System.out.println("courseIds 개수: " + (courseIds != null ? courseIds.length : 0));
 
 			if (courseIds != null) {
 				for (String courseIdStr : courseIds) {
@@ -110,15 +133,15 @@ public class AttendanceController {
 					String paramName = "status_" + courseId;
 					String statusStr = req.getParameter(paramName);
 
-					if (statusStr == null) continue; // 선택 안 한 경우는 건너뛴다
+					if (statusStr == null)
+						continue; // 선택 안 한 경우는 건너뛴다
 
 					int status = Integer.parseInt(statusStr);
-					
-					
 
 					Attendance_recordDTO dto = new Attendance_recordDTO();
 					dto.setCourse_id(courseId);
 					dto.setStatus(status);
+					dto.setWeek(week);
 
 					dao.insertAttendance(dto);
 				}
@@ -128,43 +151,40 @@ public class AttendanceController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/professor/attendance/list?lecture_code=" + lecture_code);
+		return new ModelAndView("redirect:/professor/attendance/list?lecture_code=" + lecture_code + "&week=" + week);
 	}
-	
+
 	// 출석 개수 (학생용)
 	@RequestMapping(value = "/student/study/attendance", method = RequestMethod.GET)
-	public ModelAndView studentAttendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    // 출석관리
-	    HttpSession session = req.getSession();
-	    SessionInfo info = (SessionInfo) session.getAttribute("member");
+	public ModelAndView studentAttendance(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// 출석관리
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
-	    StudentDAO dao = new StudentDAO();
-	    AttendanceDAO aDao = new AttendanceDAO();
-	    ModelAndView mav = new ModelAndView("student/study/attendance");
+		StudentDAO dao = new StudentDAO();
+		AttendanceDAO aDao = new AttendanceDAO();
+		ModelAndView mav = new ModelAndView("student/study/attendance");
 
-	    try {
-	        String member_id = info.getMember_id();
+		try {
+			String member_id = info.getMember_id();
 
-	        List<Attendance_recordDTO> list = dao.listAttendance(member_id);
-	        mav.addObject("list", list);
+			List<Attendance_recordDTO> list = dao.listAttendance(member_id);
+			mav.addObject("list", list);
 
-	        int present = aDao.dataCount(member_id, 1);   // 출석
-	        int absent = aDao.dataCount(member_id, 0);    // 결석
-	        int late = aDao.dataCount(member_id, 2);      // 지각
+			int present = aDao.dataCount(member_id, 1); // 출석
+			int absent = aDao.dataCount(member_id, 0); // 결석
+			int late = aDao.dataCount(member_id, 2); // 지각
 
-	        mav.addObject("present", present);
-	        mav.addObject("absent", absent);
-	        mav.addObject("late", late);
+			mav.addObject("present", present);
+			mav.addObject("absent", absent);
+			mav.addObject("late", late);
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-	    return mav;
+		return mav;
 	}
-	
-	
-	
 
-	
 }
