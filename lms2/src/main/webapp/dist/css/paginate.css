@@ -1,49 +1,59 @@
 ﻿@charset "UTF-8";
+
+/* 페이징 처리 CSS */
 .page-navigation {
-	padding: 20px 0;
-	text-align: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  
+  padding: 20px 0;
 }
 
 .paginate {
-	font-size: 14px;
-	text-align: center;
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  
+  font-size: 14px;	
+}
+
+.paginate a,
+.paginate span {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #333333;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
 }
 
 .paginate a {
-	color: #000;
-	font-weight: 600;
-	text-decoration: none;
-	padding: 3px 7px;
-	margin-left: 3px;
-	border: none;
-	border-radius: 321px;
-	vertical-align: middle;
+  cursor: pointer;
+  text-decoration: none;  
 }
 
-.paginate a:hover, .paginate a:active {
-	color: #6771ff;
+.paginate a:hover, 
+.paginate a:focus {
+  z-index: 2;
+  color: #106eea;  
 }
 
 .paginate span {
-	font-weight: 600;
-	padding: 3px 7px;
-	margin-left: 3px;
-	vertical-align: middle;
+  z-index: 3;
+  color: #ffffff;
+  background-color: #106eea;
+  border-color: #106eea;
 }
 
 .paginate :first-child {
-	margin-left: 0;
+  margin-left: 0;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
 }
 
-.choosed {
-	/* color: #b60000; */
-	color: #CF1C31;
-}
-
-.page-btn {
-	border: 1px solid #CF1C31;
-	background-color: #CF1C31;
-	border-radius: 3px;
-	color: #fff;
-	box-shadow: 0 1px 1px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.1);
+.paginate :last-child {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
 }

@@ -12,7 +12,7 @@
 	</div>
 
 	<div class="accordion accordion-flush" id="sidebarAccordion">
-		<div class="accordion-button custom-accordion-btn collapsed">메인페이지</div>
+		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/admin/home/frame">메인페이지</a></div>
 
 		<div class="accordion-item">
 			<h2 class="accordion-header">

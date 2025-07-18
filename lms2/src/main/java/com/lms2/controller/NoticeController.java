@@ -56,18 +56,31 @@ public class NoticeController {
 			String pageSize = req.getParameter("size");
 			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
 			
-			int dataCount, total_page;
+			int dataCount,  dataCount2 , total_page;
 			
 			if(kwd.length() != 0) {
 				dataCount = dao.dataCount(schType, kwd);
 			} else {
 				dataCount = dao.dataCount();
 			}
+			
+			if(kwd.length() != 0) {
+				dataCount2 = dao.dataCount2(schType, kwd);
+			} else {
+				dataCount2 = dao.dataCount2();
+			}			
+			
 			total_page = util.pageCount(dataCount, size);
+			
+			
+			
 			
 			if(current_page > total_page) {
 				current_page = total_page;
 			}
+			
+			
+			
 			
 			int offset = (current_page - 1) * size;
 			if(offset < 0) offset = 0;
@@ -115,6 +128,7 @@ public class NoticeController {
 			mav.addObject("listNotice", listNotice);
 			mav.addObject("articleUrl", articleUrl);
 			mav.addObject("dataCount", dataCount);
+			mav.addObject("dataCount2", dataCount2);
 			mav.addObject("size", size);
 			mav.addObject("page", current_page);
 			mav.addObject("total_page", total_page);

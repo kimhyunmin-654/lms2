@@ -24,10 +24,11 @@
         <div class="row">
             <div class="col">
                 <h3 class="mb-4" style="margin-top: 50px;">관리자 관리</h3>
+               
 
                 <!-- 상단: 삭제/페이지 선택/글쓰기 -->
                 <div class="d-flex justify-content-between mb-2 align-items-center">
-
+					${dataCount} 명( ${page} / ${total_page} 페이지)
                     <div class="d-flex align-items-center">
                         <c:if test="${dataCount != 0}">
                             <form name="pageSizeForm" class="me-2">
