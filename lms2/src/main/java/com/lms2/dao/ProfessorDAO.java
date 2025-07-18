@@ -23,9 +23,9 @@ public class ProfessorDAO {
 		
 		try {
 			conn.setAutoCommit(false);
-
-			sql = "INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip) "
-				    + "VALUES(?,?,?,51,SYSDATE,SYSDATE,?,?,?,TO_DATE(?,'YYYY-MM-DD'),?,?,?)";
+			
+			sql = " INSERT INTO member(member_id, name, password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip) "
+					+ " VALUES(?, ?, ?, 51, SYSDATE, SYSDATE, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?, ?) ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -41,14 +41,13 @@ public class ProfessorDAO {
 			pstmt.setString(10, dto.getZip());
 			
 			pstmt.executeUpdate();
-			
 			pstmt.close();
 			pstmt = null;
 			
-			sql = "INSERT INTO professor(member_id, position, department_id)"
-					+ "VALUES(?,?,?)";
-			pstmt = conn.prepareStatement(sql);
+			sql = "INSERT INTO professor(member_id, position, department_id) "
+					+ "	VALUES(?, ? ,?) ";
 			
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getMember_id());
 			pstmt.setString(2, dto.getPosition());
 			pstmt.setString(3, dto.getDepartment_id());
@@ -58,17 +57,18 @@ public class ProfessorDAO {
 			conn.commit();
 			
 		} catch (SQLException e) {
+			DBUtil.rollback(conn);
 			e.printStackTrace();
 			throw e;
+			
 		} finally {
 			DBUtil.close(pstmt);
 			
 			try {
 				conn.setAutoCommit(true);
 			} catch (Exception e2) {
-				
 			}
-		}	
+		}
 	}
 	
 	// 교수 검색
@@ -80,8 +80,8 @@ public class ProfessorDAO {
 		
 		try {
 			sql = " SELECT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD') birth, addr1, addr2, zip, p.position, p.department_id "
-					+ " FROM professor p "
-					+ " LEFT OUTER JOIN professor a ON m.member_id = p.member_id "
+					+ " FROM member m "
+					+ " LEFT OUTER JOIN professor p ON m.member_id = p.member_id "
 					+ " WHERE m.member_id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
