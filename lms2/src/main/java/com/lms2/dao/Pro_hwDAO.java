@@ -81,7 +81,7 @@ public class Pro_hwDAO {
 				sql += " AND (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1) ";
 			} else if (schType.equals("reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\.|\\/)", "");
-				sql += " AND TO_CHAR(reg_date, 'YYYYMMDD'_ = ? ";
+				sql += " AND TO_CHAR(reg_date, 'YYYYMMDD' = ? ";
 			} else {
 				sql += " AND INSTR(" + schType + ", ?) >= 1 ";
 			}
@@ -115,7 +115,7 @@ public class Pro_hwDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT homework_id, subject, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, hit_count ");
+			sb.append(" SELECT homework_id, subject, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, hit_count, TO_CHAR(deadline_date, 'YYYY-MM-DD') deadline_date ");
 			sb.append(" FROM homework");
 			sb.append(" ORDER BY homework_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
@@ -133,7 +133,7 @@ public class Pro_hwDAO {
 				dto.setSubject(rs.getString("subject"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHit_count(rs.getInt("hit_count"));
-				
+				dto.setDeadline_date(rs.getString("deadline_date"));
 				list.add(dto);
 			}
 		} catch (Exception e) {
@@ -154,7 +154,7 @@ public class Pro_hwDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT homework_id, subject, TO_CHAR(reg_date, 'YYYYMMDD') reg_date, hitCount ");
+			sb.append(" SELECT homework_id, subject, TO_CHAR(reg_date, 'YYYYMMDD') reg_date, hitcount ");
 			sb.append(" FROM homework ");
 			if(schType.equals("all")) {
 				sb.append(" WHERE INSTR(subject, ?) >= 1 ");
@@ -230,7 +230,7 @@ public class Pro_hwDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT h.homework_id, h.subject, h.content, h.hit_count, TO_CHAR(h.reg_date, 'YYYYMMDD') reg_date, h.deadline_date, l.subject AS lecture_subject "
+			sql = "SELECT h.homework_id, h.subject, h.content, h.hit_count, TO_CHAR(h.reg_date, 'YYYYMMDD') reg_date, h.deadline_date, l.subject AS lecture_subject, l.member_id "
 					+ " FROM homework h "
 					+ " JOIN LECTURE l ON h.lecture_code = l.lecture_code "
 					+ " WHERE h.homework_id = ? ";
@@ -249,6 +249,7 @@ public class Pro_hwDAO {
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setDeadline_date(rs.getString("deadline_date"));
 				dto.setLecture_code(rs.getString("lecture_subject"));
+				dto.setMember_id(rs.getString("member_id"));
 				
 			}
 		} catch (Exception e) {
@@ -324,63 +325,58 @@ public class Pro_hwDAO {
 	
 	//다음글
 	public Pro_hwDTO findByNext(int homework_id, String schType, String kwd) {
-		Pro_hwDTO dto = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder();
-		
-		try {
-			if(kwd != null && kwd.length() != 0) {
-				sb.append(" SELECT homework_id, subject ");
-				sb.append(" FROM homework ");
-				sb.append(" WHERE homework_id > ? ");
-				
-				if(schType.equals("all")) {
-					sb.append(" AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
-				} else if ("reg_date".equals(schType)) {
-					kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
-					sb.append(" AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ");
-				} else {
-					sb.append(" AND INSTR(" + schType + ", ?) >= 1 ");
-				}
-				
-				sb.append(" ORDER BY homework_id ASC ");
-				sb.append(" FETCH FIRSR 1 ROWS ONLY ");
-				
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, homework_id);
-				
-				if(schType.equals("all")) {
-					pstmt.setString(2, kwd);
-					pstmt.setString(3, kwd);
-				} else {
-					pstmt.setString(2, kwd);
-				}
-			} else {
-				sb.append(" SELECT homework_id, subject ");
-				sb.append(" FROM homework ");
-				sb.append(" ORDER BY homework_id ASC ");
-				sb.append(" FETCH FIRST 1 ROWS ONLY ");
-				
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, homework_id);
-			}
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				dto = new Pro_hwDTO();
-				dto.setHomework_id(rs.getInt("homework_id"));
-				dto.setSubject(rs.getString("subject"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
-		}
-		
-		return dto;
+	    Pro_hwDTO dto = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    StringBuilder sb = new StringBuilder();
+
+	    try {
+	        sb.append(" SELECT homework_id, subject ");
+	        sb.append(" FROM homework ");
+	        sb.append(" WHERE homework_id > ? ");
+
+	        if (kwd != null && kwd.length() != 0) {
+	            if (schType.equals("all")) {
+	                sb.append(" AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
+	            } else if ("reg_date".equals(schType)) {
+	                kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
+	                sb.append(" AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ");
+	            } else {
+	                sb.append(" AND INSTR(" + schType + ", ?) >= 1 ");
+	            }
+	        }
+
+	        sb.append(" ORDER BY homework_id ASC ");
+	        sb.append(" FETCH FIRST 1 ROWS ONLY "); // 오타 수정됨
+
+	        pstmt = conn.prepareStatement(sb.toString());
+
+	        pstmt.setInt(1, homework_id);
+
+	        if (kwd != null && kwd.length() != 0) {
+	            if (schType.equals("all")) {
+	                pstmt.setString(2, kwd);
+	                pstmt.setString(3, kwd);
+	            } else {
+	                pstmt.setString(2, kwd);
+	            }
+	        }
+
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            dto = new Pro_hwDTO();
+	            dto.setHomework_id(rs.getInt("homework_id"));
+	            dto.setSubject(rs.getString("subject"));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
+
+	    return dto;
 	}
 	
 	//과제 수정
@@ -389,16 +385,17 @@ public class Pro_hwDAO {
 		String sql;
 		
 		try {
-			sql = "UPDATE homework SET subject = ?, content = ?, deadline_date = ? WHERE homework_id = ?";
+			sql = "UPDATE homework SET subject = ?, content = ?, deadline_date = ?, lecture_code = ? WHERE homework_id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSubject());
 			pstmt.setString(2, dto.getContent());
 			pstmt.setString(3, dto.getDeadline_date());
-			pstmt.setInt(4, dto.getHomework_id());
+			pstmt.setString(4, dto.getLecture_code());
+			pstmt.setInt(5, dto.getHomework_id());
 			
-			
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -414,7 +411,7 @@ public class Pro_hwDAO {
 		String sql;
 		
 		try {
-			sql = "DELETE FROM homework homework_id = ?";
+			sql = "DELETE FROM homework WHERE homework_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, homework_id);

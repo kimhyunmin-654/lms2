@@ -28,7 +28,7 @@
 
 			<div class="body-container row justify-content-center hw-header" style="margin: 100px;">
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_hw.png">
+					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
 				</div>
 
 				<table class="table table-hover board-list">
@@ -37,6 +37,7 @@
 							<th width="60">번호</th>
 							<th>제목</th>
 							<th width="200">등록일</th>
+							<th width="200">마감일</th>
 							<th width="100">첨부파일</th>
 						</tr>
 					</thead>
@@ -47,10 +48,11 @@
 								<td>${dataCount - (page - 1) * size - status.index}</td>
 								<td class="left">
 									<div class="text-wrap">
-										<a href="${articleUrl}&num=${dto.homework_id}" class="text-reset">${dto.subject}</a>
+										<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${dto.homework_id}&page=${page}" class="text-reset">${dto.subject}</a>
 									</div>
 								</td>
 								<td>${dto.reg_date}</td>
+								<td>${dto.deadline_date}</td>
 								<td>ㅇ</td>
 							</tr>
 						</c:forEach>

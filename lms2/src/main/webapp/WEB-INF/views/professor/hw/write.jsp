@@ -27,7 +27,8 @@
 					</div>
 					
 					<div class="body-main">
-						<form name="bbsForm" action="${pageContext.request.contextPath}/professor/hw/write" method="post">
+						<form name="hwForm" action="${pageContext.request.contextPath}/professor/hw/${mode}" method="post">
+
 							<table class="table">
 								<tr>
 									<td>제목
@@ -41,7 +42,7 @@
 									<td>강의 과목
 									</td>
 									<td>
-										<select name="lesson" id="lesson-select">
+										<select name="lecture_code" id="lesson-select">
 											<option value="CS01">a</option>
 											<option value="CS02">b</option>
 											<option value="CS03">c</option>
@@ -49,6 +50,14 @@
 											<option value="CS05">e</option>
 											<option value="CS06">f</option>
 										</select>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>마감일
+									</td>
+									<td>
+										<input type="date" name="deadline_date" value="${dto.deadline_date}" required />
 									</td>
 								</tr>
 								
@@ -76,7 +85,7 @@
 										<button type="reset" class="btn btn-light">다시입력</button>
 										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/list';">${mode=="update"?"수정취소":"등록취소"}<i class="bi bi-x"></i></button>
 										<c:if test="${mode=='update'}">
-											<input type="hidden" name="num" value="${dto.num}">
+											<input type="hidden" name="homework_id" value="${dto.homework_id}">
 											<input type="hidden" name="page" value="${page}">
 										</c:if>
 									</td>
@@ -92,7 +101,7 @@
 	
 	<script type="text/javascript">
 		function sendOk() {
-			const f = document.bbsForm;
+			const f = document.hwForm;
 			let str;
 			
 			str = f.subject.value.trim();

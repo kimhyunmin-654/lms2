@@ -6,6 +6,7 @@ import java.util.List;
 import com.lms2.dao.Pro_hwDAO;
 import com.lms2.model.Pro_hwDTO;
 import com.lms2.model.SessionInfo;
+import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
@@ -16,12 +17,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+@Controller
 public class ProhwController {
 
-	@RequestMapping(value = "/hw/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/hw/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//리스트보기
-		ModelAndView mav = new ModelAndView("professor/hw/list");
+		ModelAndView mav = new ModelAndView("/professor/hw/list");
 		
 		Pro_hwDAO dao = new Pro_hwDAO();
 		MyUtil util = new MyUtil();
@@ -116,7 +118,8 @@ public class ProhwController {
 			
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("content"));
-			
+			dto.setDeadline_date(req.getParameter("deadline_date"));
+			dto.setLecture_code(req.getParameter("lecture_code"));
 			dao.inserthw(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,12 +131,16 @@ public class ProhwController {
 	@RequestMapping(value = "/professor/hw/article", method = RequestMethod.GET)
 	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글보기
+		
 		Pro_hwDAO dao = new Pro_hwDAO();
 		MyUtil util = new MyUtil();
 		
 		String page = req.getParameter("page");
+		if(page == null || page.isEmpty()) {
+		    page = "1";
+		}
 		String query = "page=" + page;
-		
+
 		try {
 			int homework_id = Integer.parseInt(req.getParameter("homework_id"));
 			String schType = req.getParameter("schType");
@@ -145,13 +152,17 @@ public class ProhwController {
 			kwd = util.decodeUrl(kwd);
 			
 			if(kwd.length() != 0) {
-				query += "*schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
 			
 			dao.updateHitCount(homework_id);
 			
 			//과제게시물 가져오기
 			Pro_hwDTO dto = dao.findById(homework_id);
+			
+			System.out.println("homework_id = " + homework_id);
+			System.out.println("dto = " + dto);
+
 			if(dto == null) {
 				return new ModelAndView("redirect:/professor/hw/list?" + query);
 			}
@@ -177,7 +188,7 @@ public class ProhwController {
 		return new ModelAndView("redirect:/professor/hw/list?" + query);
 	}
 	
-	@RequestMapping(value = "/hw/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/professor/hw/update", method = RequestMethod.GET)
 	public ModelAndView updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글수정
 		
@@ -196,8 +207,9 @@ public class ProhwController {
 				return new ModelAndView("redirect:/professor/hw/list?page=" + page);
 			}
 			
-			if(! dto.getMember_id().equals(info.getMember_id())) {
-				return new ModelAndView("redirect:/professor/hw.list?page=" + page);
+			if (dto.getMember_id() == null || !dto.getMember_id().equals(info.getMember_id())) {
+			    return new ModelAndView("redirect:/professor/hw/list?page=" + page);
+
 			}
 			
 			ModelAndView mav = new ModelAndView("hw/write");
@@ -206,6 +218,7 @@ public class ProhwController {
 			mav.addObject("page", page);
 			mav.addObject("mode", "update");
 			
+			return mav;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -213,7 +226,7 @@ public class ProhwController {
 		return new ModelAndView("redirect:/professor/hw/list?page=" + page);
 	}
 	
-	@RequestMapping(value = "/hw/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/professor/hw/update", method = RequestMethod.POST)
 	public ModelAndView updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글수정 완료
 		Pro_hwDAO dao = new Pro_hwDAO();
@@ -229,7 +242,8 @@ public class ProhwController {
 			dto.setHomework_id(Integer.parseInt(req.getParameter("homework_id")));
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("content"));
-			
+			dto.setLecture_code(req.getParameter("lecture_code"));
+			dto.setDeadline_date(req.getParameter("deadline_date"));
 			dto.setMember_id(info.getMember_id());
 			
 			dao.updateHw(dto);

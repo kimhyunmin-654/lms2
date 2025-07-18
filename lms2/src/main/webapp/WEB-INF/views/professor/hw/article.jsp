@@ -47,6 +47,10 @@
 									<td align="left">${dto.lecture_code}</td>
 								</tr>
 								<tr>
+									<td width="150px" align="justify">마감일</td>
+									<td align="left">${dto.deadline_date}</td>
+								</tr>
+								<tr>
 									<td width="150px" align="justify">조회수</td>
 									<td align="left">${dto.hit_count}</td>
 								</tr>
@@ -63,14 +67,14 @@
 								<tr>
 									<td colspan="2">이전글:
 										<c:if test="${not empty prevDto}">
-											<a href="${pageContext.request.contextPath}/professor/hw/article?num=${prevDto.homework_id}&${query}">${prevDto.subject}</a>
+											<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${prevDto.homework_id}&${query}">${prevDto.subject}</a>
 										</c:if>
 									</td>
 								</tr>
 								<tr style="border-bottom: 2px solid gray;">
 									<td colspan="2">다음글:
 										<c:if test="${not empty nextDto}">
-											<a href="${pageContext.request.contextPath}/professor/hw/article?num=${nextDto.homework_id}&${query}">${nextDto.subject}</a>
+											<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${nextDto.homework_id}&${query}">${nextDto.subject}</a>
 										</c:if>
 									</td>
 								</tr>
@@ -79,7 +83,7 @@
 
 						<table class="table table-borderless mb-2">
 							<tr>
-								<td width="50%"><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/update?num=${dto.homework_id}&page=${page}';">수정</button>
+								<td width="50%"><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/update?homework_id=${dto.homework_id}&page=${page}';">수정</button>
 								<td class="text-end">
 									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/list?${query}';">리스트</button>
 								</td>
