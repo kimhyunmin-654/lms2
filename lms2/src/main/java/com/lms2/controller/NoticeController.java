@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +27,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class NoticeController {
@@ -40,8 +43,8 @@ public class NoticeController {
 		try {
 			String page = req.getParameter("page");
 			int current_page = 1;
-			if(page != null) {
-				current_page = Integer.parseInt(page);
+			if (page != null && !page.equals("") && !page.equals("null")) {
+			    current_page = Integer.parseInt(page);
 			}
 			page = String.valueOf(current_page);
 			
@@ -183,7 +186,16 @@ public class NoticeController {
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("content"));
 			
-			List<MyMultipartFile> listFile = fileManager.doFileUpload(req.getParts(), pathname);
+			Collection<Part> parts = req.getParts();
+			List<Part> uploadParts = new ArrayList<>();
+			for (Part part : parts) {
+			    if (part.getName().equals("upload") && part.getSize() > 0) {
+			        uploadParts.add(part);
+			    }
+			}
+			
+			
+			List<MyMultipartFile> listFile = fileManager.doFileUpload(uploadParts, pathname); 
 			dto.setListFile(listFile);
 			
 			dao.insertNotice(dto);
@@ -313,7 +325,14 @@ public class NoticeController {
 		String pathname = root + "uploads" + File.separator + "notice";
 		
 		String page = req.getParameter("page");
+		if (page == null || page.equals("") || page.equals("null")) {
+			page = "1";
+		}
+
 		String size = req.getParameter("size");
+		if (size == null || size.equals("") || size.equals("null")) {
+			size = "10";
+		}
 
 		try {
 			NoticeDTO dto = new NoticeDTO();
@@ -326,7 +345,15 @@ public class NoticeController {
 			dto.setContent(req.getParameter("content"));
 			
 			
-			List<MyMultipartFile> listFile = fileManager.doFileUpload(req.getParts(), pathname);
+			Collection<Part> parts = req.getParts();
+			List<Part> uploadParts = new ArrayList<>();
+			for (Part part : parts) {
+			    if (part.getName().equals("upload") && part.getSize() > 0) {
+			        uploadParts.add(part);
+			    }
+			}
+
+			List<MyMultipartFile> listFile = fileManager.doFileUpload(uploadParts, pathname);
 			dto.setListFile(listFile);
 			
 			dao.updateNotice(dto);
@@ -336,7 +363,8 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/admin/notice/list?page=" + page + "&size=" + size);
+		String query = "page=" + page + "&size=" + size;
+		return new ModelAndView("redirect:/admin/notice/list?" + query);
 	}
 	
 	@RequestMapping(value = "/admin/notice/deleteFile")

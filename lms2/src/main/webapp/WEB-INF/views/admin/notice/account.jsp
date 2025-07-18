@@ -60,7 +60,7 @@
 				            <div class="form-check">
 				                <input class="form-check-input" type="checkbox" id="is_notice" name="is_notice"
 				                       value="1" ${dto.is_notice==1 ? "checked" : "" }>
-				                <label class="form-check-label" for="id_notice">공지로 등록</label>
+				                <label class="form-check-label" for="is_notice">공지로 등록</label>
 				            </div>
 				        </div>
 				    </div>
@@ -69,7 +69,7 @@
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">첨부파일</div>
 				        <div class="col-sm-10 bg-white py-3">
-				            <input type="file" class="form-control" name="selectFile" multiple>
+				            <input type="file" class="form-control" name="upload" multiple>
 				        </div>
 				    </div>
 				
@@ -80,11 +80,12 @@
 				                ${mode == 'update' ? '수정' : '등록'}
 				            </button>
 				            <button type="reset" class="btn btn-warning me-2">다시 입력</button>
-				            <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-secondary">목록</a>
+				            <a href="${pageContext.request.contextPath}/admin/notice/list?page=${empty page ? '1' : page}&size=${empty size ? '10' : size}" class="btn btn-secondary">목록</a>
 				
 							<c:if test="${mode=='update'}">
-							    <input type="hidden" name="num" value="${dto.notice_id}">
-							    <input type="hidden" name="page" value="${page}">
+							    <input type="hidden" name="notice_id" value="${dto.notice_id}">
+								<input type="hidden" name="page" value="${empty page ? 1 : page}">
+								<input type="hidden" name="size" value="${empty size ? 10 : size}">
 							    
 							    <c:forEach var="file" items="${listFile}">
 							        <input type="hidden" name="saveFilename" value="${file.save_filename}">

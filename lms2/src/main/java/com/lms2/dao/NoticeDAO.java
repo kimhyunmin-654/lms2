@@ -43,8 +43,8 @@ public class NoticeDAO {
 
 			// 첨부 파일이 있다면 파일 테이블에도 INSERT
 			if (dto.getListFile() != null && !dto.getListFile().isEmpty()) {
-				sql = "INSERT INTO notice_file(file_num, file_size, save_filename, original_filename, notice_id) "
-					+ "VALUES(noticeFile_seq.NEXTVAL, ?, ?, ?, ?)";
+				sql = "INSERT INTO notice_file(file_num, file_size, save_filename, original_filename, notice_num) "
+					+ "VALUES(noticefile_seq.NEXTVAL, ?, ?, ?, ?)";
 
 				pstmt = conn.prepareStatement(sql);
 				for (MyMultipartFile mf : dto.getListFile()) {
@@ -578,8 +578,8 @@ public class NoticeDAO {
 			pstmt = null;
 
 			if (dto.getListFile() != null && dto.getListFile().size() != 0) {
-				sql = "INSERT INTO noticeFile(file_num, notice_id, file_size, save_filename, original_filename) "
-						+ " VALUES (noticeFile_seq.NEXTVAL, ?, ?, ?, ?)";
+				sql = "INSERT INTO notice_file(file_num, notice_num, file_size, save_filename, original_filename) "
+						+ " VALUES (noticefile_seq.NEXTVAL, ?, ?, ?, ?)";
 				pstmt = conn.prepareStatement(sql);
 				
 				for (MyMultipartFile mf: dto.getListFile()) {
@@ -689,7 +689,7 @@ public class NoticeDAO {
 
 		try {
 			sql = "SELECT file_num, file_size, save_filename, original_filename, notice_num "
-					+ " FROM notice_file WHERE file_id = ?";
+					+ " FROM notice_file WHERE file_num= ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setLong(1, file_id);
