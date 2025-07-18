@@ -53,12 +53,10 @@
 
 								<tr>
 								<c:if test="${not empty dto.save_filename}">
-									<td width="150px" align="justify">파일명</td>
-									<td>
+									<td colspan="2" align="justify">파일명</td>
 										<div>
 											<i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
 										</div>
-									</td>
 									</c:if>
 								
 								</tr>

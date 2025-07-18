@@ -55,7 +55,7 @@
 								</tr>
 								
 								<tr>
-								<td>첨부 파일</td>
+									<td>첨부 파일</td>
 								<td> 
 									<input type="file" name="selectFile" class="form-control">
 								</td>
@@ -121,6 +121,13 @@
 			if( ! str ) {
 				alert('내용을 입력하세요. ');
 				f.content.focus();
+				return;
+			}
+			
+			str = f.lesson.value.trim();
+			if (!str) {
+				alert('강의를 선택하세요. ');
+				f.category.focus();
 				return;
 			}
 	

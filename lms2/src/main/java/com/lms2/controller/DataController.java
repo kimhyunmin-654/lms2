@@ -369,7 +369,7 @@ public class DataController {
 				return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 			}
 
-			ModelAndView mav = new ModelAndView("data/write");
+			ModelAndView mav = new ModelAndView("/professor/write");
 
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
