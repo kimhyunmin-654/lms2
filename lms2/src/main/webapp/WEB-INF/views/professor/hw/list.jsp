@@ -5,11 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자료실</title>
+<title>과제</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/board.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style type="text/css">
 .hw-header img {
 	height: 50px;
@@ -28,7 +30,7 @@
 
 			<div class="body-container row justify-content-center hw-header" style="margin: 100px;">
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
+					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_hw3..png">
 				</div>
 
 				<table class="table table-hover board-list">
@@ -44,17 +46,25 @@
 
 					<tbody>
 						<c:forEach var="dto" items="${list}" varStatus="status">
-							<tr>
-								<td>${dataCount - (page - 1) * size - status.index}</td>
-								<td class="left">
-									<div class="text-wrap">
-										<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${dto.homework_id}&page=${page}" class="text-reset">${dto.subject}</a>
+						<tr>
+							<td>${dataCount - (page - 1) * size - status.index}</td>
+							<td class="left">
+								<div class="text-wrap">
+									<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${dto.homework_id}&page=${page}" class="text-reset">${dto.subject}</a>
+								</div>
+							</td>
+							<td>${dto.reg_date}</td>
+							<td>${dto.deadline_date}</td>
+							<td>
+								<c:if test="${not empty dto.save_filename}">
+									<div>
+										<a href="${pageContext.request.contextPath}/homework/download?homework_id=${dto.homework_id}">
+											<i class="fa-solid fa-floppy-disk"></i>
+										</a>
 									</div>
-								</td>
-								<td>${dto.reg_date}</td>
-								<td>${dto.deadline_date}</td>
-								<td>ㅇ</td>
-							</tr>
+								</c:if>
+							</td>
+						</tr>
 						</c:forEach>
 					</tbody>
 				</table>
