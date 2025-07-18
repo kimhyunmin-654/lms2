@@ -1,5 +1,9 @@
 package com.lms2.model;
 
+import java.util.List;
+
+import com.lms2.util.MyMultipartFile;
+
 public class LectureDTO {
 	private String lecture_code; // 강의 코드
 	private String subject; // 강의 명
@@ -12,6 +16,8 @@ public class LectureDTO {
 	private double credit; // 학점
 	private String department_id; // 학과 코드
 	private String member_id; // 학번
+	
+	private List<MyMultipartFile> listFile;
 	
 	private int file_id; // 파일 번호
 	private String save_filename; // 저장된 파일명
@@ -123,6 +129,13 @@ public class LectureDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public List<MyMultipartFile> getListFile() {
+		return listFile;
+	}
+	public void setListFile(List<MyMultipartFile> listFile) {
+		this.listFile = listFile;
+	}
+	
 	
 	
 

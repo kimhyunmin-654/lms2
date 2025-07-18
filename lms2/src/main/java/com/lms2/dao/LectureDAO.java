@@ -10,6 +10,7 @@ import java.util.List;
 import com.lms2.model.LectureDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
+import com.lms2.util.MyMultipartFile;
 
 public class LectureDAO {
 	private Connection conn = DBConn.getConnection();
@@ -41,19 +42,26 @@ public class LectureDAO {
 			pstmt.close();
 			pstmt = null;
 			
-			sql = "INSERT INTO LECTURE_FILE(file_id, save_filename, original_filename, file_size, lecture_code, reg_date) "
-		             + "VALUES(LECTURE_FILE_SEQ.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
-
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, dto.getSave_filename());
-			pstmt.setString(2, dto.getOriginal_filename());
-			pstmt.setInt(3, dto.getFile_size());
-			pstmt.setString(4, dto.getLecture_code());
-			
-			pstmt.executeUpdate();
-			
-			conn.commit();
+			if(dto.getListFile() != null & !dto.getListFile().isEmpty()) {
+				sql = "INSERT INTO LECTURE_FILE(file_id, save_filename, original_filename, file_size, lecture_code, reg_date) "
+						+ "VALUES(LECTURE_FILE_SEQ.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				for(MyMultipartFile mf : dto.getListFile()) {
+					
+				}
+				pstmt.setString(1, dto.getSave_filename());
+				pstmt.setString(2, dto.getOriginal_filename());
+				pstmt.setInt(3, dto.getFile_size());
+				pstmt.setString(4, dto.getLecture_code());
+				
+				pstmt.executeUpdate();
+				
+				conn.commit();
+				
+				
+			}
 			
 		
 		} catch (SQLException e) {
