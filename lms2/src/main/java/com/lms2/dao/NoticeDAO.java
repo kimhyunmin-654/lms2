@@ -22,6 +22,8 @@ public class NoticeDAO {
 		String sql;
 
 		try {
+			conn.setAutoCommit(false);
+			 
 			// 공지사항 INSERT + notice_id 반환
 			sql = "INSERT INTO notice(notice_id, is_notice, subject, content, hit_count, reg_date, modify_date, is_visible, member_id) "
 				 + "VALUES(notice_seq.NEXTVAL, ?, ?, ?, 0, SYSDATE, SYSDATE, 1, ?)";
@@ -53,14 +55,23 @@ public class NoticeDAO {
 					pstmt.setString(3, mf.getOriginalFilename());
 					pstmt.setLong(4, dto.getNotice_id());
 					pstmt.executeUpdate();
+					
 				}
 			}
+			conn.commit();
+		} catch (SQLException e) {
+			DBUtil.rollback(conn);
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
 			DBUtil.close(rs);
 			DBUtil.close(pstmt);
+			try {
+				conn.setAutoCommit(true);
+			} catch (Exception e2) {
+			}
 		}
 	}
 	
@@ -81,8 +92,12 @@ public class NoticeDAO {
 				result = rs.getInt(1);
 			}
 			
+		} catch (SQLException e) {
+			DBUtil.rollback(conn);
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
 			DBUtil.close(rs);
 			DBUtil.close(pstmt);
@@ -562,6 +577,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
+			conn.setAutoCommit(false);
 			
 			sql = "UPDATE notice SET is_notice = ?, subject = ?, content = ?, modify_date = SYSDATE "
 					+ " WHERE notice_id = ?";
@@ -579,24 +595,33 @@ public class NoticeDAO {
 
 			if (dto.getListFile() != null && dto.getListFile().size() != 0) {
 				sql = "INSERT INTO notice_file(file_num, notice_num, file_size, save_filename, original_filename) "
-						+ " VALUES (noticefile_seq.NEXTVAL, ?, ?, ?, ?)";
-				pstmt = conn.prepareStatement(sql);
-				
-				for (MyMultipartFile mf: dto.getListFile()) {
-					pstmt.setLong(1, dto.getNotice_id());
-					pstmt.setLong(2, mf.getSize());
-					pstmt.setString(3, mf.getSaveFilename());
-					pstmt.setString(4, mf.getOriginalFilename());
-					
-					pstmt.executeUpdate();
-				}
+					     + " VALUES (noticefile_seq.NEXTVAL, ?, ?, ?, ?)";
+					pstmt = conn.prepareStatement(sql);
+
+					for (MyMultipartFile mf : dto.getListFile()) {
+					    pstmt.setLong(1, dto.getNotice_id());             
+					    pstmt.setLong(2, mf.getSize());                   
+					    pstmt.setString(3, mf.getSaveFilename());         
+					    pstmt.setString(4, mf.getOriginalFilename());     
+					    pstmt.executeUpdate();
+					}
 			}
+			conn.commit();
 
 		} catch (SQLException e) {
+			DBUtil.rollback(conn);
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
 			DBUtil.close(pstmt);
+			
+			try {
+				conn.setAutoCommit(true);
+			} catch (Exception e2) {
+			}
 		}
 
 	}
