@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/board.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style type="text/css">
 .bbs-header img {

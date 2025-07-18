@@ -33,50 +33,53 @@ public class MyUtil {
 	public String paging(int current_page, int total_page, String list_url) {
 		StringBuilder sb = new StringBuilder();
 
-		int numPerBlock = 10;
+		int numPerBlock = 5;
 		int currentPageSetup;
 		int n, page;
 
-		if (current_page < 1 || total_page < current_page || list_url == null) {
+		if (current_page < 1 || total_page < current_page) {
 			return "";
 		}
 
-		// list_url += list_url.indexOf("?") != -1 ? "&" : "?";
 		list_url += list_url.contains("?") ? "&" : "?";
 
-		// currentPageSetup : 표시할첫페이지-1
 		currentPageSetup = (current_page / numPerBlock) * numPerBlock;
+
 		if (current_page % numPerBlock == 0) {
 			currentPageSetup = currentPageSetup - numPerBlock;
 		}
 
 		sb.append("<div class='paginate'>");
-		// 처음페이지, 이전(10페이지 전)
+
+		// 처음페이지, 이전 (10페이지 전)
 		n = current_page - numPerBlock;
+		if (currentPageSetup == 0) {
+			sb.append("<span class='page-btn'><</span>");
+		}
 		if (total_page > numPerBlock && currentPageSetup > 0) {
-			sb.append("<a href='" + list_url + "page=1' title='처음'>&#x226A</a>");
-			sb.append("<a href='" + list_url + "page=" + n + "' title='이전'>&#x003C</a>");
+			sb.append("<a href='" + list_url + "page=" + n + "'><span class='page-btn'><</span></a>"); // previous
+			sb.append("<a href='" + list_url + "page=1'>1</a>"); // firstPage
+			sb.append("<span>...</span>"); // ... 처리
 		}
 
-		// 페이징
+		// 페이징 처리
 		page = currentPageSetup + 1;
 		while (page <= total_page && page <= (currentPageSetup + numPerBlock)) {
 			if (page == current_page) {
-				sb.append("<span>" + page + "</span>");
+				sb.append("<span class='choosed'>" + page + "</span>");
 			} else {
 				sb.append("<a href='" + list_url + "page=" + page + "'>" + page + "</a>");
 			}
 			page++;
 		}
 
-		// 다음(10페이지 후), 마지막페이지
 		n = current_page + numPerBlock;
-		if (n > total_page) {
+		if (n > total_page)
 			n = total_page;
-		}
 		if (total_page - currentPageSetup > numPerBlock) {
-			sb.append("<a href='" + list_url + "page=" + n + "' title='다음'>&#x003E</a>");
-			sb.append("<a href='" + list_url + "page=" + total_page + "' title='마지막'>&#x226B</a>");
+			sb.append("<span>...</span>");
+			sb.append("<a href='" + list_url + "page=" + total_page + "'>" + total_page + "</a>");
+			sb.append("<a href='" + list_url + "page=" + n + "'><span class='page-btn'>></span></a>");
 		}
 		sb.append("</div>");
 
