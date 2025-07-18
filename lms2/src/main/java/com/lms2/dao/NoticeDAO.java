@@ -90,7 +90,34 @@ public class NoticeDAO {
 		
 		return result;
 	}
-
+	
+	// 공지글  전체 데이터 개수
+	public int dataCount2() {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT NVL(COUNT(*), 0) FROM notice WHERE is_notice = 1 ";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return result;
+	}
+	
 	
 	// 검색에서 전체 개수
 	public int dataCount(String schType, String kwd) {
@@ -138,6 +165,52 @@ public class NoticeDAO {
 		return result;
 	}
 	
+	// 검색에서 공지글 전체 개수
+	public int dataCount2(String schType, String kwd) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT NVL(COUNT(*), 0) FROM notice n "
+					+ " JOIN admin a ON n.member_id = a.member_id "
+					+ " JOIN member m ON a.member_id = m.member_id ";
+			if (schType.equals("all")) {
+				sql += "  WHERE is_notice = 1 AND INSTR(n.subject, ?) >= 1 OR INSTR(n.content, ?) >= 1 ";
+			} else if (schType.equals("n.reg_date")) {
+				kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
+				sql += "  WHERE is_notice = 1 AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
+			} else if (schType.equals("name")) {
+				sql += " WHERE is_notice = 1 AND INSTR(m.name, ?) >= 1";
+			} else {
+				sql += "  WHERE is_notice = 1 AND INSTR(" + schType + ", ?) >= 1 ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, kwd);
+			if(schType.equals("all")) {
+				pstmt.setString(2, kwd);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		
+		return result;
+	}	
+
 	// 공지사항 리스트
 	public List<NoticeDTO> listNotice(int offset, int size) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
