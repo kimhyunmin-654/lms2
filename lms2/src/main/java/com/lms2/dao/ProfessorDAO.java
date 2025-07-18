@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lms2.model.DeparmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.util.DBConn;
@@ -218,8 +217,9 @@ public class ProfessorDAO {
 		try {
 			sb.append(" SELECT m.member_id, m.name, TO_CHAR(birth, 'YYYY-MM-DD') birth, m.email, m.phone, p.position, d.department_name, p.department_id");
 			sb.append(" FROM member m");
-			sb.append(" JOIN professor p ON p.member_id = m.member_id");
-			sb.append(" JOIN department d ON p.department_id = d.department_id");
+			sb.append(" left outer JOIN professor p ON p.member_id = m.member_id");
+			sb.append(" left outer JOIN department d ON p.department_id = d.department_id");
+			sb.append(" WHERE role = 51");
 			sb.append(" ORDER BY member_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY");
 			
