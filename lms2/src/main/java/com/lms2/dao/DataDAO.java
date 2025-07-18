@@ -228,47 +228,45 @@ public class DataDAO {
 		return list;
 	}
 	
-	public List<DataDTO> listData() {
-		List<DataDTO> list = new ArrayList<DataDTO>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder();
+	public List<DataDTO> listData(String lecture_code) {
+	       List<DataDTO> list = new ArrayList<DataDTO>();
+	       PreparedStatement pstmt = null;
+	       ResultSet rs = null;
+	       StringBuilder sb = new StringBuilder();
 
-		try {
-			sb.append(" SELECT d.data_id, d.subject, TO_CHAR(d.reg_date, 'YYYY-MM-DD') reg_date, d.hit_count, ");
-			sb.append(" f.save_filename, f.original_filename ");
-			sb.append(" FROM DATA d ");
-			sb.append(" LEFT JOIN data_file f ON d.data_id = f.data_id ");
-			sb.append(" WHERE d.lecture_code = ? ");
-			sb.append(" ORDER BY d.data_id DESC ");
-			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
-			
-			pstmt = conn.prepareStatement(sb.toString());
+	       try {
+	           sb.append(" SELECT d.data_id, d.subject, TO_CHAR(d.reg_date, 'YYYY-MM-DD') reg_date, d.hit_count, ");
+	           sb.append(" f.save_filename, f.original_filename ");
+	           sb.append(" FROM DATA d ");
+	           sb.append(" LEFT JOIN data_file f ON d.data_id = f.data_id ");
+	           sb.append(" WHERE d.lecture_code = ? ");  
+	           sb.append(" ORDER BY d.data_id DESC "); 
+	           
+	           pstmt = conn.prepareStatement(sb.toString());
+	           pstmt.setString(1, lecture_code);      
 
-			rs = pstmt.executeQuery();
+	           rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				DataDTO dto = new DataDTO();
+	           while (rs.next()) {
+	               DataDTO dto = new DataDTO();
+	               dto.setData_id(rs.getInt("data_id"));
+	               dto.setSubject(rs.getString("subject"));
+	               dto.setReg_date(rs.getString("reg_date"));
+	               dto.setHit_count(rs.getInt("hit_count"));
+	               dto.setSave_filename(rs.getString("save_filename"));
+	               dto.setOriginal_filename(rs.getString("original_filename"));
 
-				dto.setData_id(rs.getInt("data_id"));
-				dto.setSubject(rs.getString("subject"));
-				dto.setReg_date(rs.getString("reg_date"));
-				dto.setHit_count(rs.getInt("hit_count"));
-				dto.setLecture_code(rs.getString("lecture_code"));
-				dto.setSave_filename(rs.getString("save_filename"));
-				dto.setOriginal_filename(rs.getString("original_filename"));
+	               list.add(dto);
+	           }
+	       } catch (Exception e) {
+	           e.printStackTrace();
+	       } finally {
+	           DBUtil.close(rs);
+	           DBUtil.close(pstmt);
+	       }
 
-				list.add(dto);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
-		}
-
-		return list;
-	}
+	       return list;
+	   }
 
 	
 	// 조회수 증가
@@ -491,6 +489,22 @@ public class DataDAO {
 		String sql;
 		
 		try {
+			sql = "DELETE FROM data_file WHERE data_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, data_id);
+			
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			sql = "DELETE FROM data WHERE data_id = ? AND member_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, data_id);
+			pstmt.setString(2, member_id);
+			
+			pstmt.executeUpdate();
+			pstmt.close();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

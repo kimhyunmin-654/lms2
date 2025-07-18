@@ -87,7 +87,7 @@
 								</td>
 								<td width="50%">
 									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/update?num=${dto.data_id}&page=${page}';">수정</button>
-									<button type="button" class="btn btn-light" onclick="deleteArticle();;">삭제</button>
+									<button type="button" class="btn btn-light" onclick="deleteArticle();">삭제</button>
 								</td>
 							</tr>
 						</table>
