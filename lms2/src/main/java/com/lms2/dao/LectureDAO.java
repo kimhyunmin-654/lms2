@@ -25,7 +25,7 @@ public class LectureDAO {
 			conn.setAutoCommit(false);
 			
 			sql = "INSERT INTO LECTURE(lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, department_id, member_id)"
-					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?)"; 
 			
 			pstmt = conn.prepareStatement(sql);
 			
