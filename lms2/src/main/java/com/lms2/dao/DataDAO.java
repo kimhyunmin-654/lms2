@@ -460,22 +460,35 @@ public class DataDAO {
 		return dto;
 	}
 	
-	//게시물 수정
+	// 게시물 수정
 	public void updateData(DataDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		try {
-			sql = "UPDATE DATA SET subject = ?, content = ? "
-					+ " WHERE data_id = ?";
+			sql = "UPDATE data SET subject = ?, content = ?, modify_date = SYSDATE, lecture_code = ? "
+				+ " WHERE data_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSubject());
 			pstmt.setString(2, dto.getContent());
-			pstmt.setInt(3, dto.getData_id());
+			pstmt.setString(3, dto.getLecture_code());
+			pstmt.setInt(4, dto.getData_id());
 			
 			pstmt.executeUpdate();
-		} catch (Exception e) {
+			pstmt.close();
+			
+			if (dto.getOriginal_filename() != null && dto.getSave_filename() != null) {
+	            sql = "UPDATE data_file SET save_filename = ?, original_filename = ?, file_size = ? "
+	                + "WHERE data_id = ?";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, dto.getSave_filename());
+	            pstmt.setString(2, dto.getOriginal_filename());
+	            pstmt.setInt(3, dto.getFile_size());
+	            pstmt.setLong(4, dto.getData_id());
+	            pstmt.executeUpdate();
+			}
+        } catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
@@ -483,7 +496,7 @@ public class DataDAO {
 		}
 	}
 	
-	//게시물 삭제
+	// 게시물 삭제
 	public void deleteData(int data_id, String member_id) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
@@ -497,11 +510,10 @@ public class DataDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 			
-			sql = "DELETE FROM data WHERE data_id = ? AND member_id = ?";
+			sql = "DELETE FROM data WHERE data_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, data_id);
-			pstmt.setString(2, member_id);
 			
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -568,7 +580,7 @@ public class DataDAO {
 			return result;
 		}
 	
-	//댓글리스트
+	// 댓글리스트
 	public List<Data_CommentDTO> listComment(int data_id, int offset, int size) {
 		List<Data_CommentDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;

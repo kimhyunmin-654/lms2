@@ -53,28 +53,17 @@
 										</select>
 									</td>
 								</tr>
-								
-								<tr>
-									<td>첨부 파일</td>
+							<tr>
+								<td>첨부 파일</td>
 								<td> 
 									<input type="file" name="selectFile" class="form-control">
+									<c:if test="${mode=='update' && not empty dto.save_filename}">
+										<p class="form-control-plaintext mt-2">
+											현재 파일: <a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
+										</p>
+									</c:if>
 								</td>
 							</tr>
-							<c:if test="${mode=='update'}">
-								<tr>
-									<td class="bg-light col-sm-2" scope="row">첨부파일</td>
-									<td> 
-										<p class="form-control-plaintext">
-											<c:if test="${not empty dto.save_filename}">
-												<a href="javascript:deleteFile('${dto.data_num}');"></a>
-												${dto.original_filename}
-											</c:if>
-											&nbsp;
-										</p>
-									</td>
-								</tr>
-							</c:if>
-								
 								<tr>
 									<td>내용
 									</td>
@@ -91,7 +80,7 @@
 										<button type="reset" class="btn btn-light">다시입력</button>
 										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list';">${mode=="update"?"수정취소":"등록취소"}<i class="bi bi-x"></i></button>
 										<c:if test="${mode=='update'}">
-											<input type="hidden" name="num" value="${dto.num}">
+											<input type="hidden" name="num" value="${dto.data_id}">
 											<input type="hidden" name="page" value="${page}">
 										</c:if>
 									</td>

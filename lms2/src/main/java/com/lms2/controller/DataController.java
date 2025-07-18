@@ -10,6 +10,7 @@ import java.util.Map;
 import com.lms2.dao.DataDAO;
 import com.lms2.model.DataDTO;
 import com.lms2.model.Data_CommentDTO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
@@ -262,7 +263,7 @@ public class DataController {
 			// 조회수 증가
 			dao.updateHitCount(data_id);
 
-			// 게시물가져오기
+			// 게시물 가져오기
 			DataDTO dto = dao.findById(data_id);
 
 			if (dto == null) {
@@ -350,31 +351,29 @@ public class DataController {
 			throws ServletException, IOException {
 		// 자료실 글수정 폼
 		DataDAO dao = new DataDAO();
-
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
 		String page = req.getParameter("page");
+		
 
 		try {
-			int data_id = Integer.parseInt(req.getParameter("data_id"));
+			int data_id = Integer.parseInt(req.getParameter("num"));
 			DataDTO dto = dao.findById(data_id);
-
+			
 			if (dto == null) {
 				return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
 			}
-
-			// 게시물 작성자가 아니면
-			if (!dto.getMember_id().equals(info.getMember_id())) {
-				return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
-			}
-
+			
 			ModelAndView mav = new ModelAndView("/professor/bbs/write");
+			
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
 
+			List<DataDTO> lectureList = dao.listLectureByMember(info.getMember_id());
+			mav.addObject("lectureList", lectureList);
+			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
 			mav.addObject("mode", "update");
-
+			
 			return mav;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -392,19 +391,39 @@ public class DataController {
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
+		FileManager fileManager = new FileManager();
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "bbs";
+		
 		String page = req.getParameter("page");
 
 		try {
 			DataDTO dto = new DataDTO();
 
-			dto.setData_id(Integer.parseInt(req.getParameter("data_id")));
+			dto.setData_id(Integer.parseInt(req.getParameter("num")));
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("content"));
+			dto.setSave_filename(req.getParameter("save_filename"));
+			dto.setOriginal_filename(req.getParameter("original_filename"));
+			dto.setLecture_code(req.getParameter("lesson"));
 
 			dto.setMember_id(info.getMember_id());
 
+			Part p = req.getPart("select_file");
+			MyMultipartFile multiFile = fileManager.doFileUpload(p, pathname);
+			if (multiFile != null) {
+				if (req.getParameter("save_filename").length() != 0) {
+					fileManager.doFiledelete(pathname, req.getParameter("save_filename"));
+				}
+				
+				String save_filename = multiFile.getSaveFilename();
+				String original_filename = multiFile.getOriginalFilename();
+				dto.setSave_filename(save_filename);
+				dto.setOriginal_filename(original_filename);
+			}
+			
 			dao.updateData(dto);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -448,7 +467,7 @@ public class DataController {
 		return new ModelAndView("redirect:/professor/bbs/list?" + query);
 	}
 
-	@RequestMapping(value = "/professor/bbs/listReply", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/professor/bbs/listReply", method = RequestMethod.GET)
 	public ModelAndView listComment(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// 리플리스트
@@ -542,7 +561,8 @@ public class DataController {
 
 		return model;
 	}
-
+*/
+	
 	@RequestMapping(value = "/lecture/download")
 	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파일 다운로드
