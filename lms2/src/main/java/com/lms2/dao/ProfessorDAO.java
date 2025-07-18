@@ -216,7 +216,7 @@ public class ProfessorDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT m.member_id, m.name, m.birth, m.email, m.phone, p.position, d.department_name, p.department_id");
+			sb.append(" SELECT m.member_id, m.name, TO_CHAR(birth, 'YYYY-MM-DD') birth, m.email, m.phone, p.position, d.department_name, p.department_id");
 			sb.append(" FROM member m");
 			sb.append(" JOIN professor p ON p.member_id = m.member_id");
 			sb.append(" JOIN department d ON p.department_id = d.department_id");

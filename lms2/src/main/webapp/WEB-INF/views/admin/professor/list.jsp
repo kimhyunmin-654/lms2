@@ -45,8 +45,8 @@
                             </form>
                         </c:if>
 
-                        <a href="${pageContext.request.contextPath}/admin/professor/account" class="btn btn-primary">
-                            <i class="bi bi-pencil-square"></i> 관리자 등록
+                        <a href="${pageContext.request.contextPath}/admin/professor/write" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i> 교수 등록
                         </a>
                     </div>
                 </div>
