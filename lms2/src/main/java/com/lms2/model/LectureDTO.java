@@ -19,7 +19,7 @@ public class LectureDTO {
 	
 	private List<MyMultipartFile> listFile;
 	
-	private int file_id; // 파일 번호
+	private long file_id; // 파일 번호
 	private String save_filename; // 저장된 파일명
 	private String original_filename; // 업로드한 원래 파일명
 	private int file_size; // 파일 크기
@@ -93,17 +93,18 @@ public class LectureDTO {
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
-	public int getFile_id() {
+	
+	public long getFile_id() {
 		return file_id;
 	}
-	public void setFile_id(int file_id) {
+	public void setFile_id(long file_id) {
 		this.file_id = file_id;
 	}
 	public String getSave_filename() {
 		return save_filename;
 	}
-	public void setSava_filename(String sava_filename) {
-		this.save_filename = sava_filename;
+	public void setSave_filename(String save_filename) {
+		this.save_filename = save_filename;
 	}
 	public String getOriginal_filename() {
 		return original_filename;
