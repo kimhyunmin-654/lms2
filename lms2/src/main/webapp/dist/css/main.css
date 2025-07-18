@@ -5,10 +5,20 @@ html, body {
 	margin: 0;
 	padding: 0;
 	overflow-x: hidden;
-	font-family: 'Pretendard', sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 	background: url('/dist/images/background.jpg') no-repeat center center fixed;
 	background-size: cover;
 }
+
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+/* .no-Yscroll {
+	overflow-y: hidden;
+} */
 
 .overlay {
 	position: fixed;
@@ -31,22 +41,13 @@ html, body {
 	z-index: 10;
 }
  */
- 
-.overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(34, 34, 34, 0.5);
-	z-index: 0;
-}
 
 .content {
 	position: relative;
 	z-index: 1;
-	transform: scale(0.9);
 	transform-origin: top center;
+	flex: 1;
+	padding-top: 50px;
 }
 
 .login-header {
@@ -73,6 +74,10 @@ html, body {
 	padding: 40px 40px;
 	border-radius: 10px;
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.yellowFont {
+	margin: 0 0 100px 0;
 }
 
 .login-form label {
@@ -163,9 +168,9 @@ html, body {
 
 .footer-wrapper {
 	width: 100%;
-	height: 300px;
+	height: 180px;
 	background: rgba(34, 34, 34, 0.8);
-	padding: 40px 0;
+	padding: 0 30px;
 	text-align: center;
 	color: white;
 	font-size: 12px;
@@ -177,6 +182,6 @@ html, body {
 	font-size: 12px;
 	color: white;
 	line-height: 1.6;
-	padding: 0 20px;
+	padding: 20px 0px;
 	box-sizing: border-box;
 }
