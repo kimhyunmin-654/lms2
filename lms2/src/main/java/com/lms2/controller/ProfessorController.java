@@ -3,6 +3,7 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.lms2.dao.AdminDAO;
 import com.lms2.dao.DataDAO;
 import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
@@ -16,6 +17,7 @@ import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
+import com.lms2.util.MyUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,12 +27,82 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class ProfessorController {
 
-	// 교수 목록
+	// 교수 목록 [관리자]
 	@RequestMapping(value = "/admin/professor/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("admin/professor/list");
-		return mav;
-	}
+		ProfessorDAO dao = new ProfessorDAO();
+		MyUtil util = new MyUtil();
+	
+		 try {
+			 String page = req.getParameter("page");
+				int current_page = 1;
+				if(page != null) {
+					current_page = Integer.parseInt(page);
+				}
+				
+				page = String.valueOf(current_page);
+				
+				String schType = req.getParameter("schType");
+				String kwd = req.getParameter("kwd");
+				if(schType == null) {
+					schType = "all";
+					kwd = "";
+				}
+				kwd = util.decodeUrl(kwd);
+				
+				String pageSize = req.getParameter("size");
+				int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+				
+				int dataCount, total_page;
+
+				dataCount = dao.dataCount();
+				
+				total_page = util.pageCount(dataCount, size);
+				
+				if(current_page > total_page) {
+					current_page = total_page;
+				}
+		
+				int offset = (current_page - 1) * size;
+				if(offset < 0) offset = 0;
+				
+				List<ProfessorDTO> list;
+				if(kwd.length() != 0) {
+					list = dao.listProfessor(offset, size, schType, kwd);
+				} else {
+					list = dao.listProfessor(offset, size);
+				}
+				
+				
+				String cp = req.getContextPath();
+				String query = "size=" + size;
+				String listUrl;
+				String articleUrl;
+				
+				if(kwd.length() != 0) {
+					query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+				}
+				listUrl = cp + "/admin/admin/list?" + query;
+				articleUrl = cp + "/admin/admin/article?page=" + current_page + "&" + query;
+				
+				String paging = util.paging(current_page, total_page, listUrl);
+				
+				mav.addObject("list", list);
+				mav.addObject("articleUrl", articleUrl);
+				mav.addObject("dataCount", dataCount);
+				mav.addObject("size", size);
+				mav.addObject("page", current_page);
+				mav.addObject("total_page", total_page);
+				mav.addObject("paging", paging);
+				mav.addObject("schType", schType);
+				mav.addObject("kwd", kwd);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return mav;
+		}
 	
 	// 교수 등록 폼
 	@RequestMapping(value = "/admin/professor/write", method = RequestMethod.GET)
