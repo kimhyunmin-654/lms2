@@ -310,7 +310,7 @@ public class LectureController {
 			
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("content"));
-			
+			 
 			
 			Collection<Part> parts = req.getParts();
 			List<Part> uploadParts = new ArrayList<>();
