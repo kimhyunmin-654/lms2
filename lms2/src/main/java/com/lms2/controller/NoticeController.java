@@ -554,4 +554,414 @@ public class NoticeController {
 		return new ModelAndView("redirect:/admin/notice/list?" + query);
 	}
 	
+	
+	
+	@RequestMapping(value = "/student/notice/list", method = RequestMethod.GET)
+	public ModelAndView studentNoticelist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// (학생)공지사항 리스트
+		NoticeDAO dao = new NoticeDAO();
+		MyUtil util = new MyUtil();
+		
+		ModelAndView mav = new ModelAndView("student/notice/list");
+		
+		try {
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if (page != null && !page.equals("") && !page.equals("null")) {
+			    current_page = Integer.parseInt(page);
+			}
+			page = String.valueOf(current_page);
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			String pageSize = req.getParameter("size");
+			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+			
+			int dataCount,  dataCount2 , total_page;
+			
+			if(kwd.length() != 0) {
+				dataCount = dao.dataCount(schType, kwd);
+			} else {
+				dataCount = dao.dataCount();
+			}
+			
+			if(kwd.length() != 0) {
+				dataCount2 = dao.dataCount2(schType, kwd);
+			} else {
+				dataCount2 = dao.dataCount2();
+			}			
+			
+			total_page = util.pageCount(dataCount, size);
+			
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page - 1) * size;
+			if(offset < 0) offset = 0;
+			
+			List<NoticeDTO> list;
+			if(kwd.length() != 0) {
+				list = dao.listNotice(offset, size, schType, kwd);
+			} else {
+				list = dao.listNotice(offset, size);
+			}
+			
+			// 공지글
+			List<NoticeDTO> listNotice = null;
+			if(current_page == 1) {
+				listNotice = dao.listNotice();
+			}
+			
+			long gap;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime today = LocalDateTime.now();
+			for (NoticeDTO dto : list) {
+				LocalDateTime dateTime = LocalDateTime.parse(dto.getReg_date(), formatter);
+				gap = dateTime.until(today, ChronoUnit.HOURS);
+				dto.setGap(gap);
+
+				dto.setReg_date(dto.getReg_date().substring(0, 10));
+			}
+			
+			
+			String cp = req.getContextPath();
+			String query = "size=" + size;
+			String listUrl;
+			String articleUrl;
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			listUrl = cp + "/student/notice/list?" + query;
+			articleUrl = cp + "/student/notice/article?page=" + current_page + "&" + query;
+			
+			String paging = util.paging(current_page, total_page, listUrl);
+			
+			// 포워딩 jsp에 전달할 데이터
+			mav.addObject("list", list);
+			mav.addObject("listNotice", listNotice);
+			mav.addObject("articleUrl", articleUrl);
+			mav.addObject("dataCount", dataCount);
+			mav.addObject("dataCount2", dataCount2);
+			mav.addObject("size", size);
+			mav.addObject("page", current_page);
+			mav.addObject("total_page", total_page);
+			mav.addObject("paging", paging);
+			mav.addObject("schType", schType);
+			mav.addObject("kwd", kwd);
+						
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return mav;	
+	}
+	
+	@RequestMapping(value = "/student/notice/article", method = RequestMethod.GET)
+	public ModelAndView studentNoticeArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 글보기
+		NoticeDAO dao = new NoticeDAO();
+		MyUtil util = new MyUtil();
+		
+		HttpSession session = req.getSession();
+		
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+		
+		try {
+			long notice_id = Long.parseLong(req.getParameter("notice_id"));
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+	        @SuppressWarnings("unchecked")
+	        Set<Long> viewed = (Set<Long>) session.getAttribute("viewedNotice");
+	        if (viewed == null) {
+	            viewed = new HashSet<>();
+	        }
+			
+			NoticeDTO dto = dao.findById(notice_id);
+			if(dto == null) {
+				return new ModelAndView("redirect:/student/notice/list?" + query);
+			}
+			
+			NoticeDTO prevDto = dao.findByPrev(dto.getNotice_id(), schType, kwd);
+			NoticeDTO nextDto = dao.findByNext(dto.getNotice_id(), schType, kwd);
+			
+			List<NoticeDTO> listFile = dao.listNoticeFile(notice_id);
+			
+			ModelAndView mav = new ModelAndView("student/notice/article");
+			
+			mav.addObject("dto", dto);
+			mav.addObject("prevDto", prevDto);
+			mav.addObject("nextDto", nextDto);
+			mav.addObject("listFile", listFile);
+			mav.addObject("query", query);
+			mav.addObject("page", page);
+			mav.addObject("size", size);
+			
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:/student/notice/list?" + query);
+	
+	}
+	
+	@RequestMapping(value = "/student/notice/download", method = RequestMethod.GET)
+	public void studentNoticDownload(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 파일 다운로드
+		// 넘어온 파라미터 : 파일번호
+		NoticeDAO dao = new NoticeDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "notice";
+		
+		boolean b = false;
+
+		try {
+			long fileNum = Long.parseLong(req.getParameter("fileNum"));
+
+			NoticeDTO dto = dao.findByFileId(fileNum);
+			if (dto != null) {
+				b = fileManager.doFiledownload(dto.getSave_filename(), dto.getOriginal_filename(), pathname, resp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if ( ! b ) {
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print("<script>alert('파일다운로드가 실패 했습니다.');history.back();</script>");
+		}
+	}
+	
+	
+	@RequestMapping(value = "/professor/notice/list", method = RequestMethod.GET)
+	public ModelAndView profNoticeList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// (교수)공지사항 리스트
+		NoticeDAO dao = new NoticeDAO();
+		MyUtil util = new MyUtil();
+		
+		ModelAndView mav = new ModelAndView("professor/notice/list");
+		
+		try {
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if (page != null && !page.equals("") && !page.equals("null")) {
+			    current_page = Integer.parseInt(page);
+			}
+			page = String.valueOf(current_page);
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			String pageSize = req.getParameter("size");
+			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+			
+			int dataCount,  dataCount2 , total_page;
+			
+			if(kwd.length() != 0) {
+				dataCount = dao.dataCount(schType, kwd);
+			} else {
+				dataCount = dao.dataCount();
+			}
+			
+			if(kwd.length() != 0) {
+				dataCount2 = dao.dataCount2(schType, kwd);
+			} else {
+				dataCount2 = dao.dataCount2();
+			}			
+			
+			total_page = util.pageCount(dataCount, size);
+			
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page - 1) * size;
+			if(offset < 0) offset = 0;
+			
+			List<NoticeDTO> list;
+			if(kwd.length() != 0) {
+				list = dao.listNotice(offset, size, schType, kwd);
+			} else {
+				list = dao.listNotice(offset, size);
+			}
+			
+			// 공지글
+			List<NoticeDTO> listNotice = null;
+			if(current_page == 1) {
+				listNotice = dao.listNotice();
+			}
+			
+			long gap;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime today = LocalDateTime.now();
+			for (NoticeDTO dto : list) {
+				LocalDateTime dateTime = LocalDateTime.parse(dto.getReg_date(), formatter);
+				gap = dateTime.until(today, ChronoUnit.HOURS);
+				dto.setGap(gap);
+
+				dto.setReg_date(dto.getReg_date().substring(0, 10));
+			}
+			
+			
+			String cp = req.getContextPath();
+			String query = "size=" + size;
+			String listUrl;
+			String articleUrl;
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			listUrl = cp + "/professor/notice/list?" + query;
+			articleUrl = cp + "/professor/notice/article?page=" + current_page + "&" + query;
+			
+			String paging = util.paging(current_page, total_page, listUrl);
+			
+			// 포워딩 jsp에 전달할 데이터
+			mav.addObject("list", list);
+			mav.addObject("listNotice", listNotice);
+			mav.addObject("articleUrl", articleUrl);
+			mav.addObject("dataCount", dataCount);
+			mav.addObject("dataCount2", dataCount2);
+			mav.addObject("size", size);
+			mav.addObject("page", current_page);
+			mav.addObject("total_page", total_page);
+			mav.addObject("paging", paging);
+			mav.addObject("schType", schType);
+			mav.addObject("kwd", kwd);
+						
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return mav;	
+	}
+	
+	@RequestMapping(value = "/professor/notice/article", method = RequestMethod.GET)
+	public ModelAndView profNoticeArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 글보기
+		NoticeDAO dao = new NoticeDAO();
+		MyUtil util = new MyUtil();
+		
+		HttpSession session = req.getSession();
+		
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+		
+		try {
+			long notice_id = Long.parseLong(req.getParameter("notice_id"));
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+	        @SuppressWarnings("unchecked")
+	        Set<Long> viewed = (Set<Long>) session.getAttribute("viewedNotice");
+	        if (viewed == null) {
+	            viewed = new HashSet<>();
+	        }
+			
+			NoticeDTO dto = dao.findById(notice_id);
+			if(dto == null) {
+				return new ModelAndView("redirect:/professor/notice/list?" + query);
+			}
+			
+			NoticeDTO prevDto = dao.findByPrev(dto.getNotice_id(), schType, kwd);
+			NoticeDTO nextDto = dao.findByNext(dto.getNotice_id(), schType, kwd);
+			
+			List<NoticeDTO> listFile = dao.listNoticeFile(notice_id);
+			
+			ModelAndView mav = new ModelAndView("professor/notice/article");
+			
+			mav.addObject("dto", dto);
+			mav.addObject("prevDto", prevDto);
+			mav.addObject("nextDto", nextDto);
+			mav.addObject("listFile", listFile);
+			mav.addObject("query", query);
+			mav.addObject("page", page);
+			mav.addObject("size", size);
+			
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:/professor/notice/list?" + query);
+	
+	}
+	
+	@RequestMapping(value = "/professor/notice/download", method = RequestMethod.GET)
+	public void profNoticeDownload(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 파일 다운로드
+		// 넘어온 파라미터 : 파일번호
+		NoticeDAO dao = new NoticeDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "notice";
+		
+		boolean b = false;
+
+		try {
+			long fileNum = Long.parseLong(req.getParameter("fileNum"));
+
+			NoticeDTO dto = dao.findByFileId(fileNum);
+			if (dto != null) {
+				b = fileManager.doFiledownload(dto.getSave_filename(), dto.getOriginal_filename(), pathname, resp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if ( ! b ) {
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print("<script>alert('파일다운로드가 실패 했습니다.');history.back();</script>");
+		}
+	}
+	
+	
+	
+	
 }

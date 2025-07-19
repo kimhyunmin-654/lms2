@@ -17,7 +17,7 @@
 </header>
 
 <main>
-    <jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
+    <jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
 
     <div class="container" style="margin-left: 220px; padding: 30px;">
         <div class="row justify-content-center">
@@ -56,7 +56,7 @@
                         <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">첨부파일</div>
                         <div class="col-sm-10 bg-white py-3">
                             <c:forEach var="vo" items="${listFile}" varStatus="status">
-                                <a href="${pageContext.request.contextPath}/student/notice/download?fileNum=${vo.file_id}">
+                                <a href="${pageContext.request.contextPath}/professor/notice/download?fileNum=${vo.file_id}">
                                     ${vo.original_filename}
                                 </a>
                                 <c:if test="${!status.last}"> | </c:if>
@@ -71,7 +71,7 @@
 				            <strong>이전글:</strong>
 				            <c:choose>
 				                <c:when test="${not empty prevDto}">
-				                    <a href="${pageContext.request.contextPath}/student/notice/article?notice_id=${prevDto.notice_id}&${query}" class="text-decoration-none">
+				                    <a href="${pageContext.request.contextPath}/professor/notice/article?notice_id=${prevDto.notice_id}&${query}" class="text-decoration-none">
 				                        ${prevDto.subject}
 				                    </a>
 				                </c:when>
@@ -83,7 +83,7 @@
 				            <strong>다음글:</strong>
 				            <c:choose>
 				                <c:when test="${not empty nextDto}">
-				                    <a href="${pageContext.request.contextPath}/student/notice/article?notice_id=${nextDto.notice_id}&${query}" class="text-decoration-none">
+				                    <a href="${pageContext.request.contextPath}/professor/notice/article?notice_id=${nextDto.notice_id}&${query}" class="text-decoration-none">
 				                        ${nextDto.subject}
 				                    </a>
 				                </c:when>
@@ -94,7 +94,7 @@
 				</div>
 
     
-                    <a href="${pageContext.request.contextPath}/student/notice/list?${query}" class="btn btn-secondary">목록</a>
+                    <a href="${pageContext.request.contextPath}/professor/notice/list?${query}" class="btn btn-secondary">목록</a>
                 </div>
 
             </div>

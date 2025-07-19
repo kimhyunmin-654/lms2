@@ -18,7 +18,7 @@
 
 
 <main>
-    <jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
+    <jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
 
     <div class="container" style="margin-left: 220px; padding: 30px;">
         <div class="row">
@@ -105,7 +105,7 @@
 					<div class="row board-list-footer justify-content-between align-items-center mt-3">
 					    <div class="col-auto">
 					        <button type="button" class="btn btn-light"
-					            onclick="location.href='${pageContext.request.contextPath}/student/notice/list';"
+					            onclick="location.href='${pageContext.request.contextPath}/professor/notice/list';"
 					            title="새로고침">새로고침</button>
 					    </div>
 					
@@ -154,7 +154,7 @@ function changeList() {
     const f = document.pageSizeForm;
     const formData = new FormData(f);
     const params = new URLSearchParams(formData).toString();
-    location.href = '${pageContext.request.contextPath}/student/notice/list?' + params;
+    location.href = '${pageContext.request.contextPath}/professor/notice/list?' + params;
 }
 
 // 검색
@@ -164,7 +164,7 @@ function searchList() {
 
     const formData = new FormData(f);
     const params = new URLSearchParams(formData).toString();
-    location.href = '${pageContext.request.contextPath}/student/notice/list?' + params;
+    location.href = '${pageContext.request.contextPath}/professor/notice/list?' + params;
 }
 </script>
 
