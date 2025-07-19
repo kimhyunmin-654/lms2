@@ -20,7 +20,16 @@ public class MemberDTO {
 	private String addr2; // 상세 주소
 	private String position;
 	private String division;
+	private String department_name;
 	
+	
+	
+	public String getDepartment_name() {
+		return department_name;
+	}
+	public void setDepartment_name(String department_name) {
+		this.department_name = department_name;
+	}
 	public String getMember_id() {
 		return member_id;
 	}
