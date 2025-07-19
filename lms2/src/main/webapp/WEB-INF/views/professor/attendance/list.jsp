@@ -48,12 +48,12 @@
 							onclick="location.href='${pageContext.request.contextPath}/professor/attendance/list?lecture_code=${lecture_code}'">새로고침</button>
 					</div>
 					<div class="col text-end mt-2">
-						<button type="submit" class="btn btn-light">출석관리</button>
+						<button type="submit" class="btn btn-light" onclick="goToWrite()">출석관리</button>
 					</div>
 
-					<select class="form-select" name="week" id="week-select">
+					<select class="form-select" name="week" id="week-select" onchange="changeWeek()">
 						<c:forEach var="i" begin="1" end="15">
-							<option value="${i}" ${i == 1 ? "selected" : ""}>${i}주차</option>
+							<option value="${i}" ${i == selectedWeek ? "selected" : ""}>${i}주차</option>
 						</c:forEach>
 					</select>
 
@@ -87,7 +87,7 @@
 										</c:when>
 										<c:otherwise>
 											<div
-												style="width: 50px; height: 20px; background-color: black; border-radius: 3px;">미체크</div>
+												style="width: 50px; height: 20px; background-color: pink; border-radius: 3px;">미체크</div>
 										</c:otherwise>
 									</c:choose></td>
 							</tr>
@@ -104,7 +104,15 @@
 	<script
 		src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>
 	<script type="text/javascript">
-		
+	function changeWeek() {
+	    const selectedWeek = document.getElementById('week-select').value;
+	    location.href = '${pageContext.request.contextPath}/professor/attendance/list?lecture_code=${lecture_code}&week=' + selectedWeek;
+	}
+	
+	function goToWrite() {
+	    const selectedWeek = document.getElementById('week-select').value;
+	    location.href = '${pageContext.request.contextPath}/professor/attendance/write?lecture_code=${lecture_code}&week=' + selectedWeek;
+	}
 	</script>
 </body>
 </html>

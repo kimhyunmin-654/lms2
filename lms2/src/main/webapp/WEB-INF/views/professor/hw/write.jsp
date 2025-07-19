@@ -27,7 +27,7 @@
 					</div>
 					
 					<div class="body-main">
-						<form name="hwForm" action="${pageContext.request.contextPath}/professor/hw/${mode}" method="post">
+						<form name="hwForm" action="${pageContext.request.contextPath}/professor/hw/${mode}" method="post" enctype="multipart/form-data">
 
 							<table class="table">
 								<tr>
@@ -65,9 +65,23 @@
 									<td>업로드파일
 									</td>
 									<td>
-										<input type="text" disabled>
+										<input type="file" name="selectFile" class="form-control">
 									</td>
 								</tr>
+								<c:if test="${mode=='update'}">
+									<tr>
+										<td class="bg-light col-sm-2" scope="row">업로드파일</td>
+										<td> 
+											<p class="form-control-plaintext">
+												<c:if test="${not empty dto.save_filename}">
+													<a href="javascript:deleteFile('${dto.file_id}');"></a>
+													${dto.original_filename}
+												</c:if>
+												&nbsp;
+											</p>
+										</td>
+									</tr>
+								</c:if>
 								
 								<tr>
 									<td>내용

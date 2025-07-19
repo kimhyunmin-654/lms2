@@ -3,6 +3,7 @@ package com.lms2.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.lms2.model.MemberDTO;
 import com.lms2.util.DBConn;
@@ -61,5 +62,91 @@ public class MemberDAO {
 		}
 		
 		return dto;
+	}
+	
+	public MemberDTO findById(String member_id) {
+		MemberDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT member_id, name, password, phone, email, birth, addr1, addr2, zip "
+					+ " FROM member "
+					+ " WHERE member_id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member_id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new MemberDTO();
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setName(rs.getString("name"));
+				dto.setPassword(rs.getString("password"));
+				dto.setRole(rs.getInt("role"));
+				dto.setCreate_date(rs.getString("create_date"));
+				dto.setModify_date(rs.getString("modify_date"));
+				dto.setAvatar(rs.getString("avatar"));
+				dto.setEmail(rs.getString("email"));
+				if(dto.getEmail() != null) {
+					String[] ss = dto.getEmail().split("@");
+					if(ss.length == 2) {
+						dto.setEmail1(ss[0]);
+						dto.setEmail2(ss[1]);
+					}
+				}
+				dto.setPhone(rs.getString("phone"));
+				dto.setBirth(rs.getString("birth"));
+				dto.setAddr1(rs.getString("addr1"));
+				dto.setAddr2(rs.getString("addr2"));
+				dto.setZip(rs.getString("zip"));				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return dto;
+	}
+	
+	public void updateMember(MemberDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			conn.setAutoCommit(false);
+			
+			sql = "UPDATE member SET name = ?, password = ?, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ?, zip = ? "
+					+ "WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getPassword());
+			pstmt.setString(3, dto.getAvatar());
+			pstmt.setString(4, dto.getEmail());
+			pstmt.setString(5, dto.getPhone());
+			pstmt.setString(6, dto.getBirth());
+			pstmt.setString(7, dto.getAddr1());
+			pstmt.setString(8, dto.getAddr2());
+			pstmt.setString(9, dto.getZip());
+			pstmt.setString(10, dto.getMember_id());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			conn.commit();
+		} catch (Exception e) {
+			DBUtil.rollback(conn);
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+			try {
+				conn.setAutoCommit(true);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 	}
 }

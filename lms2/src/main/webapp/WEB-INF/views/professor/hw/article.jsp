@@ -9,6 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 	<header>
@@ -60,8 +61,14 @@
 								</tr>
 
 								<tr>
+								<c:if test="${not empty dto.save_filename}">
 									<td width="150px" align="justify">파일명</td>
-									<td align="left">첨부파일이름.pdf</td>
+									<td>
+										<div>
+											<i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/homework/download?homework_id=${dto.homework_id}">${dto.original_filename}</a>
+										</div>
+									</td>
+									</c:if>
 								</tr>
 
 								<tr>
@@ -83,7 +90,8 @@
 
 						<table class="table table-borderless mb-2">
 							<tr>
-								<td width="50%"><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/update?homework_id=${dto.homework_id}&page=${page}';">수정</button>
+								<td width="10%"><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/update?homework_id=${dto.homework_id}&page=${page}';">수정</button>
+								<td width="10%"><button type="button" class="btn btn-light" onclick="Delete('${dto.homework_id}', '${page}');">삭제</button>
 								<td class="text-end">
 									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/list?${query}';">리스트</button>
 								</td>
@@ -133,6 +141,11 @@
 			
 			$.ajax(url, settings);
 	
+		}
+		function Delete(homework_id, page) {
+			if(confirm('삭제 하시겠습니까?')) {
+				location.href = '${pageContext.request.contextPath}/professor/hw/delete?homework_id=' + homework_id + '&page=' + page;
+			}
 		}
 	</script>
 </body>

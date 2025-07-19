@@ -19,6 +19,7 @@ public class Pro_hwDAO {
 	public int inserthw(Pro_hwDTO dto) throws SQLException {
 		int hwId = 0;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		String sql;
 		
 		try {
@@ -30,13 +31,35 @@ public class Pro_hwDAO {
 			pstmt.setString(2, dto.getContent());
 			pstmt.setString(3, dto.getDeadline_date());
 			pstmt.setString(4, dto.getLecture_code());
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        sql = "SELECT HOMEWORK_SEQ.CURRVAL FROM dual";
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+	        if(rs.next()) {
+	        	hwId = rs.getInt(1);
+	        }
+	        rs.close();
+	        pstmt.close();
+	        
 			
-			pstmt.executeUpdate();
+			if(dto.getOriginal_filename() != null && dto.getSave_filename() != null) {
+				sql = "INSERT INTO homework_file(file_id, save_filename, original_filename, file_size, homework_id) "
+						+ " VALUES(HOMEWORK_FILE_SEQ.NEXTVAL, ?, ?, ?, ?)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, dto.getSave_filename());
+				pstmt.setString(2, dto.getOriginal_filename());
+				pstmt.setInt(3, dto.getFile_size());
+				pstmt.setInt(4, hwId);
+				pstmt.executeUpdate();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
 			DBUtil.close(pstmt);
+			DBUtil.close(rs);
 		}
 		return hwId;
 	}
@@ -76,16 +99,14 @@ public class Pro_hwDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT COUNT (*) FROM homework";
-			if(schType.equals("all")) {
-				sql += " AND (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1) ";
-			} else if (schType.equals("reg_date")) {
-				kwd = kwd.replaceAll("(\\-|\\.|\\/)", "");
-				sql += " AND TO_CHAR(reg_date, 'YYYYMMDD' = ? ";
-			} else {
-				sql += " AND INSTR(" + schType + ", ?) >= 1 ";
-			}
-			
+	        if (schType.equals("all")) {
+	            sql = "SELECT COUNT(*) FROM homework WHERE (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1)";
+	        } else if (schType.equals("reg_date")) {
+	            kwd = kwd.replaceAll("(\\-|\\.|\\/)", ""); // yyyyMMdd 형태로 정규화
+	            sql = "SELECT COUNT(*) FROM homework WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ?";
+	        } else {
+	            sql = "SELECT COUNT(*) FROM homework WHERE INSTR(" + schType + ", ?) >= 1";
+	        }
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, kwd);
@@ -115,9 +136,13 @@ public class Pro_hwDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT homework_id, subject, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, hit_count, TO_CHAR(deadline_date, 'YYYY-MM-DD') deadline_date ");
-			sb.append(" FROM homework");
-			sb.append(" ORDER BY homework_id DESC ");
+			sb.append(" SELECT h.homework_id, h.subject, ");
+			sb.append(" TO_CHAR(h.reg_date, 'YYYY-MM-DD') reg_date, ");
+			sb.append(" h.hit_count, TO_CHAR(h.deadline_date, 'YYYY-MM-DD') AS deadline_date, ");
+			sb.append(" f.save_filename, f.original_filename ");
+			sb.append(" FROM homework h ");
+			sb.append(" LEFT JOIN homework_file f ON h.homework_id = f.homework_id ");
+			sb.append(" ORDER BY h.homework_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
@@ -134,6 +159,9 @@ public class Pro_hwDAO {
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setDeadline_date(rs.getString("deadline_date"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
+				
 				list.add(dto);
 			}
 		} catch (Exception e) {
@@ -154,22 +182,24 @@ public class Pro_hwDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT homework_id, subject, TO_CHAR(reg_date, 'YYYYMMDD') reg_date, hitcount ");
-			sb.append(" FROM homework ");
+			sb.append(" SELECT h.homework_id, h.subject, TO_CHAR(reg_date, 'YYYYMMDD') reg_date, h.hit_count, ");
+			sb.append(" f.save_filename, f.original_filename ");
+			sb.append(" FROM homework h ");
+			sb.append(" LEFT JOIN homework_file f ON h.homework_id = f.homework_id ");
+			
 			if(schType.equals("all")) {
 				sb.append(" WHERE INSTR(subject, ?) >= 1 ");
 			} else if (schType.equals("reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
 				sb.append(" WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ? ");
 			} else {
-				sb.append(" WHERE INSTR(" + schType + ", ?) >= 1 ");
+				sb.append(" WHERE INSTR(h." + schType + ", ?) >= 1 ");
 			}
 			
-			sb.append(" ORDER BY homework_id DESC ");
+			sb.append(" ORDER BY h.homework_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
-			
 			if(schType.equals("all")) {
 				pstmt.setString(1, kwd);
 				pstmt.setInt(2, offset);
@@ -189,6 +219,8 @@ public class Pro_hwDAO {
 				dto.setSubject(rs.getString("subject"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHit_count(rs.getInt("hit_count"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
 				
 				list.add(dto);
 			}
@@ -230,9 +262,13 @@ public class Pro_hwDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT h.homework_id, h.subject, h.content, h.hit_count, TO_CHAR(h.reg_date, 'YYYYMMDD') reg_date, h.deadline_date, l.subject AS lecture_subject, l.member_id "
+			sql = "SELECT h.homework_id, h.subject, h.content, h.hit_count, "
+					+ " TO_CHAR(h.reg_date, 'YYYYMMDD') reg_date, h.deadline_date, "
+					+ " NVL(l.subject, '강의없음') AS lecture_subject, "
+					+ " f.save_filename, f.original_filename, f.file_size "
 					+ " FROM homework h "
-					+ " JOIN LECTURE l ON h.lecture_code = l.lecture_code "
+					+ " LEFT JOIN LECTURE l ON h.lecture_code = l.lecture_code "
+					+ " LEFT JOIN homework_file f ON h.homework_id = f.homework_id "
 					+ " WHERE h.homework_id = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -249,7 +285,9 @@ public class Pro_hwDAO {
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setDeadline_date(rs.getString("deadline_date"));
 				dto.setLecture_code(rs.getString("lecture_subject"));
-				dto.setMember_id(rs.getString("member_id"));
+				dto.setSave_filename(rs.getString("save_filename"));
+				dto.setOriginal_filename(rs.getString("original_filename"));
+				dto.setFile_size(rs.getInt("file_size"));				
 				
 			}
 		} catch (Exception e) {

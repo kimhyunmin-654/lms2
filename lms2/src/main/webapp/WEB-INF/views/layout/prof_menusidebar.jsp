@@ -39,7 +39,7 @@
 				</h2>
 				<div id="collapseOne" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/lecture/compList">강의 목록</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/lecture/compList?lecture_code=${dto.lecture_code}">강의 목록</a></div>
 					<div class="accordion-body custom-submenu">수업 일정</div>
 				</div>
 			</div>
@@ -52,11 +52,11 @@
 				</h2>
 				<div id="collapseTwo" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/hw/list">과제</a></div>
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/bbs/list">자료실</a></div>
-					<div class="accordion-body custom-submenu">수강생 관리</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/hw/list?lecture_code=${dto.lecture_code}">과제</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/bbs/list?lecture_code=${dto.lecture_code}">자료실</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/member/list?lecture_code=${dto.lecture_code}">수강생 관리</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}">성적 관리</a></div>
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/attendance/list?lecture_code=${lecture_code}">출석 관리</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/attendance/list?lecture_code=${dto.lecture_code}">출석 관리</a></div>
 				</div>
 			</div>
 			

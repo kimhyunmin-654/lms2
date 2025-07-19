@@ -1,5 +1,6 @@
 package com.lms2.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,12 +11,15 @@ import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.view.ModelAndView;
+import com.lms2.util.FileManager;
+import com.lms2.util.MyMultipartFile;
 import com.lms2.util.MyUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class ProhwController {
@@ -107,11 +111,16 @@ public class ProhwController {
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글쓰기 완료
 		Pro_hwDAO dao = new Pro_hwDAO();
+		FileManager fileManager = new FileManager();
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "homework";
+		
 		try {
+			Part p = req.getPart("selectFile");
 			Pro_hwDTO dto = new Pro_hwDTO();
 			
 			dto.setMember_id(info.getMember_id());
@@ -120,7 +129,14 @@ public class ProhwController {
 			dto.setContent(req.getParameter("content"));
 			dto.setDeadline_date(req.getParameter("deadline_date"));
 			dto.setLecture_code(req.getParameter("lecture_code"));
+			
+			MyMultipartFile multiFile = fileManager.doFileUpload(p, pathname);
+			if(multiFile != null) {
+				dto.setSave_filename(multiFile.getSaveFilename());
+				dto.setOriginal_filename(multiFile.getOriginalFilename());
+			}
 			dao.inserthw(dto);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -212,7 +228,7 @@ public class ProhwController {
 
 			}
 			
-			ModelAndView mav = new ModelAndView("hw/write");
+			ModelAndView mav = new ModelAndView("/professor/hw/write");
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
@@ -289,6 +305,34 @@ public class ProhwController {
 		
 		return new ModelAndView("redirect:/professor/hw/list?" + query);
 		
+	}
+	
+	@RequestMapping(value = "/homework/download")
+	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Pro_hwDAO dao = new Pro_hwDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "homework";
+		
+		boolean b = false;
+		
+		try {
+			int homework_id = Integer.parseInt(req.getParameter("homework_id"));
+			
+			Pro_hwDTO dto = dao.findById(homework_id);
+			if(dto != null) {
+				b = fileManager.doFiledownload(dto.getSave_filename(), dto.getOriginal_filename(), pathname, resp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(!b) {
+			resp.sendRedirect(req.getContextPath() + "/professor/hw/list");
+
+		}
 	}
 		
 }

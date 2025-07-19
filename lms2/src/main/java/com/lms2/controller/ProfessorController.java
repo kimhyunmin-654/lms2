@@ -13,6 +13,7 @@ import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.ProfessorDAO;
 import com.lms2.model.DataDTO;
+import com.lms2.model.DeparmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.NoticeDTO;
@@ -118,8 +119,14 @@ public class ProfessorController {
 	public ModelAndView wirteForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("admin/professor/write");
-		mav.addObject("mode", "write");
-		return mav;
+		ProfessorDAO professorDao = new ProfessorDAO();
+		
+		 List<DeparmentDTO> listDepartment = professorDao.listDepartment();
+		    
+		 mav.addObject("listDepartment", listDepartment);
+		 mav.addObject("mode", "write");
+		    
+		 return mav;
 	}
 	
 	// 교수 등록
@@ -407,7 +414,7 @@ public class ProfessorController {
 			}
 			
 			// 정보수정 화면
-			ModelAndView mav = new ModelAndView("admin/professor/account");
+			ModelAndView mav = new ModelAndView("admin/professor/write");
 			
 			mav.addObject("dto", dto);
 			mav.addObject("mode", "update");
@@ -427,14 +434,16 @@ public class ProfessorController {
 	    String member_id = req.getParameter("member_id");
 	    ProfessorDAO dao = new ProfessorDAO();
 	    ProfessorDTO dto = dao.findById(member_id);
+	    
+	    List<DeparmentDTO> listDepartment = dao.listDepartment();
 
 	    if (dto == null) {
 	        return new ModelAndView("redirect:/admin/professor/list");
 	    }
-
-	    ModelAndView mav = new ModelAndView("admin/professor/account");
-	    mav.addObject("dto", dto);
 	    
+	    ModelAndView mav = new ModelAndView("admin/professor/write");
+	    mav.addObject("dto", dto);   
+	    mav.addObject("listDepartment", listDepartment);
 	    mav.addObject("page", req.getParameter("page"));
 	    mav.addObject("size", req.getParameter("size"));
 
@@ -498,6 +507,7 @@ public class ProfessorController {
 		}
 		
 		return new ModelAndView("redirect:/admin/professor/list");
+		
 		
 	}
 	
