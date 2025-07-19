@@ -14,18 +14,18 @@
 <body>
 	<div class="text-white p-3 position-fixed blackbox2">
 		<div class="accordion accordion-flush" id="sidebarAccordion">
+			<c:out value="${lectureList}" />
 			<form>
-			    <select name="lecture_code" id="lesson-select" onchange="location.href=this.value;">
+			    <select name="lesson" id="lesson-select">
 			        <option value="">-- 강의 선택 --</option>
 			
 			        <c:if test="${empty lectureList}">
 			            <option disabled>강의 없음</option>
 			        </c:if>
 			
-			        <c:forEach var="dto" items="${lectureList}">
-			            <option value="${pageContext.request.contextPath}/professor/lecture/main1?lecture_code=${dto.lecture_code}" 
-			                <c:if test="${dto.lecture_code == lecture_code}">selected</c:if>>
-			                ${dto.subject}
+			        <c:forEach var="lecture" items="${lectureList}">
+			            <option value="${lecture.lecture.lecture_code}">
+			                ${lecture.lecture.subject}
 			            </option>
 			        </c:forEach>
 			    </select>

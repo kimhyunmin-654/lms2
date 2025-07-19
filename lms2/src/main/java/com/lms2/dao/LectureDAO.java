@@ -548,5 +548,36 @@ public class LectureDAO {
 			return list;
 		}
 		
+		public List<LectureDTO> studentListSidebar(String member_id) throws SQLException {
+		    List<LectureDTO> list = new ArrayList<>();
+		    PreparedStatement pstmt = null;
+		    ResultSet rs = null;
+
+		    try {
+		        // 수정된 SQL: 수강신청 테이블과 강의 테이블을 조인
+		        String sql = "SELECT l.lecture_code, l.subject, l.member_id " +
+		                    "FROM LECTURE l " +
+		                    "JOIN COURSE_APPLICATION ca ON l.lecture_code = ca.lecture_code " + 
+		                    "WHERE ca.member_id = ? AND ca.status = '신청'";
+
+		        pstmt = conn.prepareStatement(sql);
+		        pstmt.setString(1, member_id);
+		        rs = pstmt.executeQuery();
+
+		        while (rs.next()) {
+		            LectureDTO dto = new LectureDTO();
+		            dto.setLecture_code(rs.getString("lecture_code"));
+		            dto.setSubject(rs.getString("subject"));
+		            dto.setMember_id(rs.getString("member_id")); // 이건 강사의 member_id
+		            list.add(dto);
+		        }
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    return list;
+		}
+		
 		
 }
