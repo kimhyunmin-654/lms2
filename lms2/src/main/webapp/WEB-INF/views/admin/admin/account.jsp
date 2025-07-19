@@ -139,7 +139,7 @@
 			<button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/admin/admin/list'; ">취소</button>
 			<input type="hidden" name="userIdValid" id="userIdValid" value="false">
 			<c:if test="${mode == 'update'}">
-    			<input type="hidden" name="profile_photo" value="${dto.avatar}">
+    			<input type="hidden" name="avatar" value="${dto.avatar}">
 		</c:if>
 		</div>
 
@@ -241,7 +241,7 @@ function sendOk() {
 	
 	p = /^[0-9]{4}$/;
 	str = f.member_id.value;
-	if( ! p.test(str) ) { 
+	if( ! (p.test(str) || str === "admin")) { 
 		alert('아이디를 다시 입력 하세요. ');
 		f.member_id.focus();
 		return;
@@ -266,7 +266,7 @@ function sendOk() {
 	
 	p =/^(?=.*[a-z])(?=.*[!@#$%^*+=-]|.*[0-9]).{5,10}$/i;
 	str = f.password.value;
-	if( ! p.test(str) ) { 
+	if( ! (p.test(str) || str === "admin") ) { 
 		alert('패스워드를 다시 입력 하세요. ');
 		f.password.focus();
 		return;
