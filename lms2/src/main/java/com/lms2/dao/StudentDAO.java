@@ -379,7 +379,7 @@ public class StudentDAO {
 				
 				pstmt.setString(1, dto.getMember_id());
 				pstmt.setString(2, dto.getLecture_code());
-				pstmt.execute();
+				pstmt.executeUpdate();
 				
 			} catch (Exception e) {
 				e.printStackTrace();

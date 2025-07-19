@@ -117,13 +117,8 @@ public class AttendanceController {
 			week = Integer.parseInt(weekStr);
 		}
 		
-		 System.out.println("=== 출석 등록 시작 ===");
-		    System.out.println("lecture_code: " + lecture_code);
-		    System.out.println("week: " + week);
-		
 		try {
 			String[] courseIds = req.getParameterValues("course_id");
-			  System.out.println("courseIds 개수: " + (courseIds != null ? courseIds.length : 0));
 
 			if (courseIds != null) {
 				for (String courseIdStr : courseIds) {
@@ -172,9 +167,9 @@ public class AttendanceController {
 			List<Attendance_recordDTO> list = dao.listAttendance(member_id);
 			mav.addObject("list", list);
 
-			int present = aDao.dataCount(member_id, 1); // 출석
-			int absent = aDao.dataCount(member_id, 0); // 결석
-			int late = aDao.dataCount(member_id, 2); // 지각
+			int present = aDao.dataCountAll(member_id, 1); // 출석
+			int absent = aDao.dataCountAll(member_id, 0); // 결석
+			int late = aDao.dataCountAll(member_id, 2); // 지각
 
 			mav.addObject("present", present);
 			mav.addObject("absent", absent);

@@ -165,23 +165,6 @@ public class AttendanceDAO {
 		return result;
 	}
 
-	// 전체 주차 (학생용)
-	public int dataCount(String member_id, int status) {
-		int result = 0;
-		String sql = "SELECT COUNT(*) FROM attendance_record WHERE member_id=? AND status=?";
-
-		try (Connection conn = DBConn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, member_id);
-			pstmt.setInt(2, status);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-			rs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
 
 	// 특정 강의의 특정 주차 출석 현황 조회 (전체 수강생 포함)
 	public List<Attendance_recordDTO> listAttendanceByWeek(String lecture_code, int week) {
@@ -232,6 +215,43 @@ public class AttendanceDAO {
 		}
 
 		return list;
+	}
+	
+	
+	// 전체 주차 (학생용)
+	public int dataCountAll(String member_id, int status) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		int result = 0;
+
+		try {
+				
+			sql = " SELECT COUNT(*) "
+					+ " FROM attendance_record r "
+					+ " JOIN COURSE_APPLICATION m ON r.course_id = m.course_id "
+					+ " JOIN STUDENT s ON m.member_id = s.member_id "
+					+ " WHERE s.member_id=? AND status=?";
+		
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member_id);
+			pstmt.setInt(2, status);
+			
+			rs = pstmt.executeQuery();
+				
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return result;
+
 	}
 
 }

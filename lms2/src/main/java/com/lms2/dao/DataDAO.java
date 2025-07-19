@@ -64,16 +64,17 @@ public class DataDAO {
 	}
 
 	// 데이터개수
-	public int dataCount() {
+	public int dataCount(String lecture_code) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT COUNT (*) FROM DATA";
+			sql = "SELECT COUNT (*) FROM DATA WHERE lecture_code = ? ";
 
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, lecture_code);
 
 			rs = pstmt.executeQuery();
 
@@ -92,27 +93,35 @@ public class DataDAO {
 	}
 
 	// 검색데이터 개수
-	public int dataCount(String schType, String kwd) {
+	public int dataCount(String schType, String kwd, String lecture_code) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT COUNT(*) FROM DATA WHERE 1 = 1";
+			sql = "SELECT COUNT(*) FROM DATA WHERE 1=1"; // <- 1=1 ????
+
 			if (schType.equals("all")) {
-				sql += " AND (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ";
+				sql += " AND (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1)";
 			} else if (schType.equals("reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\.|\\/)", "");
-				sql += " AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
+				sql += " AND TO_CHAR(reg_date, 'YYYYMMDD') = ?";
 			} else {
-				sql += " AND INSTR(" + schType + ", ?) >= 1 ";
+				sql += " AND INSTR(" + schType + ", ?) >= 1";
 			}
+			
+			sql += " AND lecture_code = ?";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, kwd);
+
 			if (schType.equals("all")) {
+				pstmt.setString(1, kwd);
 				pstmt.setString(2, kwd);
+				pstmt.setString(3, lecture_code);
+			} else {
+				pstmt.setString(1, kwd);
+				pstmt.setString(2, lecture_code);
 			}
 
 			rs = pstmt.executeQuery();
@@ -130,8 +139,9 @@ public class DataDAO {
 		return result;
 	}
 
+
 	// 자료실 리스트
-	public List<DataDTO> listData(int offset, int size) {
+	public List<DataDTO> listData(int offset, int size, String lecture_code) {
 		List<DataDTO> list = new ArrayList<DataDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -139,16 +149,19 @@ public class DataDAO {
 
 		try {
 			sb.append(" SELECT d.data_id, d.subject, TO_CHAR(d.reg_date, 'YYYY-MM-DD') reg_date, d.hit_count, ");
-			sb.append(" f.save_filename, f.original_filename ");
+			sb.append(" f.save_filename, f.original_filename, l.lecture_code ");
 			sb.append(" FROM DATA d ");
 			sb.append(" LEFT JOIN data_file f ON d.data_id = f.data_id ");
+			sb.append(" JOIN LECTURE l ON l.lecture_code = d.lecture_code ");
+			sb.append(" WHERE l.lecture_code = ?"); 
 			sb.append(" ORDER BY d.data_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 
-			pstmt.setInt(1, offset);
-			pstmt.setInt(2, size);
+			pstmt.setString(1, lecture_code);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 
 			rs = pstmt.executeQuery();
 
@@ -161,6 +174,7 @@ public class DataDAO {
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setSave_filename(rs.getString("save_filename"));
 				dto.setOriginal_filename(rs.getString("original_filename"));
+				dto.setLecture_code(rs.getString("lecture_code"));
 
 				list.add(dto);
 			}
@@ -174,7 +188,7 @@ public class DataDAO {
 		return list;
 	}
 
-	public List<DataDTO> listData(int offset, int size, String schType, String kwd) {
+	public List<DataDTO> listData(int offset, int size, String schType, String kwd, String lecture_code) {
 		List<DataDTO> list = new ArrayList<DataDTO>();
 
 		PreparedStatement pstmt = null;
@@ -186,6 +200,7 @@ public class DataDAO {
 			sb.append(" f.save_filename, f.original_filename ");
 			sb.append(" FROM DATA d ");
 			sb.append(" LEFT JOIN DATA_FILE f ON d.data_id = f.data_id ");
+			sb.append(" JOIN LECTURE l ON l.lecture_code = d.lecture_code ");
 
 			if (schType.equals("all")) {
 				sb.append(" WHERE INSTR(d.subject, ?) >= 1 ");
@@ -466,14 +481,14 @@ public class DataDAO {
 		String sql;
 		
 		try {
-			sql = "UPDATE data SET subject = ?, content = ?, modify_date = SYSDATE, lecture_code = ? "
-				+ " WHERE data_id = ?";
+			sql = "UPDATE data SET subject = ?, content = ?, modify_date = SYSDATE "
+				+ " WHERE data_id = ? AND lecture_code = ? ";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSubject());
 			pstmt.setString(2, dto.getContent());
-			pstmt.setString(3, dto.getLecture_code());
-			pstmt.setInt(4, dto.getData_id());
+			pstmt.setInt(3, dto.getData_id());
+			pstmt.setString(4, dto.getLecture_code());
 			
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -651,12 +666,12 @@ public class DataDAO {
 	}
 	
 	// 강의코드 - 강의명
-	public List<DataDTO> listLectureByMember(String member_id) {
+	public List<DataDTO> listLectureByMember(String member_id, String lecture_code) {
 		List<DataDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT lecture_code, subject FROM lecture WHERE member_id = ?";
+		String sql = "SELECT lecture_code, subject FROM lecture WHERE member_id = ? ";
 
 		try {
 			pstmt = conn.prepareStatement(sql);

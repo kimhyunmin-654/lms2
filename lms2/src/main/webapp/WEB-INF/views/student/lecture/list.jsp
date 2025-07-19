@@ -39,41 +39,41 @@
 						src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
 				</div>
 				
-				<table class="table table-hover board-list">
-					<thead class="table-light">
-						<tr>
-							<th width="">번호</th>
-							<th>강의명</th>
-							<th width="">교수명</th>
-							<th width="">학년</th>
-							<th width="">강의실</th>
-							<th width="">학점</th>
-							<th width=""></th>
-						</tr>
-					</thead>
+				<form method="post" name="insertForm">
+					<input type="hidden" name="lecture_code" id="lecture_code" />
+				</form>
+				
+					<table class="table table-hover board-list">
+						<thead class="table-light">
+							<tr>
+								<th width="">번호</th>
+								<th>강의명</th>
+								<th width="">교수명</th>
+								<th width="">학년</th>
+								<th width="">강의실</th>
+								<th width="">학점</th>
+								<th width=""></th>
+							</tr>
+						</thead>
 
-					<tbody>
-					  <c:forEach var="dto" items="${list}" varStatus="status">
-					    <tr>
-					      <td>${status.index + 1}</td>
-					      <td>
-					        <a href="${pageContext.request.contextPath}/professor/lecture/main1?lecture_code=${dto.lecture_code}">
-					          ${dto.subject}
-					        </a>
-					      </td>
-					      <td>${dto.name}</td>
-					      <td>${dto.grade}</td>
-					      <td>${dto.classroom}</td>
-					      <td>${dto.credit}</td>
-					      <td>
-					        <button class="btn btn-sm btn-primary" onclick="okSend()">신청</button>
-					      </td>
-					    </tr>
-					  </c:forEach>
-					</tbody>
-					
-				</table>
+						<tbody>
+							<c:forEach var="dto" items="${list}" varStatus="status">
+								<tr>
+									<td>${status.index + 1}</td>
+									<td>${dto.subject}</td>
+									<td>${dto.name}</td>
+									<td>${dto.grade}</td>
+									<td>${dto.classroom}</td>
+									<td>${dto.credit}</td>
+									<td>
+										<button type="button" onclick="okSend('${dto.lecture_code}')">신청</button>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
 
+					</table>
+				
 
 				<div class="page-navigation">${dataCount == 0 ? "등록된 강의가 없습니다." : paging}
 				</div>
@@ -94,16 +94,16 @@
 		src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>
 	<script type="text/javascript">
 		// 수강신청하기
-		function okSend() {
-			
-			if(confirm('수강 신청하시겠습니까?')) {
-				return;
-			}
-			const f = document.insertForm;
-			
-			f.action = '${pageContext.request.contextPath}/student/lecture/list';
-			f.submit();
+		function okSend(lecture_code) {
+		    if (confirm('수강 신청하시겠습니까?')) {
+		        document.getElementById('lecture_code').value = lecture_code;
+		        const form = document.insertForm;
+		        form.action = '${pageContext.request.contextPath}/student/lecture/account';
+		        form.submit();
+		    }
 		}
+
+
 	</script>
 </body>
 </html>

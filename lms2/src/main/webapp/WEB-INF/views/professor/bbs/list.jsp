@@ -24,7 +24,9 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp">
+			<jsp:param name="lecture_code" value="${lecture_code}" />
+		</jsp:include>
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
@@ -40,6 +42,7 @@
 							<th>제목</th>
 							<th width="200">등록일</th>
 							<th width="100">첨부파일</th>
+							<th width="">조회수</th>
 						</tr>
 					</thead>
 
@@ -60,6 +63,9 @@
 										</div>
 									</c:if>
 								</td>
+								<td>
+									${dto.hit_count}
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -70,10 +76,11 @@
 
 				<div class="row board-list-footer">
 					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list';">새로고침</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?lecture_code=${lecture_code}';">새로고침</button>
 					</div>
 					<div class="col-6 d-flex justify-content-center">
 						<form class="row" name="searchForm">
+							<input type="hidden" name="lecture_code" value="${lecture_code}" />
 							<div class="col-auto p-1">
 								<select name="schType" class="form-select">
 									<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
@@ -95,7 +102,7 @@
 					</div>
 
 					<div class="col text-end">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/write';">글올리기</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/write?lecture_code=${lecture_code}';">글올리기</button>
 					</div>
 				</div>
 			</div>
@@ -130,7 +137,7 @@
 			const formData = new FormData(f);
 			let params = new URLSearchParams(formData).toString();
 			
-			let url = '${pageContext.request.contextPath}/student/bbs/list';
+			let url = '${pageContext.request.contextPath}/professor/bbs/list';
 			location.href = url + '?' + params;
 		}
 	</script>

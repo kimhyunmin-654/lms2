@@ -86,7 +86,7 @@
 									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?${query}';">리스트</button>
 								</td>
 								<td class="text-end">
-									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/update?num=${dto.data_id}&page=${page}';">수정</button>
+									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/update?num=${dto.data_id}&page=${page}&lecture_code=${lecture_code}';">수정</button>
 									<button type="button" class="btn btn-light" onclick="deleteArticle();">삭제</button>
 								</td>
 							</tr>
@@ -138,12 +138,13 @@
 		}
 		
 		function deleteArticle() {
-			if (confirm ('게시글을 삭제하시겠습니까?')) {
-				let params = 'num=${dto.data_id}&page=${page}';
-				let url = '${pageContext.request.contextPath}/professor/bbs/delete?' + params;
-				location.href = url;
-			}
+		    if (confirm('게시글을 삭제하시겠습니까?')) {
+		        let params = 'num=${dto.data_id}&page=${page}&lecture_code=${lecture_code}';
+		        let url = '${pageContext.request.contextPath}/professor/bbs/delete?' + params;
+		        location.href = url;
+		    }
 		}
+
 	</script>
 </body>
 </html>

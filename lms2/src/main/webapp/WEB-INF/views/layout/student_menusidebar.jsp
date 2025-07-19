@@ -60,7 +60,7 @@
 				</div>
 			</div>
 
-			<div class="accordion-button custom-accordion-btn collapsed">학사 공지사항</div>
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/notice/list">학사</a> 공지사항</div>
 			<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>

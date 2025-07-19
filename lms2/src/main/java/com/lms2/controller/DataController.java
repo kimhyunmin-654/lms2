@@ -3,19 +3,16 @@ package com.lms2.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.lms2.dao.DataDAO;
+import com.lms2.dao.LectureDAO;
 import com.lms2.model.DataDTO;
-import com.lms2.model.Data_CommentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
-import com.lms2.mvc.annotation.ResponseBody;
 import com.lms2.mvc.view.ModelAndView;
 import com.lms2.util.FileManager;
 import com.lms2.util.MyMultipartFile;
@@ -32,13 +29,22 @@ public class DataController {
 
 	@RequestMapping(value = "/professor/bbs/list", method = RequestMethod.GET)
 	public ModelAndView pList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 자료실 리스트
+		// (교수) 자료실 리스트
 		ModelAndView mav = new ModelAndView("/professor/bbs/list");
 
 		DataDAO dao = new DataDAO();
+		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
-
+		
 		try {
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
+			
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null) {
@@ -53,11 +59,25 @@ public class DataController {
 			}
 			kwd = util.decodeUrl(kwd);
 
+			String query = "";
+			if (kwd.length() != 0) {
+				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+
+			// lecture_code 넘기기
+			String lecture_code = req.getParameter("lecture_code");
+			if (lecture_code != null) {
+				if (!query.isEmpty()) {
+					query += "&";
+				}
+				query += "lecture_code=" + lecture_code;
+			}
+
 			int dataCount;
 			if (kwd.length() == 0) {
-				dataCount = dao.dataCount();
+				dataCount = dao.dataCount(lecture_code);
 			} else {
-				dataCount = dao.dataCount(schType, kwd);
+				dataCount = dao.dataCount(schType, kwd, lecture_code);
 			}
 
 			int size = 10;
@@ -72,14 +92,9 @@ public class DataController {
 
 			List<DataDTO> list = null;
 			if (kwd.length() == 0) {
-				list = dao.listData(offset, size);
+				list = dao.listData(offset, size, lecture_code);
 			} else {
-				list = dao.listData(offset, size, schType, kwd);
-			}
-
-			String query = "";
-			if (kwd.length() != 0) {
-				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+				list = dao.listData(offset, size, schType, kwd, lecture_code);
 			}
 
 			String cp = req.getContextPath();
@@ -101,6 +116,8 @@ public class DataController {
 			mav.addObject("paging", paging);
 			mav.addObject("schType", schType);
 			mav.addObject("kwd", kwd);
+			mav.addObject("lecture_code", lecture_code);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -109,13 +126,22 @@ public class DataController {
 
 	@RequestMapping(value = "/student/bbs/list", method = RequestMethod.GET)
 	public ModelAndView sList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 자료실 리스트
+		// (학생) 자료실 리스트
 		ModelAndView mav = new ModelAndView("/student/bbs/list");
 
 		DataDAO dao = new DataDAO();
+		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
 
 		try {
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
+			
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null) {
@@ -130,11 +156,25 @@ public class DataController {
 			}
 			kwd = util.decodeUrl(kwd);
 
+			String query = "";
+			if (kwd.length() != 0) {
+				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+			// lecture_code 넘기기
+			String lecture_code = req.getParameter("lecture_code");
+			if (lecture_code != null) {
+				if (!query.isEmpty()) {
+					query += "&";
+				}
+				query += "lecture_code=" + lecture_code;
+			}			
+			
 			int dataCount;
 			if (kwd.length() == 0) {
-				dataCount = dao.dataCount();
+				dataCount = dao.dataCount(lecture_code);
 			} else {
-				dataCount = dao.dataCount(schType, kwd);
+				dataCount = dao.dataCount(schType, kwd, lecture_code);
 			}
 
 			int size = 10;
@@ -147,16 +187,12 @@ public class DataController {
 			if (offset < 0)
 				offset = 0;
 
+			
 			List<DataDTO> list = null;
 			if (kwd.length() == 0) {
-				list = dao.listData(offset, size);
+				list = dao.listData(offset, size, lecture_code);
 			} else {
-				list = dao.listData(offset, size, schType, kwd);
-			}
-
-			String query = "";
-			if (kwd.length() != 0) {
-				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+				list = dao.listData(offset, size, schType, kwd, lecture_code);
 			}
 
 			String cp = req.getContextPath();
@@ -178,6 +214,8 @@ public class DataController {
 			mav.addObject("paging", paging);
 			mav.addObject("schType", schType);
 			mav.addObject("kwd", kwd);
+			mav.addObject("lecture_code", lecture_code);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -187,17 +225,29 @@ public class DataController {
 	@RequestMapping(value = "/professor/bbs/write", method = RequestMethod.GET)
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 자료실 글 쓰기
+		// (교수) 자료실 글 쓰기
 		ModelAndView mav = new ModelAndView("/professor/bbs/write");
 		mav.addObject("mode", "write");
+		LectureDAO lectureDao = new LectureDAO();
+		
+		try {
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
 
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
-		DataDAO dao = new DataDAO();
-		List<DataDTO> lectureList = dao.listLectureByMember(info.getMember_id());
-		mav.addObject("lectureList", lectureList);
-
+			String lecture_code = req.getParameter("lecture_code");
+			
+			DataDAO dao = new DataDAO();
+			List<DataDTO> lectureList = dao.listLectureByMember(info.getMember_id(), lecture_code);
+			mav.addObject("bbsLectureList", lectureList);
+			mav.addObject("lecture_code", lecture_code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return mav;
 	}
 
@@ -211,6 +261,8 @@ public class DataController {
 	    
 	    String root = session.getServletContext().getRealPath("/");
 	    String pathname = root + "uploads" + File.separator + "lecture";
+	    String lecture_code = req.getParameter("lecture_code");
+	   
 
 	    try {
 	        Part p = req.getPart("selectFile"); 
@@ -219,7 +271,7 @@ public class DataController {
 	        dto.setMember_id(info.getMember_id());
 	        dto.setSubject(req.getParameter("subject"));
 	        dto.setContent(req.getParameter("content"));
-	        dto.setLecture_code(req.getParameter("lesson"));
+	        dto.setLecture_code(req.getParameter("lecture_code"));
 
 	        MyMultipartFile multiFile = fileManager.doFileUpload(p, pathname);
 	        if (multiFile != null) {
@@ -233,33 +285,38 @@ public class DataController {
 	        e.printStackTrace();
 	    }
 
-	    return new ModelAndView("redirect:/professor/bbs/list");
+	    return new ModelAndView("redirect:/professor/bbs/list?lecture_code=" + lecture_code);
 	}
 
 	@RequestMapping(value = "/professor/bbs/article", method = RequestMethod.GET)
 	public ModelAndView pArticle(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 자료실 글보기
+		// (교수) 자료실 글보기
 		DataDAO dao = new DataDAO();
 		MyUtil util = new MyUtil();
 
 		String page = req.getParameter("page");
+		String schType = req.getParameter("schType");
+		String kwd = req.getParameter("kwd");
+		String lecture_code = req.getParameter("lecture_code");
+		
+		if (schType == null) {
+			schType = "all";
+			kwd = "";
+		}
+		kwd = util.decodeUrl(kwd);
+
 		String query = "page=" + page;
+	    if (lecture_code != null && !lecture_code.isEmpty()) {
+	        query += "&lecture_code=" + lecture_code;
+	    }
+	    if (!kwd.isEmpty()) {
+	        query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+	    }
 
 		try {
 			int data_id = Integer.parseInt(req.getParameter("num"));
-			String schType = req.getParameter("schType");
-			String kwd = req.getParameter("kwd");
-			if (schType == null) {
-				schType = "all";
-				kwd = "";
-			}
-			kwd = util.decodeUrl(kwd);
-
-			if (kwd.length() != 0) {
-				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
-			}
-
+			
 			// 조회수 증가
 			dao.updateHitCount(data_id);
 
@@ -281,6 +338,7 @@ public class DataController {
 			mav.addObject("query", query);
 			mav.addObject("prevDto", prevDto);
 			mav.addObject("nextDto", nextDto);
+			mav.addObject("lecture_code", lecture_code);
 
 			return mav;
 
@@ -294,7 +352,7 @@ public class DataController {
 	@RequestMapping(value = "/student/bbs/article", method = RequestMethod.GET)
 	public ModelAndView sArticle(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 자료실 글보기
+		// (학생) 자료실 글보기
 		DataDAO dao = new DataDAO();
 		MyUtil util = new MyUtil();
 
@@ -313,6 +371,14 @@ public class DataController {
 
 			if (kwd.length() != 0) {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+			String lecture_code = req.getParameter("lecture_code");
+			if (lecture_code != null) {
+				if (!query.isEmpty()) {
+					query += "&";
+				}
+				query += "lecture_code=" + lecture_code;
 			}
 
 			// 조회수 증가
@@ -336,6 +402,7 @@ public class DataController {
 			mav.addObject("query", query);
 			mav.addObject("prevDto", prevDto);
 			mav.addObject("nextDto", nextDto);
+			mav.addObject("lecture_code", lecture_code);
 
 			return mav;
 
@@ -353,7 +420,6 @@ public class DataController {
 		DataDAO dao = new DataDAO();
 		String page = req.getParameter("page");
 		
-
 		try {
 			int data_id = Integer.parseInt(req.getParameter("num"));
 			DataDTO dto = dao.findById(data_id);
@@ -366,9 +432,12 @@ public class DataController {
 			
 			HttpSession session = req.getSession();
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
+			String lecture_code = req.getParameter("lecture_code");
 
-			List<DataDTO> lectureList = dao.listLectureByMember(info.getMember_id());
+			List<DataDTO> lectureList = dao.listLectureByMember(info.getMember_id(), lecture_code);
 			mav.addObject("lectureList", lectureList);
+			mav.addObject("lecture_code", lecture_code);
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
@@ -397,6 +466,7 @@ public class DataController {
 		String pathname = root + "uploads" + File.separator + "bbs";
 		
 		String page = req.getParameter("page");
+		String lecture_code = req.getParameter("lecture_code");
 
 		try {
 			DataDTO dto = new DataDTO();
@@ -406,7 +476,7 @@ public class DataController {
 			dto.setContent(req.getParameter("content"));
 			dto.setSave_filename(req.getParameter("save_filename"));
 			dto.setOriginal_filename(req.getParameter("original_filename"));
-			dto.setLecture_code(req.getParameter("lesson"));
+			dto.setLecture_code(req.getParameter("lecture_code"));
 
 			dto.setMember_id(info.getMember_id());
 
@@ -428,7 +498,7 @@ public class DataController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/professor/bbs/list?page=" + page);
+		return new ModelAndView("redirect:/professor/bbs/list?page=" + page + "&lecture_code=" + lecture_code);
 	}
 
 	@RequestMapping(value = "/professor/bbs/delete", method = RequestMethod.GET)
@@ -441,7 +511,9 @@ public class DataController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		String page = req.getParameter("page");
-		String query = "page=" + page;
+		String lecture_code = req.getParameter("lecture_code");
+		String query = "page=" + page + "&lecture_code=" + lecture_code;
+		
 
 		try {
 			int data_id = Integer.parseInt(req.getParameter("num"));

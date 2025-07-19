@@ -32,25 +32,14 @@
 					<div class="body-main">
 					
 						<form name="bbsForm" action="${pageContext.request.contextPath}/professor/bbs/write" method="post" enctype="multipart/form-data">
+							<input type="hidden" name="lecture_code" value="${lecture_code}" />
+							
 							<table class="table">
 								<tr>
 									<td>제목
 									</td>
 									<td>
 										<input type="text" name="subject" maxlength="100" class="form-control" value="${dto.subject}">
-									</td>
-								</tr>
-								
-								<tr>
-									<td>강의 과목
-									</td>
-									<td>
-										<select name="lesson" class="form-select">
-											<option value="">-- 강의를 선택하세요 --</option>
-											<c:forEach var="lec" items="${lectureList}">
-												<option value="${lec.lecture_code}">${lec.subject}</option>
-											</c:forEach>
-										</select>
 									</td>
 								</tr>
 							<tr>
@@ -78,10 +67,11 @@
 									<td class="text-center">
 										<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=="update"?"수정완료":"등록완료"}</button>
 										<button type="reset" class="btn btn-light">다시입력</button>
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list';">${mode=="update"?"수정취소":"등록취소"}<i class="bi bi-x"></i></button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list?lecture_code=${lecture_code}';">${mode=="update"?"수정취소":"등록취소"}<i class="bi bi-x"></i></button>
 										<c:if test="${mode=='update'}">
 											<input type="hidden" name="num" value="${dto.data_id}">
 											<input type="hidden" name="page" value="${page}">
+											<input type="hidden" name="lecture_code" value="${lecture_code}">
 										</c:if>
 									</td>
 								</tr>
@@ -112,14 +102,7 @@
 				f.content.focus();
 				return;
 			}
-			
-			str = f.lesson.value.trim();
-			if (!str) {
-				alert('강의를 선택하세요. ');
-				f.category.focus();
-				return;
-			}
-	
+
 			f.action = '${pageContext.request.contextPath}/professor/bbs/${mode}';
 			f.submit();
 		}
