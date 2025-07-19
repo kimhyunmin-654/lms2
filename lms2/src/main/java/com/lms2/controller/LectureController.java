@@ -273,7 +273,7 @@ public class LectureController {
 		return new ModelAndView("redirect:/admin/lecture/list?page=" + page + "&size=" + size);
 	}
 	
-	/*
+	
 	@RequestMapping(value = "/admin/lecture/update", method = RequestMethod.POST)
 	public ModelAndView updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 수정 완료
@@ -289,7 +289,7 @@ public class LectureController {
 		
 		// 파일 저장 경로
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "notice";
+		String pathname = root + "uploads" + File.separator + "lecture";
 		
 		String page = req.getParameter("page");
 		if (page == null || page.equals("") || page.equals("null")) {
@@ -303,15 +303,17 @@ public class LectureController {
 
 		try {
 			LectureDTO dto = new LectureDTO();
-			dto.setNotice_id(Long.parseLong(req.getParameter("notice_id")));
-			if(req.getParameter("is_notice") != null) {
-				dto.setIs_notice(Integer.parseInt(req.getParameter("is_notice")));
-			}
-			
+			dto.setLecture_code(req.getParameter("lecture_code"));
 			dto.setSubject(req.getParameter("subject"));
-			dto.setContent(req.getParameter("content"));
-			 
+			dto.setGrade(Integer.parseInt(req.getParameter("grade")));
+			dto.setClassroom(req.getParameter("classroom"));
+			dto.setDivision(req.getParameter("division"));
+			dto.setLecture_year(Integer.parseInt(req.getParameter("lecture_year"))); 
+			dto.setSemester(req.getParameter("semester"));
+			dto.setCapacity(Integer.parseInt(req.getParameter("capacity")));
+			dto.setCredit(Double.parseDouble(req.getParameter("credit")));
 			
+						
 			Collection<Part> parts = req.getParts();
 			List<Part> uploadParts = new ArrayList<>();
 			for (Part part : parts) {
@@ -323,7 +325,7 @@ public class LectureController {
 			List<MyMultipartFile> listFile = fileManager.doFileUpload(uploadParts, pathname);
 			dto.setListFile(listFile);
 			
-			dao.updateNotice(dto);
+			dao.updateLecture(dto);
 			
 
 		} catch (Exception e) {
@@ -331,8 +333,46 @@ public class LectureController {
 		}
 
 		String query = "page=" + page + "&size=" + size;
-		return new ModelAndView("redirect:/admin/notice/list?" + query);
+		return new ModelAndView("redirect:/admin/lecture/list?" + query);
+	}
+	
+	/*
+	@RequestMapping(value = "/admin/lecture/deleteFile")
+	public ModelAndView deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 수정에서 파일만 삭제
+		LectureDAO dao = new LectureDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "lecture";
+
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			long fileNum = Long.parseLong(req.getParameter("fileNum"));
+			NoticeDTO dto = dao.findByFileId(fileNum);
+			if (dto != null) {
+				// 파일삭제
+				fileManager.doFiledelete(pathname, dto.getSave_filename());
+				
+				// 테이블 파일 정보 삭제
+				dao.deleteNoticeFile("one", fileNum);
+			}
+
+			// 다시 수정 화면으로
+			return new ModelAndView("redirect:/admin/notice/update?num=" + num + "&page=" + page + "&size=" + size);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/admin/notice/list?page=" + page + "&size=" + size);
 	}
 	*/
+	
 
 }

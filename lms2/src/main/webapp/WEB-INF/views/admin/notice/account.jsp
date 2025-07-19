@@ -8,6 +8,7 @@
 <title>공지사항 등록</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 </head>
 <body>
@@ -72,6 +73,23 @@
 				            <input type="file" class="form-control" name="upload" multiple>
 				        </div>
 				    </div>
+				    
+				    
+				    
+					<c:if test="${mode == 'update'}">
+					    <c:forEach var="vo" items="${listFile}">
+					        <div class="row align-items-center border-bottom py-2">
+					            <div class="col-sm-2 bg-light fw-bold">첨부된파일</div>
+					            <div class="col-sm-10 d-flex align-items-center">
+									<a href="#" class="text-danger me-2"
+									   onclick="deleteFile(${vo.file_id}); return false;">
+									    <i class="bi bi-trash"></i>
+									</a>
+					                <span>${vo.original_filename}</span>
+					            </div>
+					        </div>
+					    </c:forEach>
+					</c:if>		    
 				
 				   
 				    <div class="row mt-4">
@@ -126,6 +144,19 @@ function check() {
 	
 	
 }
+
+<c:if test="${mode=='update'}">
+function deleteFile(fileNum) {
+	if(! confirm('파일을 삭제 하시겠습니까 ? ')) {
+		return;
+	}
+	
+	let params = 'notice_id=${dto.notice_id}&file_num=' + fileNum + '&page=${page}&size=${size}'
+	let url = '${pageContext.request.contextPath}/admin/notice/deleteFile?' + params ;
+	location.href = url;
+}
+</c:if>
+
 </script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/vendor/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>

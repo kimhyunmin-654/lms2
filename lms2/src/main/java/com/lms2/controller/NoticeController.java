@@ -383,19 +383,19 @@ public class NoticeController {
 		String size = req.getParameter("size");
 
 		try {
-			long num = Long.parseLong(req.getParameter("num"));
-			long fileNum = Long.parseLong(req.getParameter("fileNum"));
-			NoticeDTO dto = dao.findByFileId(fileNum);
+			long notice_id = Long.parseLong(req.getParameter("notice_id"));
+			long file_num = Long.parseLong(req.getParameter("file_num"));
+			NoticeDTO dto = dao.findByFileId(file_num);
 			if (dto != null) {
 				// 파일삭제
 				fileManager.doFiledelete(pathname, dto.getSave_filename());
 				
 				// 테이블 파일 정보 삭제
-				dao.deleteNoticeFile("one", fileNum);
+				dao.deleteNoticeFile("one", file_num);
 			}
 
 			// 다시 수정 화면으로
-			return new ModelAndView("redirect:/admin/notice/update?num=" + num + "&page=" + page + "&size=" + size);
+			return new ModelAndView("redirect:/admin/notice/update?notice_id=" + notice_id + "&page=" + page + "&size=" + size);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
