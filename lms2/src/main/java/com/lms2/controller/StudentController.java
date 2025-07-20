@@ -122,6 +122,7 @@ public class StudentController {
 		// 학생 등록
 		StudentDAO dao = new StudentDAO();
 
+		
 		// 사진 파일은 나중에... -김하은
 
 		HttpSession session = req.getSession();
