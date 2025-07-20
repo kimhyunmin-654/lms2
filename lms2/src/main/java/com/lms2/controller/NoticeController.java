@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
@@ -764,10 +766,13 @@ public class NoticeController {
 		// (교수)공지사항 리스트
 		NoticeDAO dao = new NoticeDAO();
 		MyUtil util = new MyUtil();
+		LectureDAO lectureDao = new LectureDAO();
 		
 		ModelAndView mav = new ModelAndView("professor/notice/list");
 		
 		try {
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null && !page.equals("") && !page.equals("null")) {
@@ -847,6 +852,12 @@ public class NoticeController {
 			
 			String paging = util.paging(current_page, total_page, listUrl);
 			
+			if (info != null) {
+                String memberId = String.valueOf(info.getMember_id());
+                List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+                mav.addObject("lectureList", lectures);
+            }
+			
 			// 포워딩 jsp에 전달할 데이터
 			mav.addObject("list", list);
 			mav.addObject("listNotice", listNotice);
@@ -872,6 +883,7 @@ public class NoticeController {
 		// 글보기
 		NoticeDAO dao = new NoticeDAO();
 		MyUtil util = new MyUtil();
+		LectureDAO lectureDao = new LectureDAO();
 		
 		HttpSession session = req.getSession();
 		
@@ -880,6 +892,7 @@ public class NoticeController {
 		String query = "page=" + page + "&size=" + size;
 		
 		try {
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			long notice_id = Long.parseLong(req.getParameter("notice_id"));
 			
 			String schType = req.getParameter("schType");
@@ -911,6 +924,12 @@ public class NoticeController {
 			List<NoticeDTO> listFile = dao.listNoticeFile(notice_id);
 			
 			ModelAndView mav = new ModelAndView("professor/notice/article");
+			
+			if (info != null) {
+                String memberId = String.valueOf(info.getMember_id());
+                List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+                mav.addObject("lectureList", lectures);
+            }
 			
 			mav.addObject("dto", dto);
 			mav.addObject("prevDto", prevDto);

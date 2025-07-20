@@ -31,7 +31,6 @@ public class DataController {
 	public ModelAndView pList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// (교수) 자료실 리스트
 		ModelAndView mav = new ModelAndView("/professor/bbs/list");
-
 		DataDAO dao = new DataDAO();
 		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
@@ -294,7 +293,7 @@ public class DataController {
 		// (교수) 자료실 글보기
 		DataDAO dao = new DataDAO();
 		MyUtil util = new MyUtil();
-
+		LectureDAO lectureDao = new LectureDAO();
 		String page = req.getParameter("page");
 		String schType = req.getParameter("schType");
 		String kwd = req.getParameter("kwd");
@@ -304,6 +303,7 @@ public class DataController {
 			schType = "all";
 			kwd = "";
 		}
+		
 		kwd = util.decodeUrl(kwd);
 
 		String query = "page=" + page;
@@ -316,6 +316,8 @@ public class DataController {
 
 		try {
 			int data_id = Integer.parseInt(req.getParameter("num"));
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			
 			// 조회수 증가
 			dao.updateHitCount(data_id);
@@ -339,6 +341,12 @@ public class DataController {
 			mav.addObject("prevDto", prevDto);
 			mav.addObject("nextDto", nextDto);
 			mav.addObject("lecture_code", lecture_code);
+			
+			if (info != null) {
+                String memberId = String.valueOf(info.getMember_id());
+                List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+                mav.addObject("lectureList", lectures);
+            }
 
 			return mav;
 
@@ -419,6 +427,7 @@ public class DataController {
 		// 자료실 글수정 폼
 		DataDAO dao = new DataDAO();
 		String page = req.getParameter("page");
+		LectureDAO lectureDao = new LectureDAO();
 		
 		try {
 			int data_id = Integer.parseInt(req.getParameter("num"));
@@ -434,6 +443,12 @@ public class DataController {
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			
 			String lecture_code = req.getParameter("lecture_code");
+			
+			if (info != null) {
+                String memberId = String.valueOf(info.getMember_id());
+                List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+                mav.addObject("lectureList", lectures);
+            }
 
 			List<DataDTO> lectureList = dao.listLectureByMember(info.getMember_id(), lecture_code);
 			mav.addObject("lectureList", lectureList);
