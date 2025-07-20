@@ -47,22 +47,42 @@
 					    </div>
 					    <div class="border rounded p-2 bg-white">
 					        <a href="${pageContext.request.contextPath}/admin/lecture/list" class="text-decoration-none text-dark fw-bold">
-					            <i class="bi bi-journal-bookmark-fill me-2 text-warning"></i>강의 개설 수 : ${dataCount3}명
+					            <i class="bi bi-journal-bookmark-fill me-2 text-warning"></i>총 등록 관리자 수 : ${dataCount3}명
 					        </a>
 					    </div>
 				        </div>
 				    </div>
 				</div>
-				    <!-- 학기일정 -->
-				    <div class="col-md-6">
-				        <div class="card shadow-sm">
-				            <div class="card-header fw-bold">
-				                 학기일정
-				            </div>
-				            <div class="card-body">
-				                <p>학기 일정 정보를 여기에 추가하세요.</p>
-				            </div>
+				<!-- 강의 목록 -->
+				<div class="col-md-6">
+				    <div class="card shadow-sm">
+				        <div class="card-header fw-bold bg-light">
+				            <i class="bi bi-megaphone text-danger me-2"></i> 최근 강의 목록
 				        </div>
+				        <div class="card-body d-flex flex-column gap-3">
+				            <c:forEach var="dto" items="${listLecture}">
+				                <div class="border rounded p-2 bg-white">
+				                        <div class="fw-bold text-truncate">
+				                    		<a href="${pageContext.request.contextPath}/admin/lecture/article?lecture_code=${dto.lecture_code}"  class="text-decoration-none text-dark d-block">
+				                            	<i class="bi bi-pin-angle-fill me-2 text-secondary"></i>강의명 : ${dto.subject}
+				                    		</a>
+				                        </div>
+				                        <div class="small text-muted mt-1">
+				                            <span class="badge bg-secondary me-1">${dto.division}</span>
+				                            <span class="badge bg-info text-dark me-1">${dto.department_name}</span>
+				                            <span class="badge bg-light text-dark">${dto.name}</span>
+				                        </div>
+				                </div>
+				            </c:forEach>
+				
+				            <c:forEach var="n" begin="${listLecture.size() + 1}" end="5">
+				                <div class="border rounded p-2 bg-white">&nbsp;</div>
+				            </c:forEach>
+				        </div> 
+				    </div> 
+				    
+				    <div class="text-end pt-2 px-3">
+				        <a href="${pageContext.request.contextPath}/admin/lecture/list" class="text-decoration-none">더보기</a>
 				    </div>
 				</div>
 				
@@ -71,7 +91,7 @@
 				    <div class="col-md-12">
 				        <div class="card shadow-sm">
 				            <div class="card-header fw-bold bg-light">
-				                <i class="bi bi-megaphone text-danger me-2"></i> 최근 공지사항
+				                <i class="bi bi-megaphone text-danger me-2"></i> 최근 공지사항 목록
 				            </div>
 				            <div class="card-body d-flex flex-column gap-3">				               
 				                <c:forEach var="dto" items="${listNotice}">
@@ -90,10 +110,11 @@
         				<div class="text-end pt-2">
             				<a href="${pageContext.request.contextPath}/admin/notice/list" class="text-decoration-none">더보기</a>
         				</div>
-    			</div>
-			</div>
+    				</div>
+				</div>
 			</div>
 		</div>
+	</div>
 	</main>
 	<script
 		src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>

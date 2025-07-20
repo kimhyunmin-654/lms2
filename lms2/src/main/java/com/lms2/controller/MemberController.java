@@ -9,6 +9,8 @@ import com.lms2.dao.LectureDAO;
 import com.lms2.dao.MemberDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.ProfessorDAO;
+import com.lms2.dao.StudentDAO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
@@ -96,26 +98,30 @@ public class MemberController {
 	@RequestMapping(value = "/admin/home/frame", method = RequestMethod.GET)
 	public ModelAndView adminMain(HttpServletRequest req, HttpServletResponse resp) {
 		
-		AdminDAO dao = new AdminDAO();
+		AdminDAO adao = new AdminDAO();
+		StudentDAO sdao = new StudentDAO();
 		ProfessorDAO pdao = new ProfessorDAO();
-		LectureDAO ldao = new LectureDAO();
 		NoticeDAO ndao = new NoticeDAO();
+		LectureDAO ldao = new LectureDAO();
 		
 		ModelAndView mav = new ModelAndView("admin/home/frame");
 		
 		try {
-			int dataCount, dataCount2, dataCount3 ;
+			int dataCount, dataCount2, dataCount3;
 
 			List<NoticeDTO> listNotice = ndao.listNotice(0, 5);
+			List<LectureDTO> listLecture = ldao.listLecture(0, 5);
 			
-			dataCount = dao.dataCount();
-			dataCount2 = pdao.dataCount();
-			dataCount3 = ldao.dataCount();
+			dataCount = sdao.dataCount(); // 학생
+			dataCount2 = pdao.dataCount(); // 교수
+			dataCount3 = adao.dataCount(); // 관리자
+			
 			
 			mav.addObject("dataCount", dataCount);
 			mav.addObject("dataCount2", dataCount2);
 			mav.addObject("dataCount3", dataCount3);
 			mav.addObject("listNotice", listNotice);
+			mav.addObject("listLecture", listLecture);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
