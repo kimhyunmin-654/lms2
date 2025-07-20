@@ -31,7 +31,6 @@ public class DataController {
 	public ModelAndView pList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// (교수) 자료실 리스트
 		ModelAndView mav = new ModelAndView("/professor/bbs/list");
-
 		DataDAO dao = new DataDAO();
 		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
