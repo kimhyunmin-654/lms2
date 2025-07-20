@@ -52,8 +52,8 @@
 							    <td>${dto.name}</td>
 							    <td>
 							        <c:choose>
-							            <c:when test="${dto.role == 0}">학생</c:when>
-							            <c:when test="${dto.role == 1}">교수</c:when>
+							            <c:when test="${dto.role == 1}">학생</c:when>
+							            <c:when test="${dto.role == 51}">교수</c:when>
 							            <c:otherwise>관리자</c:otherwise>
 							        </c:choose>
 							    </td>
@@ -64,17 +64,17 @@
 				</table>
 
 				<div class="row board-list-footer">
+				<c:set var="lecture_code" value="${lecture_code}" /> <!--controller에서 넘긴 lecture_code를 별도로 저장해둠   -->
 					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/list';">새로고침</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/member/list?lecture_code=${lecture_code}';">새로고침</button>
 					</div>
 					<div class="col-6 d-flex justify-content-center">
 						<form class="row" name="searchForm">
 							<div class="col-auto p-1">
 								<select name="schType" class="form-select">
-									<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
-									<option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
-									<option value="subject" ${schType=="subject"?"selected":""}>제목</option>
-									<option value="content" ${schType=="content"?"selected":""}>내용</option>
+									<option value="member_id" ${schType=="member_id"?"selected":""}>학번</option>
+									<option value="department_name" ${schType=="department_name"?"selected":""}>학과</option>
+									<option value="name" ${schType=="name"?"selected":""}>이름</option>
 								</select>
 							</div>
 							<div class="col-auto p-1">
@@ -87,10 +87,6 @@
 								</button>
 							</div>
 						</form>
-					</div>
-
-					<div class="col text-end">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/bbs/write';">글올리기</button>
 					</div>
 				</div>
 			</div>
@@ -125,7 +121,7 @@
 			const formData = new FormData(f);
 			let params = new URLSearchParams(formData).toString();
 			
-			let url = '${pageContext.request.contextPath}/student/bbs/list';
+			let url = '${pageContext.request.contextPath}/professor/member/list';
 			location.href = url + '?' + params;
 		}
 	</script>

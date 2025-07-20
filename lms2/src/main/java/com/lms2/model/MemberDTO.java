@@ -18,12 +18,18 @@ public class MemberDTO {
 	private String zip; // 우편번호
 	private String addr1; // 주소
 	private String addr2; // 상세 주소
+	
 	private String position;
 	private String division;
 	private String department_name;
-	
-	
-	
+	private String lecture_code;
+
+	public String getLecture_code() {
+		return lecture_code;
+	}
+	public void setLecture_code(String lecture_code) {
+		this.lecture_code = lecture_code;
+	}
 	public String getDepartment_name() {
 		return department_name;
 	}
