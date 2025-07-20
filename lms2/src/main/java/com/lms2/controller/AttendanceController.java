@@ -159,6 +159,7 @@ public class AttendanceController {
 
 		StudentDAO dao = new StudentDAO();
 		AttendanceDAO aDao = new AttendanceDAO();
+		LectureDAO lectureDao = new LectureDAO();
 		ModelAndView mav = new ModelAndView("student/study/attendance");
 
 		try {
@@ -170,10 +171,18 @@ public class AttendanceController {
 			int present = aDao.dataCountAll(member_id, 1); // 출석
 			int absent = aDao.dataCountAll(member_id, 0); // 결석
 			int late = aDao.dataCountAll(member_id, 2); // 지각
+			
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
+			String lecture_code = req.getParameter("lecture_code");
 
 			mav.addObject("present", present);
 			mav.addObject("absent", absent);
 			mav.addObject("late", late);
+			mav.addObject("lecture_code", lecture_code);
 
 		} catch (Exception e) {
 			e.printStackTrace();

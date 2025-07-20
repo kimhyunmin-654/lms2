@@ -132,9 +132,11 @@ public class DataController {
 		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
 
+		HttpSession session = req.getSession(false);
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
 		try {
-			HttpSession session = req.getSession(false);
-			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
 			if (info != null) {
 				String memberId = String.valueOf(info.getMember_id());
 				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);

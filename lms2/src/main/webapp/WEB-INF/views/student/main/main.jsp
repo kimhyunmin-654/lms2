@@ -26,67 +26,63 @@
 			<div class="body-container row justify-content-center"
 				style="margin: 100px;">
 				<h3 style="font-size: 29px;">학생 메인페이지</h3>
-				
+
 				<!-- 수강과목 -->
-				<div class="col-md-6 p-1">
-					<div>
-						<div class="fw-semibold pt-2 pb-1">
-							<i class="bi bi-book-half">수강과목</i>
-						</div>
-						<div class="border px-2">
-						    <c:forEach var="dto" items="${list}">
-						        <div class="text-truncate px-2 subject-list">
-						            <a href="${pageContext.request.contextPath}/student/lecture/compList?lecture_code=${dto.lecture.lecture_code}">
-						                ${dto.lecture.subject} (${dto.lecture.name})
-						            </a>
-						        </div>
-						    </c:forEach>
-						    <c:forEach var="n" begin="${list.size() + 1}" end="5">
-						        <div class="text-truncate px-2 subject-list">&nbsp;</div>
-						    </c:forEach>
-						</div>
-						<div class="pt-2 text-end">
-							<a href="${pageContext.request.contextPath}/student/lecture/compList"
-								class="text-reset">더보기</a>
+				<div class="row g-3">
+					<div class="col-md-12">
+						<div class="card shadow-sm">
+							<div class="card-header fw-bold bg-light">
+								<i class="bi bi-book-half me-2"></i> 수강과목 목록
+							</div>
+							<div class="card-body d-flex flex-column gap-3 px-2">
+								<c:forEach var="dto" items="${list}">
+									<div
+										class="border rounded p-2 bg-white text-truncate subject-list">
+										<a
+											href="${pageContext.request.contextPath}/student/lecture/compList?lecture_code=${dto.lecture.lecture_code}"
+											class="text-decoration-none text-dark d-block">
+											${dto.lecture.subject} (${dto.lecture.name}) </a>
+									</div>
+								</c:forEach>
+								<c:forEach var="n" begin="${list.size() + 1}" end="5">
+									<div class="border rounded p-2 bg-white">&nbsp;</div>
+								</c:forEach>
+							</div>
+							<div class="text-end pt-2 pe-2">
+								<a
+									href="${pageContext.request.contextPath}/student/lecture/compList"
+									class="text-decoration-none"> 더보기 </a>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<!-- 학기일정 -->
-				<div class="col-md-6 p-1">
-					<div>
-						<div class="fw-semibold pt-2 pb-1">
-							<i class="bi bi-book-half">학기일정</i>
-
+				<!-- 최근 공지사항 -->
+				<div class="row my-3">
+					<div class="col-md-12">
+						<div class="card shadow-sm">
+							<div class="card-header fw-bold bg-light">
+								<i class="bi bi-megaphone text-danger me-2"></i> 최근 공지사항 목록
+							</div>
+							<div class="card-body d-flex flex-column gap-3">
+								<c:forEach var="dto" items="${listNotice}">
+									<div class="border rounded p-2 bg-white">
+										<a
+											href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.notice_id}"
+											class="text-decoration-none text-dark text-truncate d-block">
+											<i class="bi bi-pin-angle-fill me-2 text-secondary"></i>
+											${dto.subject}
+										</a>
+									</div>
+								</c:forEach>
+								<c:forEach var="n" begin="${listNotice.size() + 1}" end="5">
+									<div class="border rounded p-2 bg-white">&nbsp;</div>
+								</c:forEach>
+							</div>
 						</div>
-						<div class="border px-2">
-							
-						</div>
-					</div>
-				</div>
-				
-				<!-- 공지사항 -->
-				<div class="col-md-12 p-1">
-					<div>
-						<div class="fw-semibold pt-2 pb-1">
-							<i class="bi bi-book-half">공지사항</i>
-						</div>
-						<div class="border px-2">
-							<c:forEach var="dto" items="${listNotice}" varStatus="status">
-								<div class="text-truncate px-2 subject-list">
-									<a href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.notice_id}">
-										${dto.subject}
-									</a>
-								</div>
-							</c:forEach>
-							
-							<c:forEach var="n" begin="${listNotice.size() + 1}" end="5">
-								<div class="text-truncate px-2 subject-list">&nbsp;</div>
-							</c:forEach>
-						</div>
-						<div class="pt-2 text-end">
+						<div class="text-end pt-2">
 							<a href="${pageContext.request.contextPath}/admin/notice/list"
-								class="text-reset">더보기</a>
+								class="text-decoration-none">더보기</a>
 						</div>
 					</div>
 				</div>

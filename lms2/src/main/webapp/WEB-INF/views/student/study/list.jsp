@@ -28,9 +28,6 @@
 				<h3 style="font-size: 29px;">학생 강의 정보페이지</h3>
 
 				<div class="container text-center">
-					<div class="row">
-						<div class="col-md-8 border border">공지사항</div>
-					</div>
 
 					<div class="row">
 						<div class="col-md-8 border border">강의자료</div>
@@ -38,6 +35,8 @@
 					<div class="row">
 						<div class="col-md-8 border border">과제</div>
 					</div>
+					
+					
 				</div>
 
 

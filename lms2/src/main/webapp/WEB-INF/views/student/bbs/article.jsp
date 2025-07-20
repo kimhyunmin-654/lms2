@@ -16,7 +16,7 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 		
 		<div class="container">
 			<div class="body-container row justify-content-center" style="margin: 100px;">

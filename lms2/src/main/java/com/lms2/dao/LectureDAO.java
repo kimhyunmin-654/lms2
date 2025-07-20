@@ -555,7 +555,9 @@ public class LectureDAO {
 			ResultSet rs = null;
 
 			try {
-				String sql = "SELECT lecture_code, subject, member_id FROM LECTURE WHERE member_id = ?";
+				String sql = " SELECT L.lecture_code, L.subject, L.member_id "
+						+ " FROM LECTURE L JOIN COURSE_APPLICATION CA ON L.lecture_code = CA.lecture_code  "
+						+ " WHERE CA.member_id = ? ";
 
 				pstmt = conn.prepareStatement(sql);
 

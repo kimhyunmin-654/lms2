@@ -27,7 +27,7 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
@@ -40,38 +40,43 @@
 				</div>
 
 				<div class="container mt-4">
-					<h3 class="mb-4">수강 중인 강의</h3>
+			    <h3 class="mb-4">수강 중인 강의</h3>
+			
+			    <c:choose>
+			        <c:when test="${not empty list}">
+			            <div class="row g-3"> 
+			                <c:forEach var="dto" items="${list}" varStatus="status">
+			                    <div class="col-md-6"> <!-- 2열 -->
+			                        <div class="card h-100 shadow-sm"> <!-- Bootstrap 카드 스타일 -->
+			                            <div class="card-body">
+			                                <h5 class="card-title">${dto.lecture.subject}</h5>
+			                                <p class="card-text mb-1">
+			                                    <span class="me-3">${dto.lecture.grade}학년</span>
+			                                    <span class="me-3">${dto.lecture.classroom}</span>
+			                                    <span>${dto.lecture.credit}학점</span>
+			                                </p>
+			                                <p class="card-text">
+			                                    <span class="me-3">${dto.lecture.lecture_year}년 ${dto.lecture.semester}</span>
+			                                    <span>분반: ${dto.lecture.division}</span>
+			                                </p>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </c:forEach>
+			            </div>
+			        </c:when>
+			        <c:otherwise>
+			            <div class="row">
+			                <div class="col-12">
+			                    <div class="alert alert-warning text-center" role="alert">
+			                        수강 중인 강의가 없습니다.
+			                    </div>
+			                </div>
+			            </div>
+			        </c:otherwise>
+			    </c:choose>
+			</div>
 
-					<c:choose>
-						<c:when test="${not empty list}">
-							<div class="row">
-								<c:forEach var="dto" items="${list}" varStatus="status">
-									<div class="col-md-6">
-										<div class="course-box">
-											<div class="course-title">${dto.lecture.subject}</div>
-											<div class="course-info">
-												<span>${dto.lecture.grade}학년</span> <span>${dto.lecture.classroom}</span>
-												<span>${dto.lecture.credit}학점</span>
-											</div>
-											<div class="course-info">
-												<span>${dto.lecture.lecture_year}년
-													${dto.lecture.semester}</span> <span>분반:
-													${dto.lecture.division}</span>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<div class="row">
-								<div class="col-12">
-									<div class="no-courses">수강 중인 강의가 없습니다.</div>
-								</div>
-							</div>
-						</c:otherwise>
-					</c:choose>
-				</div>
 
 
 

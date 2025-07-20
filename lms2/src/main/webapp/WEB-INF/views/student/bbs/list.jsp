@@ -24,7 +24,7 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
@@ -76,6 +76,7 @@
 					
 					<div class="col-6 d-flex justify-content-center">
 						<form class="row" name="searchForm">
+							<input type="hidden" name="lecture_code" value="${lecture_code}" />
 							<div class="col-auto p-1">
 								<select name="schType" class="form-select">
 									<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
