@@ -42,7 +42,9 @@
 			<div class="col-md-6 wrap-member_id">
 			    <label class="form-label">아이디(학번)</label>
 			    <div class="input-group">
-			        <input type="text" id="member_id_text" class="form-control" value="${dto.member_id}" readonly autofocus>
+			        <input type="text" name="member_id" id="member_id" 
+			               class="form-control" 
+			               value="${dto.member_id}" ${mode=="update" ? "readonly" : ""} autofocus>
 			        <c:if test="${mode == 'account'}">
 			            <button type="button" class="btn btn-outline-secondary" onclick="userIdCheck();">아이디 중복검사</button>
 			        </c:if>
@@ -52,14 +54,6 @@
 			            학번은 8자 이내로 입력하세요. 숫자여야 합니다.
 			        </small>
 			    </c:if>
-			</div>
-			<div class="col-md-6">
-			    <label class="form-label">학년</label>
-			    <input type="number" name="grade" class="form-control" value="${dto.grade}">
-			</div>
-			<div class="col-md-6">
-			    <label class="form-label">입학일</label>
-			    <input type="date" name="admission_date" class="form-control" value="${dto.admission_date}">
 			</div>
 			<div class="col-md-6">
 				<label class="form-label">이름</label>
@@ -131,7 +125,7 @@
 		<div class="row mt-3">
 			<div class="col-md-6">
 				<label class="form-label">학과코드</label>
-				<input type="text" name="department_id" class="form-control" value="${dto.division}">
+				<input type="text" name="division" class="form-control" value="${dto.division}">
 			</div>
 		</div>
 		<c:if test="${mode == 'update'}">
@@ -336,11 +330,12 @@ function sendOk() {
 }
 
 function userIdCheck() {
+	// 아이디 중복 검사
 	let p;
 	let member_id = $('#member_id').val();
 	
-	p = /^[0-9]{8}$/;
-	if (!p.test(String(member_id))) {
+	p = /^[0-9]{8}$/;f.action = '${pageContext.request.contextPath}/admin/student/${mode}';
+	if (! p.test(member_id)) {
 		let s = '숫자 8자리로 입력하세요.';
 		$('#member_id').focus();
 		$('#member_id').closest('.wrap-member_id').find('.help-block').html(s);
@@ -357,21 +352,24 @@ function userIdCheck() {
 		dataType: 'json',
 		success: function(data) {
 			let passed = data.passed;
-			let s;
-
+			
+			let str;
 			if (passed === 'true') {
 				s = '<span style="color:blue; font-weight: bold;">' + member_id + '</span> 아이디는 사용가능 합니다.';
+				
 				$('#userIdValid').val('true');
+				$('#member_id').closest('.wrap-member_id').find('.help-block').html(s);
 			} else {
 				s = '<span style="color:red; font-weight: bold;">' + member_id + '</span> 아이디는 사용할 수 없습니다.';
+				
+				$('#member_id').closest('.wrap-member_id').find('.help-block').html(s);
 				$('#userIdValid').val('false');
 				$('#member_id').val('');
 				$('#member_id').focus();				
 			}
-
-			$('#member_id').closest('.wrap-member_id').find('.help-block').html(s);
 		}
 	});
+	
 }
 
 function changeEmail() {

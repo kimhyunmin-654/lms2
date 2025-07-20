@@ -67,7 +67,7 @@
                         		<tr>
                         			<td>${dto.member_id}</td>
                         			<td class="text-start">
-                        				<a href="${pageContext.request.contextPath}/admin/article?member_id=${dto.member_id}">${dto.name}</a>
+                        				<a href="${articleUrl}&member_id=${dto.member_id}" class="text-reset">${dto.name}</a>
                         			</td>
                         			<td>${dto.birth}</td>
                         			<td>${dto.email}</td>
