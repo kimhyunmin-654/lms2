@@ -11,6 +11,7 @@ import com.lms2.dao.AdminDAO;
 import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.StudentDAO;
+import com.lms2.model.AdminDTO;
 import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
@@ -144,8 +145,8 @@ public class StudentController {
 	        StudentDTO dto = new StudentDTO();
 
 	        dto.setMember_id(req.getParameter("member_id"));
-	        dto.setName(req.getParameter("name"));
-	        dto.setPassword(req.getParameter("password"));
+	        // dto.setName(req.getParameter("name"));
+	        // dto.setPassword(req.getParameter("password"));
 	        dto.setEmail(req.getParameter("email1") + "@" + req.getParameter("email2"));
 	        dto.setPhone(req.getParameter("phone"));
 	        dto.setBirth(req.getParameter("birth"));
@@ -329,7 +330,7 @@ public class StudentController {
 
 		StudentDAO dao = new StudentDAO();
 		LectureDAO lectureDao = new LectureDAO();
-		ModelAndView mav = new ModelAndView("student/study/list");
+		ModelAndView mav = new ModelAndView("/student/study/list");
 
 		try {
 			String lecture_code = req.getParameter("lecture_code");
@@ -545,6 +546,116 @@ public class StudentController {
 		model.put("passed", passed);
 
 		return model;
+	}
+	
+	@RequestMapping(value = "/student/student/pwd", method = RequestMethod.GET)
+	public ModelAndView pwdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 패스워드 확인 폼(정보수정)
+		ModelAndView mav = new ModelAndView("student/student/pwd");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/student/student/pwd", method = RequestMethod.POST)
+	public ModelAndView pwdSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 패스워드 확인
+		StudentDAO dao = new StudentDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		try {
+			MemberDTO dto = dao.findById(info.getMember_id());
+			if(dto == null) {
+				session.invalidate();
+				return new ModelAndView("redirect:/student/main/main");
+			}
+			
+			String password = req.getParameter("password");
+			
+			if(! dto.getPassword().equals(password)) {
+				ModelAndView mav = new ModelAndView("student/student/pwd");
+				
+				mav.addObject("message", "패스워드가 일치하지 않습니다.");
+				
+				return mav;
+			}
+			
+			// 정보수정 화면
+			ModelAndView mav = new ModelAndView("student/student/update");
+			
+			mav.addObject("dto", dto);
+			
+			return mav;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ModelAndView("redirect:/student/main/main");
+	}
+	
+
+	@RequestMapping(value = "/student/student/update", method = RequestMethod.POST)
+	public ModelAndView updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 개인정보수정완료
+		StudentDAO dao = new StudentDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "member";
+		
+		
+		try {
+			StudentDTO dto = new StudentDTO();
+			
+			dto.setMember_id(req.getParameter("member_id"));
+			dto.setName(req.getParameter("name"));
+			dto.setPassword(req.getParameter("password"));
+			
+			dto.setBirth(req.getParameter("birth"));
+			String e1 = req.getParameter("email1");
+			String e2 = req.getParameter("email2");
+			dto.setEmail(e1 + "@" + e2);
+			dto.setPhone(req.getParameter("phone"));
+			dto.setZip(req.getParameter("zip"));
+			dto.setAddr1(req.getParameter("addr1"));
+			dto.setAddr2(req.getParameter("addr2"));
+			
+			dto.setAvatar(req.getParameter("avatar"));
+			Part p = req.getPart("selectFile");
+			MyMultipartFile multilPart = fileManager.doFileUpload(p, pathname);
+			if(multilPart != null) {
+				// 기존 사진 삭제
+				if(dto.getAvatar().length() != 0) {
+					fileManager.doFiledelete(pathname, dto.getAvatar());
+				}
+				
+				dto.setAvatar(multilPart.getSaveFilename());
+			}
+			
+			dao.updateStudent(dto);
+			
+	        // 로그인한 사용자 본인일 경우에만 세션 정보 갱신
+	        if (info.getMember_id().equals(dto.getMember_id())) {
+	            info.setAvatar(dto.getAvatar());
+	            info.setName(dto.getName());
+	            info.setDivision(dto.getDivision());
+	            session.setAttribute("member", info);
+	        }
+			
+			
+			return new ModelAndView("redirect:/student/main/main");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ModelAndView("redirect:/student/main/main");
+		
 	}
 
 }

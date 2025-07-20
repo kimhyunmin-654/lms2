@@ -13,6 +13,7 @@
 </head>
 <body>
 	<div class="text-white p-3 position-fixed blackbox2">
+	<%-- 	
 		<form>
 			<select name="lecture_code" id="lesson-select"
 				onchange="location.href=this.value;">
@@ -32,6 +33,27 @@
 
 			</select>
 		</form>
+		 --%>
+
+		<form>
+			<select name="lecture_code" id="lesson-select"
+				onchange="location.href=this.value;">
+				<option value="">-- 강의 선택 --</option>
+
+				<c:if test="${empty lectureList}">
+					<option disabled>강의 없음</option>
+				</c:if>
+
+				<c:forEach var="dto" items="${lectureList}">
+					<option
+						value="${pageContext.request.contextPath}/student/study/list?lecture_code=${dto.lecture_code}"
+						<c:if test="${dto.lecture_code == lecture_code}">selected</c:if>>
+						${dto.subject}</option>
+				</c:forEach>
+			</select>
+
+		</form>
+
 		<div class="accordion accordion-flush" id="sidebarAccordion">
 			<div class="accordion-item">
 				<h2 class="accordion-header">
@@ -63,7 +85,7 @@
 			</div>
 
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/notice/list">학사 공지사항</a></div>
-			<div class="accordion-button custom-accordion-btn collapsed">내 정보 관리</div>
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/student/pwd">내 정보 관리</a></div>
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
 	</div>

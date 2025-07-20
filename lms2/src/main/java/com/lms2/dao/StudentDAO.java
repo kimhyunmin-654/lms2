@@ -273,17 +273,17 @@ public class StudentDAO {
 		String sql;
 
 		try {
-			sql = " UPDATE member SET password = ? , modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ? "
+			sql = " UPDATE member SET modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ?, zip = ? "
 					+ " WHERE member_id = ? ";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getPassword());
-			pstmt.setString(2, dto.getAvatar());
-			pstmt.setString(3, dto.getEmail());
-			pstmt.setString(4, dto.getPhone());
-			pstmt.setString(5, dto.getBirth());
-			pstmt.setString(6, dto.getAddr1());
-			pstmt.setString(7, dto.getAddr2());
+			pstmt.setString(1, dto.getAvatar());
+			pstmt.setString(2, dto.getEmail());
+			pstmt.setString(3, dto.getPhone());
+			pstmt.setString(4, dto.getBirth());
+			pstmt.setString(5, dto.getAddr1());
+			pstmt.setString(6, dto.getAddr2());
+			pstmt.setString(7, dto.getZip());
 			pstmt.setString(8, dto.getMember_id());
 
 			pstmt.executeUpdate();
@@ -501,7 +501,7 @@ public class StudentDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT attend_date, checkin_time, checkout_time, a.status, c.member_id, week, lecture_code ");
+			sb.append(" SELECT attend_date, checkin_time, checkout_time, a.status, c.member_id, week, lecture_code, ");
 			sb.append(
 					" CASE a.status WHEN 0 THEN '결석' WHEN 1 THEN '출석' WHEN 2 THEN '지각' ELSE '미체크' END AS attendance_status ");
 			sb.append(" FROM Attendance_record a ");
