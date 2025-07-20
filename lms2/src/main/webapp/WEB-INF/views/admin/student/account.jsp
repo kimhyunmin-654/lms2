@@ -160,8 +160,8 @@
 
 					<div class="row mt-3">
 						<div class="col-md-6">
-							<label class="form-label">학과코드</label> <input type="text"
-								name="division" class="form-control" value="${dto.division}">
+							<label class="form-label">학과코드</label> 
+							<input type="text" name="department_id" class="form-control" value="${dto.department_id}">
 						</div>
 					</div>
 					<c:if test="${mode == 'update'}">
@@ -286,6 +286,7 @@ function isValidDateString(dateString) {
 }
 
 function sendOk() {
+    // console.log("sendOk() 실행됨");
 	const f = document.insertForm;
 	let str, p;
 	
@@ -364,6 +365,7 @@ function sendOk() {
 
 function userIdCheck() {
 	// 아이디 중복 검사
+	const f = document.insertForm; 
 	let p;
 	let member_id = $('#member_id').val();
 	
