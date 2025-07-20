@@ -14,7 +14,7 @@
 <body>
 	<div class="text-white p-3 position-fixed blackbox2">
 		<div class="accordion accordion-flush" id="sidebarAccordion">
-			<c:out value="${lectureList}" />
+
 			<form>
 			    <select name="lesson" id="lesson-select">
 			        <option value="">-- 강의 선택 --</option>
