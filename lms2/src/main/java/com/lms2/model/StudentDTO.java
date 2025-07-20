@@ -6,9 +6,13 @@ public class StudentDTO extends MemberDTO {
 	private String admission_date;
 	private String graduate_date;
 	private String department_id;
+	private String department_name;
+	private String academic_status;
 
 	private String lecture_code;
 	private String apply_status;
+
+	private int status_id;
 
 	public String getLecture_code() {
 		return lecture_code;
@@ -58,4 +62,29 @@ public class StudentDTO extends MemberDTO {
 		this.department_id = department_id;
 	}
 
+	public String getDepartment_name() {
+		return department_name;
+	}
+
+	public void setDepartment_name(String department_name) {
+		this.department_name = department_name;
+	}
+
+	public String getAcademic_status() {
+		return academic_status;
+	}
+
+	public void setAcademic_status(String academic_status) {
+		this.academic_status = academic_status;
+	}
+	
+
+	public int getStatus_id() {
+	    return status_id;
+	}
+
+	public void setStatus_id(int status_id) {
+	    this.status_id = status_id;
+	}
+	
 }
