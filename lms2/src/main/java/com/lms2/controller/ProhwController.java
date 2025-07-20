@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.lms2.dao.LectureDAO;
 import com.lms2.dao.Pro_hwDAO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.Pro_hwDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
@@ -28,13 +30,16 @@ public class ProhwController {
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//리스트보기
 		ModelAndView mav = new ModelAndView("/professor/hw/list");
-		
+		LectureDAO lectureDao = new LectureDAO();
 		Pro_hwDAO dao = new Pro_hwDAO();
 		MyUtil util = new MyUtil();
 		
 		try {
 			String page = req.getParameter("page");
 			int current_page = 1;
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
 			if(page != null) {
 				current_page = Integer.parseInt(page);
 			}
@@ -93,6 +98,13 @@ public class ProhwController {
 			mav.addObject("paging", paging);
 			mav.addObject("schType", schType);
 			mav.addObject("kwd", kwd);
+			
+			if (info != null) {
+                String memberId = String.valueOf(info.getMember_id());
+                List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+                mav.addObject("lectureList", lectures);
+            }
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -103,6 +115,7 @@ public class ProhwController {
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글쓰기 폼
 		ModelAndView mav = new ModelAndView("professor/hw/write");
+		
 		mav.addObject("mode", "write");
 		return mav;
 	}
@@ -147,7 +160,7 @@ public class ProhwController {
 	@RequestMapping(value = "/professor/hw/article", method = RequestMethod.GET)
 	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글보기
-		
+		LectureDAO lectureDao = new LectureDAO();
 		Pro_hwDAO dao = new Pro_hwDAO();
 		MyUtil util = new MyUtil();
 		
@@ -158,6 +171,8 @@ public class ProhwController {
 		String query = "page=" + page;
 
 		try {
+			HttpSession session = req.getSession(false);
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			int homework_id = Integer.parseInt(req.getParameter("homework_id"));
 			String schType = req.getParameter("schType");
 			String kwd = req.getParameter("kwd");
@@ -188,6 +203,12 @@ public class ProhwController {
 			Pro_hwDTO nextDto = dao.findByNext(dto.getHomework_id(), schType, kwd);
 			
 			ModelAndView mav = new ModelAndView("/professor/hw/article");
+			
+			if (info != null) {
+                String memberId = String.valueOf(info.getMember_id());
+                List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+                mav.addObject("lectureList", lectures);
+            }
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
