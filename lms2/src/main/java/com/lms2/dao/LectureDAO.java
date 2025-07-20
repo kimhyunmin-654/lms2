@@ -408,27 +408,24 @@ public class LectureDAO {
 			}
 		}
 		
-		public void deleteLecture(long[] lecture_codes) throws SQLException {
-			PreparedStatement pstmt = null;
-			String sql;
+		public void deleteLecture(String[] lecture_codes) throws SQLException {
+		    PreparedStatement pstmt = null;
+		    String sql;
 
-			try {
-
-
-				sql = "DELETE FROM lecture WHERE lecture_code = ? ";
-				pstmt = conn.prepareStatement(sql);
-				
-				for(long num : lecture_codes) {
-					pstmt.setString(1, String.valueOf(num));
-					pstmt.executeUpdate();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw e;
-			} finally {
-				DBUtil.close(pstmt);
-			}
-
+		    try {
+		        sql = "DELETE FROM lecture WHERE lecture_code = ?";
+		        pstmt = conn.prepareStatement(sql);
+		        
+		        for (String code : lecture_codes) {
+		            pstmt.setString(1, code);  
+		            pstmt.executeUpdate();
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        throw e;
+		    } finally {
+		        DBUtil.close(pstmt);
+		    }
 		}
 		
 		public List<LectureDTO> listLectureFile(String lecture_code) {

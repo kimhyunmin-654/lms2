@@ -516,30 +516,23 @@ public class LectureController {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
 
-			String[] nn = req.getParameterValues("nums");
-			long nums[] = null;
-			nums = new long[nn.length];
-			for (int i = 0; i < nn.length; i++) {
-				nums[i] = Long.parseLong(nn[i]);
-			}
+	        String[] codes = req.getParameterValues("nums");
 
-			LectureDAO dao = new LectureDAO();
+	        LectureDAO dao = new LectureDAO();
 
-			// 파일 삭제
-			for (long code : nums) {
-				List<LectureDTO> listFile = dao.listLectureFile(String.valueOf(code)); // lecture_code가 String 타입
-				for (LectureDTO vo : listFile) {
-					fileManager.doFiledelete(pathname, vo.getSave_filename());
-				}
-				dao.deleteLectureFile(String.valueOf(code)); // "all" 구분자 제거된 버전이면 이 방식
-			}
+	        for (String code : codes) {
+	            List<LectureDTO> listFile = dao.listLectureFile(code);
+	            for (LectureDTO vo : listFile) {
+	                fileManager.doFiledelete(pathname, vo.getSave_filename());
+	            }
+	            dao.deleteLectureFile(code);
+	        }
 
-			// 게시글 삭제
-			dao.deleteLecture(nums);
+	        dao.deleteLecture(codes);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
 		return new ModelAndView("redirect:/admin/lecture/list?" + query);
 	}
