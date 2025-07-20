@@ -86,7 +86,7 @@
                 </form>
 
                 <!-- 페이징 -->
-                <div class="d-flex justify-content-center my-4">
+                <div class="d-flex justify-content-center my-4 page-navigation">
                     ${dataCount == 0 ? "등록된 학생 없습니다." : paging}
                 </div>
 

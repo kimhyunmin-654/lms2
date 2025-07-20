@@ -211,7 +211,7 @@ window.addEventListener('DOMContentLoaded', ev => {
 	
 	let avatar;
 	if( img ) {
-		avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
+		avatar = '${pageContext.request.contextPath}/uploads/student/' + img;
 		avatarEL.src = avatar;
 	}
 	
