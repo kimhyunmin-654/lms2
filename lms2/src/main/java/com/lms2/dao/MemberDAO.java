@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lms2.model.MemberDTO;
 import com.lms2.util.DBConn;
@@ -149,4 +151,37 @@ public class MemberDAO {
 			}
 		}
 	}
+	
+	public List<MemberDTO> listProfessor() throws SQLException {
+	    List<MemberDTO> list = new ArrayList<>();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql;
+	    
+
+	    try {
+	    	sql = "SELECT member_id, name FROM member WHERE role = 51 ORDER BY name ASC";
+			
+	    	pstmt = conn.prepareStatement(sql);
+	    	
+	    	rs = pstmt.executeQuery();
+	    	
+	    	while (rs.next()) {
+	    		MemberDTO dto = new MemberDTO();
+	    		dto.setMember_id(rs.getString("member_id"));
+	    		dto.setName(rs.getString("name"));
+	    		list.add(dto);
+	    		
+	    	}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+
+	
+	    return list;
+	}	
 }

@@ -77,18 +77,19 @@
 				    
 				    
 					<c:if test="${mode == 'update'}">
-					    <c:forEach var="vo" items="${listFile}">
-					        <div class="row align-items-center border-bottom py-2">
-					            <div class="col-sm-2 bg-light fw-bold">첨부된파일</div>
-					            <div class="col-sm-10 d-flex align-items-center">
-									<a href="#" class="text-danger me-2"
-									   onclick="deleteFile(${vo.file_id}); return false;">
-									    <i class="bi bi-trash"></i>
-									</a>
-					                <span>${vo.original_filename}</span>
-					            </div>
-					        </div>
-					    </c:forEach>
+						<div class="row border-bottom">
+						    <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">첨부된파일</div>
+						    <div class="col-sm-10 bg-white py-3">
+						        <c:forEach var="vo" items="${listFile}">
+						            <div class="d-flex align-items-center mb-1">
+						                <a href="#" class="text-danger me-2" onclick="deleteFile(${vo.file_id}); return false;">
+						                    <i class="bi bi-trash"></i>
+						                </a>
+						                <span>${vo.original_filename}</span>
+						            </div>
+						        </c:forEach>
+						    </div>
+						</div>
 					</c:if>		    
 				
 				   

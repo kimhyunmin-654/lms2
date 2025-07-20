@@ -16,6 +16,7 @@ public class LectureDTO {
 	private double credit; // 학점
 	private String department_id; // 학과 코드
 	private String member_id; // 학번
+	private String department_name; // 학과 이름
 	
 	private List<MyMultipartFile> listFile;
 	
@@ -136,6 +137,13 @@ public class LectureDTO {
 	public void setListFile(List<MyMultipartFile> listFile) {
 		this.listFile = listFile;
 	}
+	public String getDepartment_name() {
+		return department_name;
+	}
+	public void setDepartment_name(String department_name) {
+		this.department_name = department_name;
+	}
+	
 	
 	
 	

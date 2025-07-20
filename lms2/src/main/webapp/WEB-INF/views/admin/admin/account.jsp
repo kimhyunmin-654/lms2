@@ -42,8 +42,7 @@
 <div class="col-md-6 wrap-member_id">
     <label class="form-label">아이디(사번)</label>
     <div class="input-group">
-        <input type="text" name="member_id" id="member_id" 
-               class="form-control" 
+        <input type="text" name="member_id" id="member_id"  class="form-control" 
                value="${dto.member_id}" ${mode=="update" ? "readonly" : ""} autofocus>
         <c:if test="${mode == 'account'}">
             <button type="button" class="btn btn-outline-secondary" onclick="userIdCheck();">아이디 중복검사</button>

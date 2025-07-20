@@ -2,10 +2,15 @@ package com.lms2.controller;
 
 import java.io.IOException;
 import java.rmi.ServerException;
+import java.util.List;
 
+import com.lms2.dao.AdminDAO;
+import com.lms2.dao.LectureDAO;
 import com.lms2.dao.MemberDAO;
-import com.lms2.model.AdminDTO;
+import com.lms2.dao.NoticeDAO;
+import com.lms2.dao.ProfessorDAO;
 import com.lms2.model.MemberDTO;
+import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
@@ -89,8 +94,33 @@ public class MemberController {
     }
 	
 	@RequestMapping(value = "/admin/home/frame", method = RequestMethod.GET)
-	public String adminMain(HttpServletRequest req, HttpServletResponse resp) {
-	    return "admin/home/frame"; // JSP 뷰 경로
+	public ModelAndView adminMain(HttpServletRequest req, HttpServletResponse resp) {
+		
+		AdminDAO dao = new AdminDAO();
+		ProfessorDAO pdao = new ProfessorDAO();
+		LectureDAO ldao = new LectureDAO();
+		NoticeDAO ndao = new NoticeDAO();
+		
+		ModelAndView mav = new ModelAndView("admin/home/frame");
+		
+		try {
+			int dataCount, dataCount2, dataCount3 ;
+
+			List<NoticeDTO> listNotice = ndao.listNotice(0, 5);
+			
+			dataCount = dao.dataCount();
+			dataCount2 = pdao.dataCount();
+			dataCount3 = ldao.dataCount();
+			
+			mav.addObject("dataCount", dataCount);
+			mav.addObject("dataCount2", dataCount2);
+			mav.addObject("dataCount3", dataCount3);
+			mav.addObject("listNotice", listNotice);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	    return mav; // JSP 뷰 경로
 	}
 	/*
 	@RequestMapping(value = "/professor/main/main", method = RequestMethod.GET)

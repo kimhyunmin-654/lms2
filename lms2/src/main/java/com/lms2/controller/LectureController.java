@@ -2,6 +2,8 @@ package com.lms2.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -12,8 +14,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.lms2.dao.LectureDAO;
+import com.lms2.dao.MemberDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.model.LectureDTO;
+import com.lms2.model.MemberDTO;
 import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
@@ -36,7 +40,7 @@ public class LectureController {
 	
 	@RequestMapping(value = "/admin/lecture/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 공지사항 리스트
+		// 강의 리스트
 		LectureDAO dao = new LectureDAO();
 		MyUtil util = new MyUtil();
 		
@@ -97,8 +101,8 @@ public class LectureController {
 			if(kwd.length() != 0) {
 				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
-			listUrl = cp + "/admin/notice/list?" + query;
-			articleUrl = cp + "/admin/notice/article?page=" + current_page + "&" + query;
+			listUrl = cp + "/admin/lecture/list?" + query;
+			articleUrl = cp + "/admin/lecture/article?page=" + current_page + "&" + query;
 			
 			String paging = util.paging(current_page, total_page, listUrl);
 			
@@ -127,6 +131,15 @@ public class LectureController {
 		
 		String size = req.getParameter("size");
 		
+		try {
+			MemberDAO dao = new MemberDAO(); 
+			List<MemberDTO> professorList = dao.listProfessor(); 
+			
+			mav.addObject("professorList", professorList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+			
 		mav.addObject("mode", "write");
 		mav.addObject("size", size);
 		
@@ -142,9 +155,11 @@ public class LectureController {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 	    
 	    String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "member";
+		String pathname = root + "uploads" + File.separator + "lecture";
 		
 		String size = req.getParameter("size");
+		
+		
 	    try {
 	        LectureDTO dto = new LectureDTO();
 	        
@@ -193,7 +208,7 @@ public class LectureController {
 		String query = "page=" + page + "&size=" + size;
 		
 		try {
-			long lecture_code = Long.parseLong(req.getParameter("lecture_code"));
+			String lecture_code = req.getParameter("lecture_code");
 			
 			String schType = req.getParameter("schType");
 			String kwd = req.getParameter("kwd");
@@ -246,11 +261,11 @@ public class LectureController {
 		String size = req.getParameter("size");
 
 		try {
-			long lecture_code = Long.parseLong(req.getParameter("lecture_code"));
+			String lecture_code = req.getParameter("lecture_code");
 
 			LectureDTO dto = dao.findById(lecture_code);
 			if (dto == null) {
-				return new ModelAndView("redirect:/admin/notice/list?page=" + page + "&size=" + size);
+				return new ModelAndView("redirect:/admin/lecture/list?page=" + page + "&size=" + size);
 			}
 
 			// 파일
@@ -258,11 +273,15 @@ public class LectureController {
 
 			ModelAndView mav = new ModelAndView("admin/lecture/write");
 			
+			// 교수 리스트 가져오기
+			MemberDAO memberDao = new MemberDAO();
+		    List<MemberDTO> professorList = memberDao.listProfessor();
+			
 			mav.addObject("dto", dto);
 			mav.addObject("listFile", listFile);
 			mav.addObject("page", page);
 			mav.addObject("size", size);
-
+			 mav.addObject("professorList", professorList);
 			mav.addObject("mode", "update");
 
 			return mav;
@@ -312,6 +331,8 @@ public class LectureController {
 			dto.setSemester(req.getParameter("semester"));
 			dto.setCapacity(Integer.parseInt(req.getParameter("capacity")));
 			dto.setCredit(Double.parseDouble(req.getParameter("credit")));
+			dto.setDepartment_id(req.getParameter("department_id"));
+			dto.setMember_id(req.getParameter("member_id"));
 			
 						
 			Collection<Part> parts = req.getParts();
@@ -336,7 +357,7 @@ public class LectureController {
 		return new ModelAndView("redirect:/admin/lecture/list?" + query);
 	}
 	
-	/*
+	
 	@RequestMapping(value = "/admin/lecture/deleteFile")
 	public ModelAndView deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 수정에서 파일만 삭제
@@ -353,26 +374,174 @@ public class LectureController {
 		String size = req.getParameter("size");
 
 		try {
-			long num = Long.parseLong(req.getParameter("num"));
-			long fileNum = Long.parseLong(req.getParameter("fileNum"));
-			NoticeDTO dto = dao.findByFileId(fileNum);
+			String lecture_code = req.getParameter("lecture_code");
+			long file_num = Long.parseLong(req.getParameter("file_num"));
+			LectureDTO dto = dao.findByFileId(file_num);
 			if (dto != null) {
 				// 파일삭제
 				fileManager.doFiledelete(pathname, dto.getSave_filename());
 				
 				// 테이블 파일 정보 삭제
-				dao.deleteNoticeFile("one", fileNum);
+				dao.deleteLectureFile(file_num);
 			}
 
 			// 다시 수정 화면으로
-			return new ModelAndView("redirect:/admin/notice/update?num=" + num + "&page=" + page + "&size=" + size);
+			return new ModelAndView("redirect:/admin/lecture/update?lecture_code=" + lecture_code + "&page=" + page + "&size=" + size);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/admin/notice/list?page=" + page + "&size=" + size);
+		return new ModelAndView("redirect:/admin/lecture/list?page=" + page + "&size=" + size);
 	}
-	*/
 	
+	@RequestMapping(value = "/admin/lecture/delete", method = RequestMethod.GET)
+	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 삭제
+		LectureDAO dao = new LectureDAO();
+		MyUtil util = new MyUtil();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "lecture";
+
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+
+		try {
+			String lecture_code = req.getParameter("lecture_code");
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if (schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+
+			if (kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+
+			LectureDTO dto = dao.findById(lecture_code);
+			if (dto == null) {
+				return new ModelAndView("redirect:/admin/lecture/list?" + query);
+			}
+
+			// 파일삭제
+			List<LectureDTO> listFile = dao.listLectureFile(lecture_code);
+			for (LectureDTO vo : listFile) {
+				fileManager.doFiledelete(pathname, vo.getSave_filename());
+			}
+			dao.deleteLectureFile(lecture_code);
+
+			// 게시글 삭제
+			dao.deleteLecture(lecture_code);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/admin/lecture/list?" + query);
+	}
+	
+	@RequestMapping(value = "/admin/lecture/download", method = RequestMethod.GET)
+	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 파일 다운로드
+		// 넘어온 파라미터 : 파일번호
+		LectureDAO dao = new LectureDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "lecture";
+		
+		boolean b = false;
+
+		try {
+			long file_num = Long.parseLong(req.getParameter("file_num"));
+
+			LectureDTO dto = dao.findByFileId(file_num);
+			if (dto != null) {
+				b = fileManager.doFiledownload(dto.getSave_filename(), dto.getOriginal_filename(), pathname, resp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if ( ! b ) {
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print("<script>alert('파일다운로드가 실패 했습니다.');history.back();</script>");
+		}
+	}
+	
+	@RequestMapping(value = "/admin/lecture/deleteList", method = RequestMethod.POST)
+	public ModelAndView deleteList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 게시글다중삭제
+		MyUtil util = new MyUtil();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "lecture";
+
+		String page = req.getParameter("page");
+		if (page == null || page.equals("") || page.equals("null")) {
+			page = "1";
+		}
+
+		String size = req.getParameter("size");
+		if (size == null || size.equals("") || size.equals("null")) {
+			size = "10";
+		}
+		String query = "size=" + size + "&page=" + page;
+
+		try {
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if (schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+			if (kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+
+			String[] nn = req.getParameterValues("nums");
+			long nums[] = null;
+			nums = new long[nn.length];
+			for (int i = 0; i < nn.length; i++) {
+				nums[i] = Long.parseLong(nn[i]);
+			}
+
+			LectureDAO dao = new LectureDAO();
+
+			// 파일 삭제
+			for (long code : nums) {
+				List<LectureDTO> listFile = dao.listLectureFile(String.valueOf(code)); // lecture_code가 String 타입
+				for (LectureDTO vo : listFile) {
+					fileManager.doFiledelete(pathname, vo.getSave_filename());
+				}
+				dao.deleteLectureFile(String.valueOf(code)); // "all" 구분자 제거된 버전이면 이 방식
+			}
+
+			// 게시글 삭제
+			dao.deleteLecture(nums);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/admin/lecture/list?" + query);
+	}
 
 }
