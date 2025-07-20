@@ -100,7 +100,11 @@
 							<option value="4" ${dto.grade == 4 ? "selected" : ""}>4학년</option>
 						</select>
 					</div>
-
+					
+					<div class="col-md-6">
+					    <label class="form-label">졸업일자</label>
+					    <input type="date" name="graduate_date" class="form-control" value="${dto.graduate_date}">
+					</div>
 
 					<div class="row mt-3">
 						<label class="col-md-2 form-label fw-medium">이메일</label>
@@ -190,8 +194,7 @@
 							value="false">
 
 						<c:if test="${mode == 'update'}">
-							<input type="hidden" name="avatar" value="${dto.avatar}">
-							<input type="hidden" name="originalAvatar" value="${dto.avatar}">
+							<input type="hidden" name="profile_photo" value="${dto.avatar}">
 						</c:if>
 					</div>
 				</form>
@@ -211,7 +214,7 @@ window.addEventListener('DOMContentLoaded', ev => {
 	
 	let avatar;
 	if( img ) {
-		avatar = '${pageContext.request.contextPath}/uploads/student/' + img;
+		avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
 		avatarEL.src = avatar;
 	}
 	
@@ -220,7 +223,7 @@ window.addEventListener('DOMContentLoaded', ev => {
 		let file = ev.target.files[0];
 		if(! file) {
 			if(img) {
-				avatar = '${pageContext.request.contextPath}/uploads/avatar/' + img;
+				avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
 			} else {
 				avatar = '${pageContext.request.contextPath}/dist/images/user.png';
 			}
@@ -271,7 +274,8 @@ window.addEventListener('DOMContentLoaded', ev => {
 			inputEL.value = '';
 			avatarEL.src = avatar
 		}
-	});	
+	});
+	
 });
 
 function isValidDateString(dateString) {
