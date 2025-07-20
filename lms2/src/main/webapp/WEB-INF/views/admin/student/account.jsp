@@ -190,7 +190,8 @@
 							value="false">
 
 						<c:if test="${mode == 'update'}">
-							<input type="hidden" name="profile_photo" value="${dto.avatar}">
+							<input type="hidden" name="avatar" value="${dto.avatar}">
+							<input type="hidden" name="originalAvatar" value="${dto.avatar}">
 						</c:if>
 					</div>
 				</form>
@@ -219,7 +220,7 @@ window.addEventListener('DOMContentLoaded', ev => {
 		let file = ev.target.files[0];
 		if(! file) {
 			if(img) {
-				avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
+				avatar = '${pageContext.request.contextPath}/uploads/avatar/' + img;
 			} else {
 				avatar = '${pageContext.request.contextPath}/dist/images/user.png';
 			}
@@ -270,8 +271,7 @@ window.addEventListener('DOMContentLoaded', ev => {
 			inputEL.value = '';
 			avatarEL.src = avatar
 		}
-	});
-	
+	});	
 });
 
 function isValidDateString(dateString) {

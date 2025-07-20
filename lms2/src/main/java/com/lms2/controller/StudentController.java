@@ -1,5 +1,6 @@
 package com.lms2.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -21,12 +22,15 @@ import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
 import com.lms2.mvc.annotation.ResponseBody;
 import com.lms2.mvc.view.ModelAndView;
+import com.lms2.util.FileManager;
+import com.lms2.util.MyMultipartFile;
 import com.lms2.util.MyUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class StudentController {
@@ -118,57 +122,64 @@ public class StudentController {
 
 	@RequestMapping(value = "/admin/student/account", method = RequestMethod.POST)
 	public ModelAndView accountStudentSubmit(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// 학생 등록
-		StudentDAO dao = new StudentDAO();
+	        throws ServletException, IOException {
 
-		// 사진 파일은 나중에... -김하은
+	    StudentDAO dao = new StudentDAO();
+	    HttpSession session = req.getSession();
+	    String message = "";
 
-		HttpSession session = req.getSession();
+	    String root = session.getServletContext().getRealPath("/");
+	    String pathname = root + "uploads" + File.separator + "avatar";
 
-		String message = "";
+	    FileManager fileManager = new FileManager();
+	    String avatar = null;
 
-		try {
-			StudentDTO dto = new StudentDTO();
+	    try {
+	        Part part = req.getPart("selectFile");
+	        MyMultipartFile multiFile = fileManager.doFileUpload(part, pathname);
+	        if (multiFile != null) {
+	            avatar = multiFile.getSaveFilename();
+	        }
 
-			dto.setMember_id(req.getParameter("member_id"));
-			dto.setName(req.getParameter("name"));
-			dto.setPassword(req.getParameter("password"));
-			dto.setEmail(req.getParameter("email1") + "@" + req.getParameter("email2"));
-			dto.setPhone(req.getParameter("phone"));
-			dto.setBirth(req.getParameter("birth"));
-			dto.setAddr1(req.getParameter("addr1"));
-			dto.setAddr2(req.getParameter("addr2"));
+	        StudentDTO dto = new StudentDTO();
 
-			dto.setGrade(Integer.parseInt(req.getParameter("grade")));
-			dto.setAdmission_date(req.getParameter("admission_date"));
-			dto.setDepartment_id(req.getParameter("department_id"));
+	        dto.setMember_id(req.getParameter("member_id"));
+	        dto.setName(req.getParameter("name"));
+	        dto.setPassword(req.getParameter("password"));
+	        dto.setEmail(req.getParameter("email1") + "@" + req.getParameter("email2"));
+	        dto.setPhone(req.getParameter("phone"));
+	        dto.setBirth(req.getParameter("birth"));
+	        dto.setAddr1(req.getParameter("addr1"));
+	        dto.setAddr2(req.getParameter("addr2"));
+	        dto.setGrade(Integer.parseInt(req.getParameter("grade")));
+	        dto.setAdmission_date(req.getParameter("admission_date"));
+	        dto.setDepartment_id(req.getParameter("department_id"));
+	        dto.setStatus_id(1);
+	        dto.setAvatar(avatar);
 
-			dto.setStatus_id(1);
-			dao.insertStudent(dto);
+	        dao.insertStudent(dto);
 
-			session.setAttribute("mode", "account");
+	        session.setAttribute("mode", "account");
+	        return new ModelAndView("redirect:/admin/student/list");
 
-			return new ModelAndView("redirect:/admin/student/list");
+	    } catch (SQLException e) {
+	        if (e.getErrorCode() == 1) {
+	            message = "이미 등록된 학번입니다.";
+	        } else if (e.getErrorCode() == 1840 || e.getErrorCode() == 1861) {
+	            message = "날짜 형식이 올바르지 않습니다.";
+	        } else {
+	            message = "학생 등록에 실패했습니다.";
+	        }
+	    } catch (Exception e) {
+	        message = "학생 등록에 실패했습니다.";
+	        e.printStackTrace();
+	    }
 
-		} catch (SQLException e) {
-			if (e.getErrorCode() == 1) {
-				message = "이미 등록된 학번입니다.";
-			} else if (e.getErrorCode() == 1840 || e.getErrorCode() == 1861) {
-				message = "날짜 형식이 올바르지 않습니다.";
-			} else {
-				message = "학생 등록에 실패했습니다.";
-			}
-		} catch (Exception e) {
-			message = "학생 등록에 실패했습니다.";
-			e.printStackTrace();
-		}
+	    ModelAndView mav = new ModelAndView("admin/student/account");
+	    mav.addObject("mode", "account");
+	    mav.addObject("message", message);
 
-		ModelAndView mav = new ModelAndView("admin/student/account");
-		mav.addObject("mode", "account");
-		mav.addObject("message", message);
-
-		return mav;
+	    return mav;
 	}
 
 	@RequestMapping(value = "/admin/student/complete", method = RequestMethod.GET)
@@ -320,14 +331,6 @@ public class StudentController {
 		ModelAndView mav = new ModelAndView("student/study/list");
 
 		try {
-			LectureDAO lectureDao = new LectureDAO();
-
-			if (info != null) {
-				String memberId = String.valueOf(info.getMember_id());
-				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
-				mav.addObject("lectureList", lectures);
-			}
-			
 			List<Course_ApplicationDTO> list = dao.listCourse(info.getMember_id());
 
 			mav.addObject("list", list);
@@ -394,10 +397,39 @@ public class StudentController {
 	@RequestMapping(value = "/admin/student/update", method = RequestMethod.POST)
 	public ModelAndView updateStudent(HttpServletRequest req, HttpServletResponse resp)
 	        throws ServletException, IOException {
+
 	    StudentDAO dao = new StudentDAO();
 	    HttpSession session = req.getSession();
 
+	    String root = session.getServletContext().getRealPath("/");
+	    String pathname = root + "uploads" + File.separator + "avatar";
+
+	    // *****
+	    System.out.println("RealPath = " + root);
+	    System.out.println("Upload Path = " + pathname);
+
+	    FileManager fileManager = new FileManager();
+	    String avatar = null;
+
 	    try {
+	        // 기존 아바타
+	        String originalAvatar = req.getParameter("originalAvatar");
+
+	        Part part = req.getPart("selectFile");
+	        MyMultipartFile multiFile = fileManager.doFileUpload(part, pathname);
+
+	        if (multiFile != null && multiFile.getSize() > 0) {
+	            avatar = multiFile.getSaveFilename();
+
+	            // 기존 파일 삭제
+	            if (originalAvatar != null && !originalAvatar.isEmpty()) {
+	            	fileManager.doFiledelete(pathname, originalAvatar);
+	            }
+
+	        } else {
+	            avatar = originalAvatar; // 새 파일 없으면 기존 유지
+	        }
+
 	        StudentDTO dto = new StudentDTO();
 
 	        dto.setMember_id(req.getParameter("member_id"));
@@ -416,6 +448,8 @@ public class StudentController {
 	        if (statusIdStr != null && !statusIdStr.isEmpty()) {
 	            dto.setStatus_id(Integer.parseInt(statusIdStr));
 	        }
+
+	        dto.setAvatar(avatar);
 
 	        dao.updateStudentByAdmin(dto);
 

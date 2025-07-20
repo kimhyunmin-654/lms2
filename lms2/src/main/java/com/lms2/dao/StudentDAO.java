@@ -236,24 +236,24 @@ public class StudentDAO {
 				dto.setAcademic_status(status);
 
 				int statusId = 0;
-				switch (status) {
-				case "입학":
-					statusId = 1;
-					break;
-				case "휴학":
-					statusId = 2;
-					break;
-				case "재학":
-					statusId = 3;
-					break;
-				case "자퇴":
-					statusId = 4;
-					break;
-				case "졸업":
-					statusId = 5;
-					break;
-				default:
-					statusId = 0;
+				if (status != null) {
+				    switch (status) {
+				        case "입학":
+				            statusId = 1;
+				            break;
+				        case "휴학":
+				            statusId = 2;
+				            break;
+				        case "재학":
+				            statusId = 3;
+				            break;
+				        case "자퇴":
+				            statusId = 4;
+				            break;
+				        case "졸업":
+				            statusId = 5;
+				            break;
+				    }
 				}
 				dto.setStatus_id(statusId);
 			}
@@ -296,45 +296,51 @@ public class StudentDAO {
 
 	}
 
-	// 학생 수정(관리자가 직접 수정)
 	public void updateStudentByAdmin(StudentDTO dto) throws SQLException {
-		PreparedStatement pstmt = null;
-		String sql;
+	    PreparedStatement pstmt = null;
+	    String sql;
 
-		try {
-			sql = " UPDATE member SET name = ?, password = ?, modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ? "
-					+ " WHERE member_id = ? ";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getName());
-			pstmt.setString(2, dto.getPassword());
-			pstmt.setString(3, dto.getAvatar());
-			pstmt.setString(4, dto.getEmail());
-			pstmt.setString(5, dto.getPhone());
-			pstmt.setString(6, dto.getBirth());
-			pstmt.setString(7, dto.getAddr1());
-			pstmt.setString(8, dto.getAddr2());
-			pstmt.setString(9, dto.getMember_id());
+	    try {
+	        // member 테이블 수정
+	        sql = " UPDATE member SET name = ?, password = ?, modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ? WHERE member_id = ? ";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, dto.getName());
+	        pstmt.setString(2, dto.getPassword());
+	        pstmt.setString(3, dto.getAvatar());
+	        pstmt.setString(4, dto.getEmail());
+	        pstmt.setString(5, dto.getPhone());
+	        pstmt.setString(6, dto.getBirth());
+	        pstmt.setString(7, dto.getAddr1());
+	        pstmt.setString(8, dto.getAddr2());
+	        pstmt.setString(9, dto.getMember_id());
+	        pstmt.executeUpdate();
+	        pstmt.close();
 
-			pstmt.executeUpdate();
-			pstmt.close();
-			pstmt = null;
+	        // student 테이블 수정
+	        sql = " UPDATE student SET grade = ?, admission_date = TO_DATE(?, 'YYYY-MM-DD'), graduate_date = TO_DATE(?, 'YYYY-MM-DD'), department_id = ? WHERE member_id = ? ";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, dto.getGrade());
+	        pstmt.setString(2, dto.getAdmission_date());
+	        pstmt.setString(3, dto.getGraduate_date());
+	        pstmt.setString(4, dto.getDepartment_id());
+	        pstmt.setString(5, dto.getMember_id());
+	        pstmt.executeUpdate();
+	        pstmt.close();
 
-			sql = " UPDATE student SET grade = ?, admission_date = TO_DATE(?, 'YYYY-MM-DD'), graduate_date = TO_DATE(?, 'YYYY-MM-DD'), department_id = ?, status_id = ? "
-					+ " WHERE member_id = ? ";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dto.getGrade());
-			pstmt.setString(2, dto.getAdmission_date());
-			pstmt.setString(3, dto.getGraduate_date());
-			pstmt.setString(4, dto.getDepartment_id());
-			pstmt.setInt(5, dto.getStatus_id());
-			pstmt.setString(6, dto.getMember_id());
-			pstmt.executeUpdate();
+	        // student_status 테이블에 변경사항 INSERT
+	        sql = "INSERT INTO STUDENT_STATUS(history_id, year, semester, grade, academic_status, reg_date, member_id) VALUES(STUDENT_STATUS_SEQ.NEXTVAL, SYSDATE, 1, ?, ?, SYSDATE, ?)";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, dto.getGrade());
+	        pstmt.setString(2, dto.getAcademic_status());
+	        pstmt.setString(3, dto.getMember_id());
+	        pstmt.executeUpdate();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(pstmt);
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new SQLException(e);
+	    } finally {
+	        DBUtil.close(pstmt);
+	    }
 	}
 
 	// 학생 삭제(관리자가 삭제)
