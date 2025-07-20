@@ -74,7 +74,7 @@
 				<table class="table table-borderless">
 					<tr>
 						<td class="text-center">
-					<button type="submit" class="btn btn-light" onclick="okSend()">출석 등록</button>
+					<button type="submit" class="btn btn-light" onclick="okSend()">성적 등록</button>
 					</tr>
 				</table>
 			</form>
