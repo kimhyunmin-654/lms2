@@ -28,8 +28,8 @@ public class SidebarController {
 	    try {
 	        if (info != null) {
 	            String memberId = String.valueOf(info.getMember_id());
-	            List<LectureDTO> lectureList = dao.listsidebar(memberId); // 이름 수정!
-	            mav.addObject("lectureList", lectureList); // 'list' → 'lectureList'
+	            List<LectureDTO> lectureList = dao.listsidebar(memberId); 
+	            mav.addObject("lectureList", lectureList);
 	        } else {
 	            System.out.println("세션에 사용자 정보 없음");
 	        }

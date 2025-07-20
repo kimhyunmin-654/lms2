@@ -8,10 +8,19 @@ public class RatingDTO {
 	private int attendance_rating;
 	private int homework_rating;
 	private int total_rating;
-	private String raiting;
+	private String rating;
 	private String reg_date;
 	private String modify_date; 
 	
+	private String name;
+	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getMember_id() {
 		return member_id;
 	}
@@ -54,11 +63,11 @@ public class RatingDTO {
 	public void setTotal_rating(int total_rating) {
 		this.total_rating = total_rating;
 	}
-	public String getRaiting() {
-		return raiting;
+	public String getRating() {
+		return rating;
 	}
-	public void setRaiting(String raiting) {
-		this.raiting = raiting;
+	public void setRating(String rating) {
+		this.rating = rating;
 	}
 	public String getReg_date() {
 		return reg_date;
