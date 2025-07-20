@@ -315,6 +315,7 @@ public class AdminController {
 	    ModelAndView mav = new ModelAndView("admin/admin/account");
 	    mav.addObject("dto", dto);
 	    
+	    mav.addObject("mode", "update");
 	    mav.addObject("page", req.getParameter("page"));
 	    mav.addObject("size", req.getParameter("size"));
 
@@ -333,6 +334,7 @@ public class AdminController {
 		
 		String root = session.getServletContext().getRealPath("/");
 		String pathname = root + "uploads" + File.separator + "member";
+		
 		
 		try {
 			AdminDTO dto = new AdminDTO();
@@ -367,10 +369,14 @@ public class AdminController {
 			
 			dao.updateAdmin(dto);
 			
-			info.setAvatar(dto.getAvatar());
+	        // 로그인한 사용자 본인일 경우에만 세션 정보 갱신
+	        if (info.getMember_id().equals(dto.getMember_id())) {
+	            info.setAvatar(dto.getAvatar());
+	            info.setName(dto.getName());
+	            info.setDivision(dto.getDivision());
+	            session.setAttribute("member", info);
+	        }
 			
-			session.setAttribute("mode", "update");
-			session.setAttribute("name", dto.getName());
 			
 			return new ModelAndView("redirect:/admin/admin/list");
 			
