@@ -29,7 +29,7 @@
 	                </div>
 	
 	                <div class="d-grid">
-	                    <button type="button" class="btn btn-lg btn-primary" onclick="location.href='${pageContext.request.contextPath}/';">
+	                    <button type="button" class="btn btn-lg btn-primary" onclick="location.href='${pageContext.request.contextPath}/admin/student/list';">
 	                        메인화면 <i class="bi bi-arrow-counterclockwise"></i>
 	                    </button>
 	                </div>

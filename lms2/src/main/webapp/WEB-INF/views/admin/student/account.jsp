@@ -6,164 +6,197 @@
 <head>
 <meta charset="UTF-8">
 <title>학생 등록</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+	integrity="sha512-X0sP..." crossorigin="anonymous"
+	referrerpolicy="no-referrer" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
-<header>
-    <jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
-</header>
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
+	</header>
 
-<main>
-    <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
-    
-<div class="container mt-5" style="margin-left:240px;">
-	<div class="body-container row justify-content-center" style="margin: 100px;">
-	<h3 class="mb-4">학생 ${mode=="update" ? "수정" : "등록"}</h3>
-	<form name="insertForm" method="post" enctype="multipart/form-data">
-		<div class="d-flex align-items-center mb-4">
-			<img src="${pageContext.request.contextPath}/dist/images/user.png" class="rounded-circle img-avatar" width="100" height="100">
-			<div class="ms-3">
-				<label for="selectFile" class="btn btn-primary me-2">
-					사진 업로드
-					<input type="file" name="selectFile" id="selectFile" hidden="" accept="image/png,image/jpeg">
-				</label>
-				<button type="button" class="btn btn-secondary">초기화</button>
-				<div class="text-muted">이미지: JPG, PNG. 최대 800KB</div>
-			</div>
-		</div>
+	<main>
+		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-	
-		<div class="row g-3">
-			<div class="col-md-6 wrap-member_id">
-			    <label class="form-label">아이디(학번)</label>
-			    <div class="input-group">
-			        <input type="text" name="member_id" id="member_id" 
-			               class="form-control" 
-			               value="${dto.member_id}" ${mode=="update" ? "readonly" : ""} autofocus>
-			        <c:if test="${mode == 'account'}">
-			            <button type="button" class="btn btn-outline-secondary" onclick="userIdCheck();">아이디 중복검사</button>
-			        </c:if>
-			    </div>
-			    <c:if test="${mode=='account'}">
-			        <small class="form-text text-muted help-block">
-			            학번은 8자 이내로 입력하세요. 숫자여야 합니다.
-			        </small>
-			    </c:if>
-			</div>
-			<div class="col-md-6">
-				<label class="form-label">이름</label>
-				<input type="text" name="name" class="form-control" value="${dto.name}">
-			</div>
-			<div class="col-md-6">
-				<label class="form-label">비밀번호</label>
-				<input type="password" name="password" class="form-control">
-			</div>
-			<div class="col-md-6">
-				<label class="form-label">비밀번호 확인</label>
-				<input type="password" name="password2" class="form-control">
-			</div>
-			<div class="col-md-6">
-				<label class="form-label">생년월일</label>
-				<input type="date" name="birth" class="form-control" value="${dto.birth}">
-			</div>
-			<div class="col-md-6">
-				<label class="form-label">전화번호</label>
-				<input type="text" name="phone" class="form-control" value="${dto.phone}">
-			</div>
-		</div>
+		<div class="container mt-5" style="margin-left: 240px;">
+			<div class="body-container row justify-content-center"
+				style="margin: 100px;">
+				<h3 class="mb-4">학생 ${mode=="update" ? "수정" : "등록"}</h3>
+				<form name="insertForm" method="post" enctype="multipart/form-data">
+					<div class="d-flex align-items-center mb-4">
+						<img src="${pageContext.request.contextPath}/dist/images/user.png"
+							class="rounded-circle img-avatar" width="100" height="100">
+						<div class="ms-3">
+							<label for="selectFile" class="btn btn-primary me-2"> 사진
+								업로드 <input type="file" name="selectFile" id="selectFile"
+								hidden="" accept="image/png,image/jpeg">
+							</label>
+							<button type="button" class="btn btn-secondary">초기화</button>
+							<div class="text-muted">이미지: JPG, PNG. 최대 800KB</div>
+						</div>
+					</div>
 
-		
-		<div class="row mt-3">
-			<label class="col-md-2 form-label fw-medium">이메일</label>
-			<div class="col-md-10">
-				<div class="row g-2">
-					<div class="col-md-3">
-						<select name="selectEmail" class="form-select" onchange="changeEmail();">
-							<option value="">선택</option>
-							<option value="naver.com" ${dto.email2=="naver.com" ? "selected" : ""}>네이버</option>
-							<option value="gmail.com" ${dto.email2=="gmail.com" ? "selected" : ""}>지메일</option>
-							<option value="hanmail.net" ${dto.email2=="hanmail.net" ? "selected" : ""}>한메일</option>
-							<option value="outlook.com" ${dto.email2=="outlook.com" ? "selected" : ""}>아웃룩</option>
-							<option value="icloud.com" ${dto.email2=="icloud.com" ? "selected" : ""}>아이클라우드</option>
-							<option value="direct">직접입력</option>
+
+					<div class="row g-3">
+						<div class="col-md-6 wrap-member_id">
+							<label class="form-label">아이디(학번)</label>
+							<div class="input-group">
+								<input type="text" name="member_id" id="member_id"
+									class="form-control" value="${dto.member_id}"
+									${mode=="update" ? "readonly" : ""} autofocus>
+								<c:if test="${mode == 'account'}">
+									<button type="button" class="btn btn-outline-secondary"
+										onclick="userIdCheck();">아이디 중복검사</button>
+								</c:if>
+							</div>
+							<c:if test="${mode=='account'}">
+								<small class="form-text text-muted help-block"> 학번은 8자
+									이내로 입력하세요. 숫자여야 합니다. </small>
+							</c:if>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">이름</label> <input type="text"
+								name="name" class="form-control" value="${dto.name}">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">비밀번호</label> <input type="password"
+								name="password" class="form-control">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">비밀번호 확인</label> <input type="password"
+								name="password2" class="form-control">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">생년월일</label> <input type="date"
+								name="birth" class="form-control" value="${dto.birth}">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">전화번호</label> <input type="text"
+								name="phone" class="form-control" value="${dto.phone}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">입학일자</label> <input type="date"
+							name="admission_date" class="form-control"
+							value="${dto.admission_date}">
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">학년</label> <select name="grade"
+							class="form-select">
+							<option value="1" ${dto.grade == 1 ? "selected" : ""}>1학년</option>
+							<option value="2" ${dto.grade == 2 ? "selected" : ""}>2학년</option>
+							<option value="3" ${dto.grade == 3 ? "selected" : ""}>3학년</option>
+							<option value="4" ${dto.grade == 4 ? "selected" : ""}>4학년</option>
 						</select>
 					</div>
-					<div class="col input-group">
-						<input type="text" name="email1" class="form-control" value="${dto.email1}">
-						<span class="input-group-text">@</span>
-						<input type="text" name="email2" class="form-control" value="${dto.email2}" readonly>
-					</div>
-				</div>
-			</div>
-		</div>
 
-		
-		<div class="row mt-3">
-			<label class="col-md-2 form-label">우편번호</label>
-			<div class="col-md-10">
-				<div class="row g-2">
-					<div class="col-md-6">
-						<input type="text" name="zip" id="zip" class="form-control" value="${dto.zip}" readonly>
-					</div>
-					<div class="col-md-6">
-						<button type="button" class="btn btn-light" onclick="daumPostcode();">우편번호검색</button>
-					</div>
-				</div>
-			</div>
-			<label class="col-md-2 form-label mt-2">주소</label>
-			<div class="col-md-10">
-				<input type="text" name="addr1" id="addr1" class="form-control mb-2" value="${dto.addr1}" readonly placeholder="기본주소">
-				<input type="text" name="addr2" id="addr2" class="form-control" value="${dto.addr2}" placeholder="상세주소">
-			</div>
-		</div>
-		
-		<div class="row mt-3">
-			<div class="col-md-6">
-				<label class="form-label">학과코드</label>
-				<input type="text" name="division" class="form-control" value="${dto.division}">
-			</div>
-		</div>
-		<c:if test="${mode == 'update'}">
-	    <div class="row mt-3">
-	        <div class="col-md-6">
-	            <label class="form-label">학적 상태</label>
-	            <select name="status_id" class="form-select">
-	                <c:forEach var="status" items="${statusList}">
-	                    <option value="${status.status_id}" 
-	                        ${status.status_id == dto.status_id ? "selected" : ""}>
-	                        ${status.status_name}
-	                    </option>
-	                </c:forEach>
-	            </select>
-	        </div>
-	    </div>
-	</c:if>
-		<div class="text-center mt-4">
-			<button type="button" name="submitBtn" class="btn btn-primary" onclick="sendOk();">
-				${mode == "update" ? "정보수정" : "등록완료"}
-			</button>
-			<button type="button" class="btn btn-secondary" 
-				onclick="location.href='${pageContext.request.contextPath}/admin/student/list';">
-				취소
-			</button>
-			
-			<input type="hidden" name="userIdValid" id="userIdValid" value="false">
-			
-			<c:if test="${mode == 'update'}">
-				<input type="hidden" name="member_id" value="${dto.member_id}">
-				<input type="hidden" name="profile_photo" value="${dto.avatar}">
-			</c:if>
-		</div>
-	</form>
-</div>
-</div>
-</main>
 
+					<div class="row mt-3">
+						<label class="col-md-2 form-label fw-medium">이메일</label>
+						<div class="col-md-10">
+							<div class="row g-2">
+								<div class="col-md-3">
+									<select name="selectEmail" class="form-select"
+										onchange="changeEmail();">
+										<option value="">선택</option>
+										<option value="naver.com"
+											${dto.email2=="naver.com" ? "selected" : ""}>네이버</option>
+										<option value="gmail.com"
+											${dto.email2=="gmail.com" ? "selected" : ""}>지메일</option>
+										<option value="hanmail.net"
+											${dto.email2=="hanmail.net" ? "selected" : ""}>한메일</option>
+										<option value="outlook.com"
+											${dto.email2=="outlook.com" ? "selected" : ""}>아웃룩</option>
+										<option value="icloud.com"
+											${dto.email2=="icloud.com" ? "selected" : ""}>아이클라우드</option>
+										<option value="direct">직접입력</option>
+									</select>
+								</div>
+								<div class="col input-group">
+									<input type="text" name="email1" class="form-control"
+										value="${dto.email1}"> <span class="input-group-text">@</span>
+									<input type="text" name="email2" class="form-control"
+										value="${dto.email2}" readonly>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row mt-3">
+						<label class="col-md-2 form-label">우편번호</label>
+						<div class="col-md-10">
+							<div class="row g-2">
+								<div class="col-md-6">
+									<input type="text" name="zip" id="zip" class="form-control"
+										value="${dto.zip}" readonly>
+								</div>
+								<div class="col-md-6">
+									<button type="button" class="btn btn-light"
+										onclick="daumPostcode();">우편번호검색</button>
+								</div>
+							</div>
+						</div>
+						<label class="col-md-2 form-label mt-2">주소</label>
+						<div class="col-md-10">
+							<input type="text" name="addr1" id="addr1"
+								class="form-control mb-2" value="${dto.addr1}" readonly
+								placeholder="기본주소"> <input type="text" name="addr2"
+								id="addr2" class="form-control" value="${dto.addr2}"
+								placeholder="상세주소">
+						</div>
+					</div>
+
+					<div class="row mt-3">
+						<div class="col-md-6">
+							<label class="form-label">학과코드</label> <input type="text"
+								name="division" class="form-control" value="${dto.division}">
+						</div>
+					</div>
+					<c:if test="${mode == 'update'}">
+						<div class="row mt-3">
+							<div class="col-md-6">
+								<label class="form-label">학적 상태</label> <select name="status_id"
+									class="form-select">
+									<c:forEach var="status" items="${statusList}">
+										<option value="${status.status_id}"
+											${status.status_id == dto.status_id ? "selected" : ""}>
+											${status.status_name}</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+					</c:if>
+					<div class="text-center mt-4">
+						<button type="button" name="submitBtn" class="btn btn-primary"
+							onclick="sendOk();">${mode == "update" ? "정보수정" : "등록완료"}
+						</button>
+						<button type="button" class="btn btn-secondary"
+							onclick="location.href='${pageContext.request.contextPath}/admin/student/list';">
+							취소</button>
+
+						<input type="hidden" name="userIdValid" id="userIdValid"
+							value="false">
+
+						<c:if test="${mode == 'update'}">
+							<input type="hidden" name="profile_photo" value="${dto.avatar}">
+						</c:if>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>	
