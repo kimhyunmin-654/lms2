@@ -55,7 +55,7 @@
 					</button>
 				</h2>
 				<div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu">학사 공지사항</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/notice/list">학사 공지사항</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/information/pwd">내 정보 관리</a></div>
 				</div>
 			</div>
