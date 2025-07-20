@@ -328,19 +328,30 @@ public class StudentController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		StudentDAO dao = new StudentDAO();
+		LectureDAO lectureDao = new LectureDAO();
 		ModelAndView mav = new ModelAndView("student/study/list");
 
 		try {
+			String lecture_code = req.getParameter("lecture_code");
+
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
+			
 			List<Course_ApplicationDTO> list = dao.listCourse(info.getMember_id());
 
 			mav.addObject("list", list);
-
+			mav.addObject("lecture_code", lecture_code);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return mav;
 	}
+
 
 	// ⚠️⚠️ 파일 충돌 날까봐 임시로 이곳에 지정. 나중에 SidebarController로 이동해야 함 - 하은
 	@RequestMapping(value = "/layout/student_menusidebar", method = RequestMethod.GET)
