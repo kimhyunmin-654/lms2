@@ -321,6 +321,14 @@ public class StudentController {
 		ModelAndView mav = new ModelAndView("student/study/list");
 
 		try {
+			LectureDAO lectureDao = new LectureDAO();
+
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
+			
 			List<Course_ApplicationDTO> list = dao.listCourse(info.getMember_id());
 
 			mav.addObject("list", list);
