@@ -432,6 +432,7 @@ public class ProfessorController {
 	@RequestMapping(value = "/admin/professor/update", method = RequestMethod.GET)
 	public ModelAndView updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    String member_id = req.getParameter("member_id");
+	    
 	    ProfessorDAO dao = new ProfessorDAO();
 	    ProfessorDTO dto = dao.findById(member_id);
 	    
@@ -442,7 +443,9 @@ public class ProfessorController {
 	    }
 	    
 	    ModelAndView mav = new ModelAndView("admin/professor/write");
-	    mav.addObject("dto", dto);   
+	    mav.addObject("dto", dto);
+	    
+	    mav.addObject("mode", "update");
 	    mav.addObject("listDepartment", listDepartment);
 	    mav.addObject("page", req.getParameter("page"));
 	    mav.addObject("size", req.getParameter("size"));
@@ -477,7 +480,12 @@ public class ProfessorController {
 			dto.setZip(req.getParameter("zip"));
 			dto.setAddr1(req.getParameter("addr1"));
 			dto.setAddr2(req.getParameter("addr2"));
+			dto.setPosition(req.getParameter("position"));
 			
+			 String departmentId = req.getParameter("department_id");
+		        if (departmentId == null || departmentId.trim().isEmpty()) {
+		            throw new ServletException("학과는 필수 항목입니다.");
+		        }
 			dto.setDepartment_id(req.getParameter("department_id"));
 			dto.setDivision(req.getParameter("division"));
 			
@@ -495,21 +503,24 @@ public class ProfessorController {
 			
 			dao.updateProfessor(dto);
 			
-			info.setAvatar(dto.getAvatar());
-			
-			session.setAttribute("mode", "update");
-			session.setAttribute("name", dto.getName());
+			 if (info.getMember_id().equals(dto.getMember_id())) {
+		            info.setAvatar(dto.getAvatar());
+		            info.setName(dto.getName());
+		            info.setDivision(dto.getDivision());
+		            session.setAttribute("member", info);
+		        }
+				
+				
+				return new ModelAndView("redirect:/admin/professor/list");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			return new ModelAndView("redirect:/admin/professor/list");
 			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/admin/professor/list");
-		
-		
-	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/admin/professor/deleteAvatar", method = RequestMethod.POST)
@@ -587,7 +598,7 @@ public class ProfessorController {
 	            fileManager.doFiledelete(pathname, dto.getAvatar());
 	        }
 
-	        dao.deleteProfessor(member_id, dto.getRole());
+	        dao. deleteProfessor(member_id);
 
 	    } catch (Exception e) {
 	        e.printStackTrace();

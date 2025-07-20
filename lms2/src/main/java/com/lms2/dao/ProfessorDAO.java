@@ -73,16 +73,17 @@ public class ProfessorDAO {
 	}
 	
 	// 교수 검색
-	public ProfessorDTO findById(String member_id) {
+	public ProfessorDTO findById(String member_id){
 		ProfessorDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 		
 		try {
-			sql = " SELECT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD') birth, addr1, addr2, zip, p.position, p.department_id "
+			sql = " SELECT m.member_id, name, password, role ,create_date, modify_date, avatar, email, phone, TO_CHAR(birth, 'YYYY-MM-DD') birth, addr1, addr2, zip, p.position, p.department_id, d.department_name"
 					+ " FROM member m "
 					+ " LEFT OUTER JOIN professor p ON m.member_id = p.member_id "
+					+ " LEFT OUTER JOIN department d ON p.department_id = d.department_id "
 					+ " WHERE m.member_id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -114,7 +115,8 @@ public class ProfessorDAO {
 				dto.setZip(rs.getString("zip"));
 				
 				dto.setPosition(rs.getString("position"));
-				dto.setDivision(rs.getString("department_id"));
+				dto.setDepartment_name(rs.getString("department_name"));
+				dto.setDepartment_id(rs.getString("department_id"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -367,8 +369,8 @@ public class ProfessorDAO {
 	    ResultSet rs = null;
 
 	    try {
-	        String sql = "SELEC memeber_id, lecture_code, grade, subject, classroom, division, capacity "
-	                   + "FROM LECTURE WHERE lecture_code = ?";
+	    	String sql = "SELECT member_id, lecture_code, grade, subject, classroom, division, capacity "
+	    	           + "FROM LECTURE WHERE lecture_code = ?";
 
 	        pstmt = conn.prepareStatement(sql);
 	        rs = pstmt.executeQuery();
@@ -518,14 +520,11 @@ public class ProfessorDAO {
 
 	
 	// 교수 삭제
-	public void deleteProfessor(String member_id, int role) throws SQLException{
+	public void deleteProfessor(String member_id) throws SQLException{
 		PreparedStatement pstmt = null;
 		String sql;
 		
-		try {
-			if(role == 99) {
-				conn.setAutoCommit(false);
-								
+		try {				
 				sql = " DELETE FROM professor WHERE member_id = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, member_id);
@@ -539,26 +538,15 @@ public class ProfessorDAO {
 				pstmt.setString(1, member_id);
 				
 				pstmt.executeUpdate();
-				
-				conn.commit();
-				
-			}
-			
-			
-			
-		} catch (SQLException e) {
-			DBUtil.rollback(conn);
-			
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
 			DBUtil.close(pstmt);
-			try {
-				conn.setAutoCommit(true);
-			} catch (Exception e2) {
-			}
 		}
 	}
+
 	
 	// 관리자 사진 초기화
 		public void deleteAvatar(String member_id) throws SQLException {

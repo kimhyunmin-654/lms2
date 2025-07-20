@@ -22,7 +22,7 @@
 <div class="container mt-5" style="margin-left:240px;">
 	<h3 class="mb-4"><i class="bi bi-person-circle"></i> 교수 ${mode=="update" ? "수정" : "등록"}</h3>
 
-	<form name="insertForm" method="post" action="${pageContext.request.contextPath}/admin/professor/write" enctype="multipart/form-data">
+	<form name="insertForm" method="post" enctype="multipart/form-data">
 
 	
 		<div class="d-flex align-items-center mb-4">
@@ -42,8 +42,7 @@
 <div class="col-md-6 wrap-member_id">
     <label class="form-label">아이디(교번)</label>
     <div class="input-group">
-        <input type="text" name="member_id" id="member_id" 
-               class="form-control" 
+        <input type="text" name="member_id" id="member_id" class="form-control" 
                value="${dto.member_id}" ${mode=="update" ? "readonly" : ""} autofocus>
         <c:if test="${mode == 'account'}">
             <button type="button" class="btn btn-outline-secondary" onclick="userIdCheck();">아이디 중복검사</button>
@@ -131,43 +130,29 @@
 			</div>
 			
 			<div class="col-md-6">
-		        <label class="form-label">학과</label>
-		        <select name="department_id" class="form-control">
-		            <option value="" selected disabled>학과 선택</option>
-		           <c:forEach var="department" items="${listDepartment}">
-					    <option value="${department.department_id}" 
-					        <c:if test="${dto.department_id == department.department_id}">selected</c:if>>
-					        ${department.department_name}
-					    </option>
-					</c:forEach>
-		        </select>
-		    </div>
+				<label class="form-label">학과</label>
+				<select name="department_id" class="form-control">
+				    <option value="" disabled>학과 선택</option>
+				    <c:forEach var="department" items="${listDepartment}">
+				       <option value="${department.department_id}"
+						    <c:if test="${dto.department_id eq department.department_id}">selected</c:if>>
+						    ${department.department_name}
+						</option>
+				    </c:forEach>
+				</select>
+			</div>
 		</div>
 	
-		<div class="text-end mt-4">
-		    <table class="table table-borderless">
-		        <tr>
-		            <td class="text-center">
-		                <button type="button" class="btn btn-primary me-2" onclick="submitContents(this.form);">
-				                ${mode == 'update' ? '수정' : '등록'}
-				            </button>
-		
-		                <button type="reset" class="btn btn-light">다시입력</button>
-		
-		                <button type="button" class="btn btn-light"
-		                    onclick="location.href='${pageContext.request.contextPath}/admin/professor/list?${query}';">
-		                    ${mode == 'update' ? '수정취소' : '등록취소'} <i class="bi bi-x"></i>
-		                </button>
-		
-		                <c:if test="${mode == 'update'}">
-		                    <input type="hidden" name="member_id" value="${dto.member_id}">
-		                    <input type="hidden" name="page" value="${page}">
-		                    <input type="hidden" name="size" value="${size}">
-		                </c:if>
-		            </td>
-		        </tr>
-		    </table>
+		<div class="text-center mt-4">
+			<button type="button" name="submitBtn" class="btn btn-primary" onclick="sendOk();">${mode=="update"?"정보수정":"등록완료"}</button>
+			<button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/admin/professor/list'; ">취소</button>
+			<input type="hidden" name="userIdValid" id="userIdValid" value="false">
+			<c:if test="${mode == 'update'}">
+    			<input type="hidden" name="avatar" value="${dto.avatar}">
+		</c:if>
 		</div>
+	</form>
+</div>
 </main>
 
 
@@ -264,7 +249,7 @@ function sendOk() {
 	
 	p = /^[0-9]{6}$/;
 	str = f.member_id.value;
-	if( ! p.test(str) ) { 
+	if( ! p.test(str)) { 
 		alert('아이디를 다시 입력 하세요. ');
 		f.member_id.focus();
 		return;
@@ -279,7 +264,7 @@ function sendOk() {
 		return;
 	}
 	
-	p = /^[가-힣]{2,5}$/;
+	p = /^[가-힣]{2,5}$/; 
     str = f.name.value;
     if( ! p.test(str) ) {
         alert('이름을 다시 입력하세요. ');
@@ -289,7 +274,7 @@ function sendOk() {
 	
 	p =/^(?=.*[a-z])(?=.*[!@#$%^*+=-]|.*[0-9]).{5,10}$/i;
 	str = f.password.value;
-	if( ! p.test(str) ) { 
+	if( ! (p.test(str) || str === "admin") ) { 
 		alert('패스워드를 다시 입력 하세요. ');
 		f.password.focus();
 		return;
@@ -331,7 +316,7 @@ function sendOk() {
     }
 
 	
-	f.action = '${pageContext.request.contextPath}/admin/professor/list/${mode}';
+	f.action = '${pageContext.request.contextPath}/admin/professor/${mode}';
 	f.submit();
 }
 
@@ -340,9 +325,10 @@ function userIdCheck() {
 	let p;
 	let member_id = $('#member_id').val();
 	
-	p = /^[0-9]{4}$/;
+	p = /^[0-9]{6}$/;
+	f.action = '${pageContext.request.contextPath}/admin/professor/${mode}';
 	if (! p.test(member_id)) {
-		let s = '숫자 4자리로 입력하세요.';
+		let s = '숫자 6자리로 입력하세요.';
 		$('#member_id').focus();
 		$('#member_id').closest('.wrap-member_id').find('.help-block').html(s);
 		return;
