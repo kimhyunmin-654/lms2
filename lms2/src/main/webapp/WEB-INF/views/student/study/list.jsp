@@ -51,9 +51,6 @@
 									</c:forEach>
 								</div>
 							</div>
-							<div class="text-end pt-2 pe-2">
-								<a href="${pageContext.request.contextPath}/student/bbs/list" class="text-decoration-none">더보기</a>
-							</div>
 						</div>
 					</div>
 
@@ -80,11 +77,6 @@
 										<div class="border rounded p-2 bg-white">&nbsp;</div>
 									</c:forEach>
 								</div>
-							</div>
-							<div class="text-end pt-2 pe-2">
-								<a
-									href="${pageContext.request.contextPath}/student/assignment/list"
-									class="text-decoration-none">더보기</a>
 							</div>
 						</div>
 					</div>

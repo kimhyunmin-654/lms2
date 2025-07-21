@@ -40,52 +40,68 @@
 					출석 관리
 				</div>
 
-				<div class="col-3 p-3 mb-2">
-					<div class="text-bg-success p-3 w-10"></div>
-					출석(${present})
-					<div class="text-bg-warning p-3 w-10"></div>
-					지각(${late})
-					<div class="text-bg-danger p-3 w-10"></div>
-					결석(${absent})
-					<div class="text-bg-dark p-3 w-10"></div>
-					미체크(<c:out value="${15 - present - late - absent}" />)
-				</div>
-
-				<div class="col-sm-9 p-3">
-					<div class="container text-center">
-						<c:forEach begin="1" end="15" var="i">
-							<c:set var="found" value="false" />
-
-							<c:forEach var="dto" items="${list}">
-								<c:if test="${dto.week == i}">
-									<c:set var="found" value="true" />
-
-									<c:choose>
-										<c:when test="${dto.status == 1}">
-											<div class="text-bg-success p-3 w-10">${i}주차출석</div>
-										</c:when>
-										<c:when test="${dto.status == 2}">
-											<div class="text-bg-warning p-3 w-10">${i}주차지각</div>
-										</c:when>
-										<c:when test="${dto.status == 0}">
-											<div class="text-bg-danger p-3 w-10">${i}주차결석</div>
-										</c:when>
-										<c:otherwise>
-											<div class="text-bg-dark p-3 w-10">${i}주차미체크</div>
-										</c:otherwise>
-									</c:choose>
-								</c:if>
-							</c:forEach>
-
-							<!-- 해당 주차의 데이터가 없을 경우 -->
-							<c:if test="${!found}">
-								<div class="text-bg-dark p-3 w-10">${i}주차미체크</div>
-							</c:if>
-						</c:forEach>
-
+				<div class="row text-center mb-3">
+					<div class="col-auto">
+						<span class="badge bg-success px-3 py-2">출석 (${present})</span>
 					</div>
-
+					<div class="col-auto">
+						<span class="badge bg-warning text-dark px-3 py-2">지각
+							(${late})</span>
+					</div>
+					<div class="col-auto">
+						<span class="badge bg-danger px-3 py-2">결석 (${absent})</span>
+					</div>
+					<div class="col-auto">
+						<span class="badge bg-dark px-3 py-2">미체크 (<c:out
+								value="${15 - present - late - absent}" />)
+						</span>
+					</div>
 				</div>
+
+				<div class="row justify-content-center">
+					<div class="col-md-4">
+						<table class="table table-bordered text-center small align-middle">
+							<thead class="table-light">
+								<tr>
+									<th>주차</th>
+									<th>출석 상태</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach begin="1" end="15" var="i">
+									<tr>
+										<td>${i}주차</td>
+										<td><c:set var="found" value="false" /> <c:forEach
+												var="dto" items="${list}">
+												<c:if test="${dto.week == i}">
+													<c:set var="found" value="true" />
+													<c:choose>
+														<c:when test="${dto.status == 1}">
+															<span class="badge bg-success">출석</span>
+														</c:when>
+														<c:when test="${dto.status == 2}">
+															<span class="badge bg-warning text-dark">지각</span>
+														</c:when>
+														<c:when test="${dto.status == 0}">
+															<span class="badge bg-danger">결석</span>
+														</c:when>
+														<c:otherwise>
+															<span class="badge bg-dark">미체크</span>
+														</c:otherwise>
+													</c:choose>
+												</c:if>
+											</c:forEach> <c:if test="${!found}">
+												<span class="badge bg-dark">미체크</span>
+											</c:if></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+
 			</div>
 		</div>
 
