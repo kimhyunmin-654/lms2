@@ -567,11 +567,17 @@ public class NoticeController {
 	public ModelAndView studentNoticelist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// (학생)공지사항 리스트
 		NoticeDAO dao = new NoticeDAO();
+		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
 		
 		ModelAndView mav = new ModelAndView("student/notice/list");
 		
 		try {
+			HttpSession session = req.getSession(false);
+            SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+            String memberId = String.valueOf(info.getMember_id());
+			
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null && !page.equals("") && !page.equals("null")) {
@@ -652,6 +658,9 @@ public class NoticeController {
 			String paging = util.paging(current_page, total_page, listUrl);
 			
 			// 포워딩 jsp에 전달할 데이터
+			List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
+			mav.addObject("lectureList", lectures);
+
 			mav.addObject("list", list);
 			mav.addObject("listNotice", listNotice);
 			mav.addObject("articleUrl", articleUrl);

@@ -139,7 +139,7 @@ public class DataController {
 			
 			if (info != null) {
 				String memberId = String.valueOf(info.getMember_id());
-				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
 				mav.addObject("lectureList", lectures);
 			}
 			
