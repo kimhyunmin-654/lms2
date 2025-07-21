@@ -40,61 +40,64 @@
 				</div>
 
 				<div class="container mt-4">
-					<h3 class="mb-4">${dto.subject}</h3>
+					<h3 class="mb-4" style=" text-align: center">${dto.subject}</h3>
                 </div>
 				<hr>
 				
 				<!-- 공지사항 -->
-				<div class="col-md-12 p-1">
-					<div>
-						<div class="fw-semibold pt-2 pb-1">
-							<i class="bi bi-book-half">공지사항</i>
-						</div>
-						<div class="border px-2">
+				<div class="row g-3">
+					<div class="col-md-12">
+						<div class="card shadow-sm">
+							<div class="card-header fw-bold bg-light">
+								<i class="bi bi-book-half me-2"></i> 공지사항
+							</div>
+						<div class="card-body d-flex flex-column gap-3 px-2">
 							<c:forEach var="dto" items="${listNotice}" varStatus="status">
-								<div class="text-truncate px-2 subject-list">
-									<a href="${pageContext.request.contextPath}/professor/notice/article?notice_id=${dto.notice_id}">
+								<div class="border rounded p-2 bg-white">
+									<a href="${pageContext.request.contextPath}/professor/notice/article?notice_id=${dto.notice_id}"
+									class="text-decoration-none text-dark text-truncate d-block">
 										${dto.subject}
 									</a>
 								</div>
 							</c:forEach>
-							
 							<c:forEach var="n" begin="${listNotice.size() + 1}" end="5">
-								<div class="text-truncate px-2 subject-list">&nbsp;</div>
+								<div class="border rounded p-2 bg-white">&nbsp;</div>
 							</c:forEach>
 						</div>
-						<div class="pt-2 text-end">
+					</div>
+					<div class="text-end pt-2">
 							<a href="${pageContext.request.contextPath}/professor/notice/list"
-								class="text-reset">더보기</a>
+								class="text-decoration-none">더보기</a>
 						</div>
 					</div>
 				</div>
 				
 				<!-- 자료실 -->
-				<div class="col-md-12 p-1">
-				    <div>
-				        <div class="fw-semibold pt-2 pb-1">
-				            <i class="bi bi-book-half">자료실</i>
-				        </div>
-				        <div class="border px-2">
+				<div class="row my-3">
+				    <div class="col-md-12">
+						<div class="card shadow-sm">
+							<div class="card-header fw-bold bg-light">
+								<i class="bi bi-megaphone text-danger me-2"></i> 자료실
+							</div>
+				        <div class="card-body d-flex flex-column gap-3">
 				            <c:forEach var="dto" items="${listData}">
-				                <div class="text-truncate px-2 subject-list">
-				                    <a href="${pageContext.request.contextPath}/professor/lecture/article?data_id=${dto.data_id}">
+				                <div class="border rounded p-2 bg-white">
+				                    <a href="${pageContext.request.contextPath}/professor/lecture/article?data_id=${dto.data_id}"
+				                    class="text-decoration-none text-dark text-truncate d-block">
 				                        ${dto.subject}
 				                    </a>
 				                </div>
 				            </c:forEach>
-				
 				           <c:forEach var="n" begin="${listData.size() + 1}" end="5">
 								<div class="text-truncate px-2 subject-list">&nbsp;</div>
 							</c:forEach>
 				        </div>
-				        <div class="pt-2 text-end">
-				            <div class="accordion-body custom-submenu">
-				                <a href="${pageContext.request.contextPath}/professor/bbs/list?lecture_code=${dto.lecture_code}">더보기</a>
-				            </div>
-				        </div>
-				    </div>
+				      </div>  
+				       <div class="text-end pt-2">
+							<a href="${pageContext.request.contextPath}/student/notice/list"
+								class="text-decoration-none">더보기</a>
+						</div>
+					</div>
 				</div>
 				
 

@@ -59,7 +59,7 @@
 												<p class="card-text">
 													<span class="me-3">분류 : ${dto.division}</span>
 													<span class="me-3">수강인원 : ${dto.capacity}</span>
-													<span > 학점: ${dto.credit}</span>
+													<span > 학점${dto.credit}</span>
 												</p>
 											</div>
 										</div>
