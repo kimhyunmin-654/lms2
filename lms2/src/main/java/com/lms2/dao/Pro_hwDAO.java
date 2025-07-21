@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.lms2.model.DataDTO;
 import com.lms2.model.Pro_hwDTO;
+import com.lms2.model.Std_hwDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
 
@@ -489,7 +490,53 @@ public class Pro_hwDAO {
 
 		return list;
 	}
+	
+	public void submitHw(Std_hwDTO dto) throws Exception {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
 
+	    try {
+	        conn = DBConn.getConnection();
+
+	        String sql = "INSERT INTO STUDENT_ASSIGNMENT(assign_id, course_id, assign_status, submit_date, assign_name, assign_content) "
+	                   + "VALUES (STUDENT_ASSIGNMENT_seq.NEXTVAL, ?, 1, SYSDATE, ?, ?)";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, dto.getCourse_id());
+	        pstmt.setString(2, dto.getAssign_name());
+	        pstmt.setString(3, dto.getAssign_content());
+	        pstmt.executeUpdate();
+	        pstmt.close();
+
+	        sql = "SELECT STUDENT_ASSIGNMENT_seq.CURRVAL FROM DUAL";
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        int assignId = 0;
+	        if (rs.next()) {
+	            assignId = rs.getInt(1);
+	        }
+	        rs.close();
+	        pstmt.close();
+
+	        // 3️⃣ 첨부파일 INSERT
+	        if (dto.getSave_filename() != null && !dto.getSave_filename().isEmpty()) {
+	            sql = "INSERT INTO STUDENT_ASSIGNMENT_FILE(file_id, save_filename, original_filename, file_size, assign_id) "
+	                + "VALUES (STUDENT_ASSIGNMENT_FILE_SEQ.NEXTVAL, ?, ?, ?, ?)";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, dto.getSave_filename());
+	            pstmt.setString(2, dto.getOriginal_filename());
+	            pstmt.setLong(3, dto.getFile_size());
+	            pstmt.setInt(4, assignId);
+	            pstmt.executeUpdate();
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
+	}
 }
-
-

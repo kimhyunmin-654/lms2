@@ -11,6 +11,7 @@ public class Std_hwDTO {
 	private String save_filename;
 	private String original_filename;
 	private long file_size;
+	private String member_id;
 	public int getAssign_id() {
 		return assign_id;
 	}
@@ -70,6 +71,12 @@ public class Std_hwDTO {
 	}
 	public void setFile_size(long file_size) {
 		this.file_size = file_size;
+	}
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 
 }

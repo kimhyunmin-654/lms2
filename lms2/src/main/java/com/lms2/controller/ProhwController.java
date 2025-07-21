@@ -2,6 +2,7 @@ package com.lms2.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.lms2.dao.LectureDAO;
@@ -9,6 +10,7 @@ import com.lms2.dao.Pro_hwDAO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.Pro_hwDTO;
 import com.lms2.model.SessionInfo;
+import com.lms2.model.Std_hwDTO;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
 import com.lms2.mvc.annotation.RequestMethod;
@@ -499,7 +501,64 @@ public class ProhwController {
 
 	    return mav;
 	}
-	
-	
+	@RequestMapping(value = "/student/hw/submit", method = RequestMethod.POST)
+	public ModelAndView hwSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Pro_hwDAO dao = new Pro_hwDAO();
+	    FileManager fileManager = new FileManager();
 
+	    HttpSession session = req.getSession();
+	    SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+	    String root = session.getServletContext().getRealPath("/");
+	    String pathname = root + "uploads" + File.separator + "submit";
+
+	    try {
+	        Part p = req.getPart("selectFile");
+	        Std_hwDTO dto = new Std_hwDTO();
+
+	        // 반드시 course_id로 받아야 함!
+	        dto.setCourse_id(Integer.parseInt(req.getParameter("course_id")));
+	        dto.setAssign_name(req.getParameter("assign_name"));
+	        dto.setAssign_content(req.getParameter("assign_content"));
+	        dto.setAssign_status(1); 
+
+	        MyMultipartFile multiFile = fileManager.doFileUpload(p, pathname);
+	        if (multiFile != null) {
+	            dto.setSave_filename(multiFile.getSaveFilename());
+	            dto.setOriginal_filename(multiFile.getOriginalFilename());
+	            dto.setFile_size(multiFile.getSize());
+	        }
+
+	        dao.submitHw(dto);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return new ModelAndView("redirect:/student/hw/list");
+	}
+	
+	@RequestMapping(value = "/hw/download", method = RequestMethod.GET)
+	public void downloadFile(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+	    String saveFilename = req.getParameter("saveFilename");
+	    String originalFilename = req.getParameter("originalFilename");
+
+	    if (saveFilename == null || originalFilename == null) {
+	        resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+	        return;
+	    }
+
+	    String root = req.getSession().getServletContext().getRealPath("/");
+	    String pathname = root + "uploads" + File.separator + "student_hw";
+
+	    FileManager fileManager = new FileManager();
+	    boolean success = fileManager.doFiledownload(saveFilename, originalFilename, pathname, resp);
+
+	    if (!success) {
+	        resp.setContentType("text/html; charset=UTF-8");
+	        PrintWriter out = resp.getWriter();
+	        out.print("<script>alert('파일 다운로드에 실패했습니다.');history.back();</script>");
+	        out.flush();
+	    }
+	}
 }
