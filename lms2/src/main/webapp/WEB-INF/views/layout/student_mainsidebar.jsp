@@ -19,7 +19,6 @@
 				<div id="collapseOne" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/list?lecture_code=${dto.lecture_code}">수강 과목</a></div>
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/rating?lecture_code=${dto.lecture_code}">성적 관리</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/attendance?lecture_code=${dto.lecture_code}">출석 관리</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/lecture/list">수강신청</a></div>
 				</div>
@@ -39,6 +38,7 @@
 			</div>
 
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/notice/list">학사 공지사항</a></div>
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/study/rating">성적 관리</a></div>
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/student/pwd">내 정보 관리</a></div>
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>
 		</div>
