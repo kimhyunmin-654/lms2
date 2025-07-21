@@ -37,7 +37,7 @@
 
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">등록일</div>
-                    <div class="col-sm-10 bg-white py-3">${ndto.reg_date}</div>
+                    <div class="col-sm-10 bg-white py-3">${ndto.reg_date}</div> 
                 </div>
 
                 <div class="row border-bottom">
