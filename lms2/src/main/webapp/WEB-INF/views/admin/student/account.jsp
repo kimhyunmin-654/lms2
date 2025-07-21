@@ -9,16 +9,9 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-	integrity="sha512-X0sP..." crossorigin="anonymous"
-	referrerpolicy="no-referrer" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/main2.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
@@ -29,10 +22,17 @@
 	<main>
 		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-		<div class="container mt-5" style="margin-left: 240px;">
-			<div class="body-container row justify-content-center"
-				style="margin: 100px;">
-				<h3 class="mb-4">학생 ${mode=="update" ? "수정" : "등록"}</h3>
+		<div class="container mt-5 ">
+			<div style="margin-top: 100px;">
+			<div class="main-wrapper">
+				<table class="table" style="margin-bottom: 30px;">
+					<tr>
+						<td width="150px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">학생 ${mode=="update" ? "수정" : "등록"}</td>
+						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					</tr>
+				</table>
+
 				<form name="insertForm" method="post" enctype="multipart/form-data">
 					<div class="d-flex align-items-center mb-4">
 						<img src="${pageContext.request.contextPath}/dist/images/user.png"
@@ -210,7 +210,8 @@
 				</form>
 			</div>
 		</div>
-	</main>
+	</div>
+</main>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>	

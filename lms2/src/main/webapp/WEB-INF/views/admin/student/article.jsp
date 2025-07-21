@@ -9,6 +9,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 
@@ -19,11 +21,17 @@
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-    <div class="container" style="margin-left: 220px; padding: 30px;">
-        <div class="row justify-content-center">
+	<div class="container mt-5 ">
+		<div style="margin-top: 100px;">
+		<div class="main-wrapper">
             <div class="col-md-10">
-
-                <h3 class="mb-4 mt-5">학생 정보</h3>
+				<table class="table" style="margin-bottom: 30px;">
+					<tr>
+						<td width="150px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">학생 정보</td>
+						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					</tr>
+				</table>
                 
                 <div class="row align-items-center mb-4">
                     <div class="col-md-2 text-center">
@@ -107,6 +115,7 @@
             </div>
         </div>
     </div>
+</div>
 </main>
 
 <script type="text/javascript">
