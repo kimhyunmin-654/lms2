@@ -69,7 +69,7 @@
 					</tbody>
 				</table>
 
-				<div class="page-navigation">${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
+				<div class="page-navigation">${dataCount == 0 ? "" : paging}
 				</div>
 
 				<div class="row board-list-footer">
