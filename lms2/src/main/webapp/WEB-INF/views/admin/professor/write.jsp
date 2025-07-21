@@ -9,6 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
@@ -19,9 +20,16 @@
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
     
-<div class="container mt-5" style="margin-left:240px;">
-	<h3 class="mb-4"><i class="bi bi-person-circle"></i> 교수 ${mode=="update" ? "수정" : "등록"}</h3>
-
+	<div class="container mt-5 ">
+	<div style="margin-top: 100px;">
+	<div class="main-wrapper">
+		<table class="table" style="margin-bottom: 30px;">
+			<tr>
+				<td width="180px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">교수 등록</td>
+				<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+				<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+			</tr>
+		</table>
 	<form name="insertForm" method="post" enctype="multipart/form-data">
 
 	
