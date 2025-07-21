@@ -16,7 +16,6 @@
     <jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
 </header>
 
-
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
