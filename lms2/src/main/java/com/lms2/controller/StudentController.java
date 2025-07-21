@@ -8,15 +8,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.crypto.Data;
+
 import com.lms2.dao.AdminDAO;
+import com.lms2.dao.DataDAO;
 import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
+import com.lms2.dao.Pro_hwDAO;
 import com.lms2.dao.StudentDAO;
 import com.lms2.model.Course_ApplicationDTO;
+import com.lms2.model.DataDTO;
 import com.lms2.model.DepartmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.NoticeDTO;
+import com.lms2.model.Pro_hwDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.model.StudentDTO;
 import com.lms2.mvc.annotation.Controller;
@@ -577,6 +583,8 @@ public class StudentController {
 
 		StudentDAO dao = new StudentDAO();
 		LectureDAO lectureDao = new LectureDAO();
+		DataDAO dataDao = new DataDAO();
+		Pro_hwDAO hwDao = new Pro_hwDAO();
 		ModelAndView mav = new ModelAndView("/student/study/list");
 
 		try {
@@ -589,8 +597,12 @@ public class StudentController {
 			}
 
 			List<Course_ApplicationDTO> list = dao.listCourse(info.getMember_id());
-
+			List<DataDTO> lectureFileList = dataDao.listData(lecture_code);
+			List<Pro_hwDTO> hwList = hwDao.listPro_hw(0, 10, lecture_code);
+			
 			mav.addObject("list", list);
+			mav.addObject("lectureFileList", lectureFileList);
+			mav.addObject("hwList", hwList);
 			mav.addObject("lecture_code", lecture_code);
 
 		} catch (Exception e) {

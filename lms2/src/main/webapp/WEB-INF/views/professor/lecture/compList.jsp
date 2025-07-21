@@ -16,6 +16,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/dist/css/board.css">
 <style type="text/css">
+
 .bbs-header img {
 	height: 50px;
 	margin-bottom: 10px;
@@ -53,13 +54,12 @@
 													</a>
 												</h5>
 												<p class="card-text mb-1">
-													<span class="me-3">학년 : ${dto.grade}</span>
-													<span class="me-3">강의실 : ${dto.classroom}</span>
+													<span class="me-3">${dto.grade}학년 | ${dto.division}</span>
 												</p>
 												<p class="card-text">
-													<span class="me-3">분류 : ${dto.division}</span>
+													<span class="me-3">강의실 : ${dto.classroom}</span>
 													<span class="me-3">수강인원 : ${dto.capacity}</span>
-													<span > 학점${dto.credit}</span>
+													<span class="me-3">학점 : <c:out value="${dto.credit}" default="정보없음"/></span>
 												</p>
 											</div>
 										</div>
@@ -94,26 +94,10 @@
 					</button>
 				</div>
 				<div class="col text-end">
-					<!-- 여기에 추가 버튼 등 가능 -->
 				</div>
 			</div>
 		</div>
 	</div>
 </main>
-	<script
-		src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>
-	<script type="text/javascript">
-		// 출석하기
-		function okSend() {
-
-			if (confirm('출석 처리 하시겠습니까?')) {
-				return;
-			}
-			const f = document.submitForm;
-
-			f.action = '${pageContext.request.contextPath}/professor/attendance/list?lecture_code=${dto.lecture_code}';
-			f.submit();
-		}
-	</script>
 </body>
 </html>
