@@ -28,6 +28,13 @@
 	</header>
 	<main>
 		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
+		<c:if test="${not empty sessionScope.error}">
+		    <script>
+		        alert('${sessionScope.error}');
+		    </script>
+		    <c:remove var="error" scope="session"/>
+		</c:if>
+				
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 

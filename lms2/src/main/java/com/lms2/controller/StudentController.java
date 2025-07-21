@@ -517,10 +517,20 @@ public class StudentController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		try {
+			String memberId = info.getMember_id();
+	        String lectureCode = req.getParameter("lecture_code");
+	        
+	        boolean already = dao.isAlready(memberId, lectureCode);
+	        if (already) {
+	            session.setAttribute("error", "이미 수강 신청한 강의입니다.");
+	            return new ModelAndView("redirect:/student/lecture/list");
+	        }
+			
+			
 			Course_ApplicationDTO dto = new Course_ApplicationDTO();
 
-			dto.setMember_id(info.getMember_id());
-			dto.setLecture_code(req.getParameter("lecture_code"));
+			dto.setMember_id(memberId);
+			dto.setLecture_code(lectureCode);
 
 			dao.insertCourse(dto);
 
