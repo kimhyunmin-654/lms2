@@ -40,19 +40,21 @@
 				</div>
 
 				<form id="weekForm" method="get" action="${pageContext.request.contextPath}/professor/rating/write">
-					<input type="hidden" name="lecture_code" value="${lecture_code}" />
-					
-					<div class="col text-end mt-2">
-						<button type="button" class="btn btn-light"
-							onclick="location.href='${pageContext.request.contextPath}/professor/rating/list?lecture_code=${lecture_code}'">새로고침</button>
-					</div>
-					<div class="col text-end mt-2">
-						<button type="button" class="btn btn-light"
-    onclick="location.href='${pageContext.request.contextPath}/professor/rating/write?lecture_code=${lecture_code}'">성적관리</button>
-					</div>
+				    <input type="hidden" name="lecture_code" value="${lecture_code}" />
+				
+				    <div class="d-flex justify-content-end mb-3 gap-2">
+				        <button type="button" class="btn btn-outline-secondary"
+				            onclick="location.href='${pageContext.request.contextPath}/professor/rating/list?lecture_code=${lecture_code}'">
+				            새로고침
+				        </button>
+				        <button type="button" class="btn btn-danger"
+				            onclick="location.href='${pageContext.request.contextPath}/professor/rating/write?lecture_code=${lecture_code}'">
+				            성적관리
+				        </button>
+				    </div>
 				</form>
 
-				<table class="table table-hover board-list mt-4">
+				<table class="table table-hover board-list mt-1">
 					<thead class="table-light">
 						<tr>
 							<th>학번</th>
@@ -61,25 +63,34 @@
 							<th>기말</th>
 							<th>출석</th>
 							<th>과제</th>
-							<th>토탈</th>
 							<th>등급</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="dto" items="${list}">
-							<tr>
-								<td>${dto.member_id}</td>
-								<td>${dto.name}</td>
-								<td>${dto.middletest_rating}</td>
-								<td>${dto.finaltest_rating}</td>
-								<td>${dto.attendance_rating}</td>
-								<td>${dto.homework_rating}</td>
-								<td>${dto.total_rating}</td>								
-								<td>${dto.rating}</td>								
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+						 <c:choose>
+            <c:when test="${empty list}">
+                <tr>
+                    <td colspan="8" class="text-center text-muted">
+                        성적관리 리스트에 추가할 데이터가 없습니다. 수강 학생이 없습니다.
+                    </td>
+                </tr>
+            </c:when>
+            <c:otherwise>
+                <c:forEach var="dto" items="${list}">
+                    <tr>
+                        <td>${dto.member_id}</td>
+                        <td>${dto.name}</td>
+                        <td>${dto.middletest_rating}</td>
+                        <td>${dto.finaltest_rating}</td>
+                        <td>${dto.attendance_rating}</td>
+                        <td>${dto.homework_rating}</td>
+                        <td>${dto.rating}</td>
+                    </tr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+    </tbody>
+</table>
 			</div>
 
 
