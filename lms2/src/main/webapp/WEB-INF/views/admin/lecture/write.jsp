@@ -252,6 +252,13 @@ function lectureSubmit(form) {
 		f.lecture_year.focus();
 		return false;
 	}
+	
+	str = f.semester.value.trim();
+	if( ! str ) {
+		alert('학기 등록하세요. ');
+		f.semester.focus();
+		return false;
+	}		
 		
 	
 	p = /^[1-9][0-9]{0,2}$/;
