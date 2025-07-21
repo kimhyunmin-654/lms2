@@ -110,7 +110,26 @@ public class StudentController {
 		}
 		return mav;
 	}
+	
+	// 학생등록
+	@RequestMapping(value = "/admin/student/account", method = RequestMethod.GET)
+	public ModelAndView accountStudentForm(HttpServletRequest req, HttpServletResponse resp)
+	        throws ServletException, IOException {
 
+	    StudentDAO dao = new StudentDAO();
+	    ModelAndView mav = new ModelAndView("admin/student/account");
+
+	    mav.addObject("dto", new StudentDTO());
+	    mav.addObject("mode", "account");
+	    
+	    try {
+	        mav.addObject("departmentList", dao.listDepartment());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return mav;
+	}
 	// 학생 등록
 	@RequestMapping(value = "/admin/student/account", method = RequestMethod.POST)
 	public ModelAndView accountStudentSubmit(HttpServletRequest req, HttpServletResponse resp)
@@ -148,7 +167,6 @@ public class StudentController {
 	        dto.setDepartment_id(req.getParameter("department_id"));
 	        dto.setAvatar(avatar);
 
-	        // 학적 상태는 DAO 내부에서 '입학'으로 처리
 	        dao.insertStudent(dto);
 
 	        session.setAttribute("mode", "account");
