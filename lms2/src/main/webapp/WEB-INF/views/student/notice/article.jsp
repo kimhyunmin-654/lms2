@@ -27,27 +27,27 @@
 
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">제목</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.subject}</div>
+                    <div class="col-sm-10 bg-white py-3">${ndto.subject}</div>
                 </div>
 
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">작성자</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.name}</div>
+                    <div class="col-sm-10 bg-white py-3">${ndto.name}</div>
                 </div>
 
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">등록일</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.reg_date}</div>
+                    <div class="col-sm-10 bg-white py-3">${ndto.reg_date}</div> 
                 </div>
 
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">조회수</div>
-                    <div class="col-sm-10 bg-white py-3">${dto.hit_count}</div>
+                    <div class="col-sm-10 bg-white py-3">${ndto.hit_count}</div>
                 </div>
 
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">내용</div>
-                    <div class="col-sm-10 bg-white py-3" style="min-height:200px;">${dto.content}</div>
+                    <div class="col-sm-10 bg-white py-3" style="min-height:200px;">${ndto.content}</div>
                 </div>
 
                 <!-- 첨부파일 -->
@@ -99,6 +99,7 @@
 
             </div>
         </div>
+    </div>
 </main>
 
 

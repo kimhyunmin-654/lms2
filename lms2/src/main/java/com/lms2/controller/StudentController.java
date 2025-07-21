@@ -369,7 +369,7 @@ public class StudentController {
 	}
 
 	// 학생 상세정보 출력
-	@RequestMapping(value = "/admin/article", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/student/article", method = RequestMethod.GET)
 	public ModelAndView viewStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String member_id = req.getParameter("member_id");
 
