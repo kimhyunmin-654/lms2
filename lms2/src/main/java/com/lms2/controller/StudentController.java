@@ -53,7 +53,7 @@ public class StudentController {
 			mav.addObject("list", list);
 
 			// 공지사항
-			List<NoticeDTO> listNotice = noticeDao.listNotice();
+			List<NoticeDTO> listNotice = noticeDao.listNotice(0,5);
 			mav.addObject("listNotice", listNotice);
 
 		} catch (Exception e) {
@@ -433,10 +433,12 @@ public class StudentController {
 			}
 
 			String password = req.getParameter("password");
+			String mode = req.getParameter("mode");
 
 			if (!dto.getPassword().equals(password)) {
 				ModelAndView mav = new ModelAndView("student/student/pwd");
-
+				
+				mav.addObject("mode", mode);
 				mav.addObject("message", "패스워드가 일치하지 않습니다.");
 
 				return mav;
@@ -446,6 +448,7 @@ public class StudentController {
 			ModelAndView mav = new ModelAndView("student/student/update");
 
 			mav.addObject("dto", dto);
+			mav.addObject("mode", "update");
 
 			return mav;
 
@@ -568,7 +571,7 @@ public class StudentController {
 
 		try {
 			String lecture_code = req.getParameter("lecture_code");
-
+		
 			if (info != null) {
 				String memberId = String.valueOf(info.getMember_id());
 				List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
@@ -586,6 +589,7 @@ public class StudentController {
 
 		return mav;
 	}
+
 
 	// ⚠️⚠️ 파일 충돌 날까봐 임시로 이곳에 지정. 나중에 SidebarController로 이동해야 함 - 하은
 	@RequestMapping(value = "/layout/student_menusidebar", method = RequestMethod.GET)

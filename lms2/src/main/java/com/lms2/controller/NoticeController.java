@@ -673,7 +673,7 @@ public class NoticeController {
 	
 	@RequestMapping(value = "/student/notice/article", method = RequestMethod.GET)
 	public ModelAndView studentNoticeArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 공지사항 상세보기
+		// 학생 공지사항 상세보기
 		NoticeDAO dao = new NoticeDAO();
 		MyUtil util = new MyUtil();
 		
@@ -923,14 +923,21 @@ public class NoticeController {
 	        if (viewed == null) {
 	            viewed = new HashSet<>();
 	        }
+	        
+	        if (!viewed.contains(notice_id)) {
+	            dao.updateHitCount(notice_id); // 조회수 증가
+	            viewed.add(notice_id);         // 세션에 조회 기록 저장
+	            session.setAttribute("viewedNotice", viewed); // 세션에 다시 저장
+	        }
 			
-			NoticeDTO dto = dao.findById(notice_id);
-			if(dto == null) {
+			
+			NoticeDTO ndto = dao.findById(notice_id);
+			if(ndto == null) {
 				return new ModelAndView("redirect:/professor/notice/list?" + query);
 			}
 			
-			NoticeDTO prevDto = dao.findByPrev(dto.getNotice_id(), schType, kwd);
-			NoticeDTO nextDto = dao.findByNext(dto.getNotice_id(), schType, kwd);
+			NoticeDTO prevDto = dao.findByPrev(ndto.getNotice_id(), schType, kwd);
+			NoticeDTO nextDto = dao.findByNext(ndto.getNotice_id(), schType, kwd);
 			
 			List<NoticeDTO> listFile = dao.listNoticeFile(notice_id);
 			
@@ -942,7 +949,7 @@ public class NoticeController {
                 mav.addObject("lectureList", lectures);
             }
 			
-			mav.addObject("dto", dto);
+			mav.addObject("ndto", ndto);
 			mav.addObject("prevDto", prevDto);
 			mav.addObject("nextDto", nextDto);
 			mav.addObject("listFile", listFile);

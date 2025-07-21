@@ -29,7 +29,7 @@
                     <div class="col-md-2 text-center">
                         <c:choose>
                             <c:when test="${not empty dto.avatar}">
-                                <img src="${pageContext.request.contextPath}/uploads/student/${dto.avatar}" 
+                                <img src="${pageContext.request.contextPath}/dist/avatar/${dto.avatar}"
                                      alt="프로필 이미지" class="img-thumbnail rounded-circle" style="width:100px; height:100px;">
                             </c:when>
                             <c:otherwise>

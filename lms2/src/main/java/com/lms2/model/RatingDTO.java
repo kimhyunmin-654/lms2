@@ -12,9 +12,39 @@ public class RatingDTO {
 	private String reg_date;
 	private String modify_date; 
 	
+	private String studentName;
+	private String lectureCode;
+	private String subject;
+	private String professorName;
+	
 	private String name;
 	
 	
+	
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public String getLectureCode() {
+		return lectureCode;
+	}
+	public void setLectureCode(String lectureCode) {
+		this.lectureCode = lectureCode;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getProfessorName() {
+		return professorName;
+	}
+	public void setProfessorName(String professorName) {
+		this.professorName = professorName;
+	}
 	public String getName() {
 		return name;
 	}

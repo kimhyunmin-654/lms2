@@ -373,18 +373,19 @@ public class StudentDAO {
 		String sql;
 
 		try {
-			sql = " UPDATE member SET modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ?, zip = ? "
+			sql = " UPDATE member SET password = ?, modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ?, zip = ? "
 					+ " WHERE member_id = ? ";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getAvatar());
-			pstmt.setString(2, dto.getEmail());
-			pstmt.setString(3, dto.getPhone());
-			pstmt.setString(4, dto.getBirth());
-			pstmt.setString(5, dto.getAddr1());
-			pstmt.setString(6, dto.getAddr2());
-			pstmt.setString(7, dto.getZip());
-			pstmt.setString(8, dto.getMember_id());
+			pstmt.setString(1, dto.getPassword());
+			pstmt.setString(2, dto.getAvatar());
+			pstmt.setString(3, dto.getEmail());
+			pstmt.setString(4, dto.getPhone());
+			pstmt.setString(5, dto.getBirth());
+			pstmt.setString(6, dto.getAddr1());
+			pstmt.setString(7, dto.getAddr2());
+			pstmt.setString(8, dto.getZip());
+			pstmt.setString(9, dto.getMember_id());
 
 			pstmt.executeUpdate();
 
@@ -597,48 +598,48 @@ public class StudentDAO {
 	}
 
 	// 특정 학생의 출석 리스트
-	public List<Attendance_recordDTO> listAttendance(String member_id) {
-		List<Attendance_recordDTO> list = new ArrayList<Attendance_recordDTO>();
+		public List<Attendance_recordDTO> listAttendance(String member_id) {
+			List<Attendance_recordDTO> list = new ArrayList<Attendance_recordDTO>();
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder();
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			StringBuilder sb = new StringBuilder();
 
-		try {
-			sb.append(" SELECT attend_date, checkin_time, checkout_time, a.status, c.member_id, week, lecture_code, ");
-			sb.append(
-					" CASE a.status WHEN 0 THEN '결석' WHEN 1 THEN '출석' WHEN 2 THEN '지각' ELSE '미체크' END AS attendance_status ");
-			sb.append(" FROM Attendance_record a ");
-			sb.append(" JOIN COURSE_APPLICATION c ON a.course_id = c.course_id ");
-			sb.append(" WHERE c. member_id = ? ");
+			try {
+				sb.append(" SELECT attend_date, checkin_time, checkout_time, a.status, c.member_id, week, lecture_code, ");
+				sb.append(" CASE a.status WHEN 0 THEN '결석' WHEN 1 THEN '출석' WHEN 2 THEN '지각' ELSE '미체크' END AS attendance_status ");
+				sb.append(" FROM Attendance_record a ");
+				sb.append(" JOIN COURSE_APPLICATION c ON a.course_id = c.course_id ");
+				sb.append(" WHERE c. member_id = ? ");
 
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setString(1, member_id);
-			rs = pstmt.executeQuery();
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setString(1, member_id);
+				rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				Attendance_recordDTO dto = new Attendance_recordDTO();
+				while (rs.next()) {
+					Attendance_recordDTO dto = new Attendance_recordDTO();
 
-				dto.setAttend_date(rs.getString("attend_date"));
-				dto.setCheckin_time(rs.getString("checkin_time"));
-				dto.setCheckout_time(rs.getString("checkout_time"));
-				dto.setStatus(rs.getInt("status"));
-				dto.setMember_id(rs.getString("member_id"));
-				dto.setWeek(rs.getInt("week"));
-				dto.setLecture_code(rs.getString("lecture_code"));
+					dto.setAttend_date(rs.getString("attend_date"));
+					dto.setCheckin_time(rs.getString("checkin_time"));
+					dto.setCheckout_time(rs.getString("checkout_time"));
+					dto.setStatus(rs.getInt("status"));
+					dto.setMember_id(rs.getString("member_id"));
+					dto.setWeek(rs.getInt("week"));
+					dto.setLecture_code(rs.getString("lecture_code"));
 
-				list.add(dto);
+					list.add(dto);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
+			return list;
 		}
 
-		return list;
-	}
 
 	// 학적 상태 목록 조회
 	public List<Map<String, Object>> getStudentStatusList() throws SQLException {

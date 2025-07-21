@@ -136,4 +136,62 @@ public class RatingDAO {
 
         return list;
     }
+    
+    public List<RatingDTO> std_listrating(int offset, int size, String member_id) {
+        List<RatingDTO> list = new ArrayList<RatingDTO>();
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        StringBuilder sb = new StringBuilder();
+
+        try {
+        	sb.append("SELECT r.member_id, m1.name AS student_name, l.lecture_code, l.subject, ");
+        	sb.append("r.course_id, middletest_rating, finaltest_rating, attendance_rating, homework_rating, ");
+        	sb.append("total_rating, rating, m.name AS professor_name ");
+        	sb.append("FROM RATING r ");
+        	sb.append("JOIN COURSE_APPLICATION c ON r.course_id = c.course_id ");
+        	sb.append("JOIN student s ON r.member_id = s.member_id ");
+        	sb.append("JOIN LECTURE l ON c.lecture_code = l.lecture_code ");
+        	sb.append("JOIN professor p ON l.member_id = p.member_id ");
+        	sb.append("JOIN member m ON p.member_id = m.member_id ");
+        	sb.append("JOIN member m1 ON r.member_id = m1.member_id ");
+        	sb.append("WHERE r.member_id = ? ");
+        	sb.append("ORDER BY l.lecture_code DESC ");
+        	sb.append("OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+
+            pstmt = conn.prepareStatement(sb.toString());
+            pstmt.setString(1, member_id);
+            pstmt.setInt(2, offset);
+            pstmt.setInt(3, size);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                RatingDTO dto = new RatingDTO();
+                
+                dto.setMember_id(rs.getString("member_id"));
+                dto.setStudentName(rs.getString("student_name"));   
+                dto.setProfessorName(rs.getString("professor_name")); 
+                dto.setCourse_id(rs.getInt("course_id"));
+                dto.setMiddletest_rating(rs.getInt("middletest_rating"));
+                dto.setFinaltest_rating(rs.getInt("finaltest_rating"));
+                dto.setAttendance_rating(rs.getInt("attendance_rating"));
+                dto.setHomework_rating(rs.getInt("homework_rating"));
+                dto.setTotal_rating(rs.getInt("total_rating"));
+                dto.setRating(rs.getString("rating"));
+                dto.setSubject(rs.getString("subject"));
+                dto.setLectureCode(rs.getString("lecture_code"));
+
+                list.add(dto);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.close(rs);
+            DBUtil.close(pstmt);
+        }
+
+        return list;
+    }
 }
