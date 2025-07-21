@@ -29,23 +29,21 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>제목</th>
-                                <td>${dto.assign_name}</td>
+                                <td>${dto.subject}</td>
                             </tr>
                             <tr>
                                 <th>내용</th>
-                                <td>${dto.assign_content}</td>
+                                <td>${dto.content}</td>
                             </tr>
                             <tr>
                                 <th>마감일</th>
-                                <td>
-                                    <fmt:formatDate value="${dto.submit_date}" pattern="yyyy-MM-dd HH:mm" />
-                                </td>
+                                <td>${dto.deadline_date}</td>
                             </tr>
                             <c:if test="${not empty dto.save_filename}">
                                 <tr>
                                     <th>첨부파일</th>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/student/hw/download?assign_id=${dto.assign_id}">
+                                        <a href="${pageContext.request.contextPath}/student/hw/download?assign_id=${dto.member_id}">
                                             <i class="fa-solid fa-floppy-disk"></i>&nbsp;${dto.original_filename}
                                         </a>
                                     </td>
@@ -55,7 +53,7 @@
 
                         <h5 class="mt-5">과제 제출</h5>
                         <form action="${pageContext.request.contextPath}/student/hw/submit" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="assign_id" value="${dto.assign_id}" />
+                            <input type="hidden" name="assign_id" value="${dto.member_id}" />
                             <input type="hidden" name="lecture_code" value="${param.lecture_code}" />
 
                             <div class="mb-3">

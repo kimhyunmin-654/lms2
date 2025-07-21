@@ -45,7 +45,7 @@
 				</h2>
 				<div id="collapseTwo" class="accordion-collapse collapse"
 					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/bbs/homework?lecture_code=${dto.lecture_code}">과제</a></div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/hw/list?lecture_code=${dto.lecture_code}">과제</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/bbs/list?lecture_code=${dto.lecture_code}">자료실</a></div>
 				</div>
 			</div>

@@ -41,18 +41,17 @@
 											<tr>
 												<td>${dataCount - ((page - 1) * size) - status.index}</td>
 												<td>
-													<!-- 상세 페이지 이동 링크 (중요 수정) -->
-													<a href="${articleUrl}&assign_id=${dto.assign_id}">
-														${dto.assign_name}
+													<a href="${pageContext.request.contextPath}/student/hw/article?homework_id=${dto.homework_id}&page=${page}&lecture_code=${dto.lecture_code}">
+													    ${dto.subject}
 													</a>
 												</td>
 												<td>
 													<c:choose>
-														<c:when test="${dto.assign_status == 1}">제출 완료</c:when>
+														<c:when test="${dto.file_id != 0}">제출 완료</c:when>
 														<c:otherwise>미제출</c:otherwise>
 													</c:choose>
 												</td>
-												<td>${dto.submit_date}</td>
+												<td>${dto.deadline_date}</td>
 											</tr>
 										</c:forEach>
 									</c:when>

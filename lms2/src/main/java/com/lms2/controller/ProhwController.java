@@ -30,65 +30,81 @@ public class ProhwController {
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//리스트보기
 		ModelAndView mav = new ModelAndView("/professor/hw/list");
-		LectureDAO lectureDao = new LectureDAO();
 		Pro_hwDAO dao = new Pro_hwDAO();
+		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
 		
 		try {
-			String page = req.getParameter("page");
-			int current_page = 1;
 			HttpSession session = req.getSession(false);
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			
-			if(page != null) {
-				current_page = Integer.parseInt(page);
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
 			}
 			
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if (page != null) {
+				current_page = Integer.parseInt(page);
+			}
+
 			String schType = req.getParameter("schType");
 			String kwd = req.getParameter("kwd");
-			if(schType == null) {
+			if (schType == null) {
 				schType = "all";
 				kwd = "";
 			}
 			kwd = util.decodeUrl(kwd);
-			
-			int dataCount;
-			if(kwd.length() == 0) {
-				dataCount = dao.dataCount();
-			} else {
-				dataCount = dao.dataCount(schType, kwd);
-			}
-			
-			int size = 10;
-			int total_page = util.pageCount(dataCount, size);
-			if(current_page > total_page) {
-				current_page = total_page;
-			}
-			
-			int offset = (current_page - 1) * size;
-			if(offset < 0) offset = 0;
-			
-			List<Pro_hwDTO> list = null;
-			if(kwd.length() == 0) {
-				list = dao.listPro_hw(offset, size);
-			} else {
-				list = dao.listPro_hw(offset, size, schType, kwd);
-			}
-			
+
 			String query = "";
-			if(kwd.length() != 0) {
+			if (kwd.length() != 0) {
 				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
 			}
-			
+
+			// lecture_code 넘기기
+			String lecture_code = req.getParameter("lecture_code");
+			if (lecture_code != null) {
+				if (!query.isEmpty()) {
+					query += "&";
+				}
+				query += "lecture_code=" + lecture_code;
+			}
+
+			int dataCount;
+			if (kwd.length() == 0) {
+				dataCount = dao.dataCount(lecture_code);
+			} else {
+				dataCount = dao.dataCount(schType, kwd, lecture_code);
+			}
+
+			int size = 10;
+			int total_page = util.pageCount(dataCount, size);
+			if (current_page > total_page) {
+				current_page = total_page;
+			}
+
+			int offset = (current_page - 1) * size;
+			if (offset < 0)
+				offset = 0;
+
+			List<Pro_hwDTO> list = null;
+			if (kwd.length() == 0) {
+				list = dao.listPro_hw(offset, size, lecture_code);
+			} else {
+				list = dao.listPro_hw(offset, size, schType, kwd, lecture_code);
+			}
+
 			String cp = req.getContextPath();
 			String listUrl = cp + "/professor/hw/list";
 			String articleUrl = cp + "/professor/hw/article?page=" + current_page;
-			if(query.length() != 0) {
+			if (query.length() != 0) {
 				listUrl += "?" + query;
 				articleUrl += "&" + query;
 			}
+
 			String paging = util.paging(current_page, total_page, listUrl);
-			
+
 			mav.addObject("list", list);
 			mav.addObject("dataCount", dataCount);
 			mav.addObject("size", size);
@@ -98,12 +114,157 @@ public class ProhwController {
 			mav.addObject("paging", paging);
 			mav.addObject("schType", schType);
 			mav.addObject("kwd", kwd);
+			mav.addObject("lecture_code", lecture_code);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mav;
+	}
+	
+	//학생과제보기
+	@RequestMapping(value = "/student/hw/article", method = RequestMethod.GET)
+	public ModelAndView sArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Pro_hwDAO dao = new Pro_hwDAO();
+		MyUtil util = new MyUtil();
+		
+		String page = req.getParameter("page");
+		String query = "page=" + page;
+		
+		try {
+			int homework_id = Integer.parseInt(req.getParameter("homework_id"));
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
 			
-			if (info != null) {
-                String memberId = String.valueOf(info.getMember_id());
-                List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
-                mav.addObject("lectureList", lectures);
-            }
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+			String lecture_code = req.getParameter("lecture_code");
+			if(lecture_code != null) {
+				if(!query.isEmpty()) {
+					query += "&";
+				}
+				query += "lecture_code=" + lecture_code;
+			}
+			Pro_hwDTO dto = dao.findById(homework_id);
+			if(dto == null) {
+				return new ModelAndView("redirect:/student/hw/list?" + query);
+			}
+			dto.setContent(util.htmlSymbols(dto.getContent()));
+			
+			Pro_hwDTO prevDto = dao.findByPrev(dto.getHomework_id(), schType, kwd);
+			Pro_hwDTO nextDto = dao.findByNext(dto.getHomework_id(), schType, kwd);
+			
+			ModelAndView mav = new ModelAndView("student/hw/article");
+			mav.addObject("dto", dto);
+			mav.addObject("page", page);
+			mav.addObject("query", query);
+			mav.addObject("prevDto", prevDto);
+			mav.addObject("nextDto", nextDto);
+			mav.addObject("lecture_code", lecture_code);
+			
+			return mav;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:/student/hw/list?" + query);
+	}
+	
+	//학생 글리스트
+	@RequestMapping(value = "/student/hw/list", method = RequestMethod.GET)
+	public ModelAndView sList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		ModelAndView mav = new ModelAndView("/student/hw/list");
+		Pro_hwDAO dao = new Pro_hwDAO();
+		LectureDAO lectureDao = new LectureDAO();
+		MyUtil util = new MyUtil();
+		
+		HttpSession session = req.getSession(false);
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		try {
+			if(info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lecture = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lecture);
+			}
+			
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if (page != null) {
+				current_page = Integer.parseInt(page);
+			}
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if (schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = util.decodeUrl(kwd);
+
+			String query = "";
+			if (kwd.length() != 0) {
+				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+			}
+			
+			String lecture_code = req.getParameter("lecture_code");
+			if(lecture_code != null) {
+				if(! query.isEmpty()) {
+					query += "&";
+				}
+				query += "lecture_code=" + lecture_code;
+			}
+			
+			int dataCount;
+			if(kwd.length() == 0) {
+				dataCount = dao.dataCount(lecture_code);
+			} else {
+				dataCount = dao.dataCount(schType, kwd, lecture_code);
+			}
+			
+			int size = 10;
+			int total_page = util.pageCount(dataCount, size);
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page -1) * size;
+			if(offset < 0)
+				offset = 0;
+			
+			List<Pro_hwDTO> list = null;
+			if(kwd.length() == 0) {
+				list = dao.listPro_hw(offset, size, lecture_code);
+			} else {
+				list = dao.listPro_hw(offset, size, schType, kwd, lecture_code);
+			}
+			
+			String cp = req.getContextPath();
+			String listUrl = cp + "/student/hw/list";
+			String articleUrl = cp + "/student/hw/article?page=" + current_page;
+			if (query.length() != 0) {
+				listUrl += "?" + query;
+				articleUrl += "&" + query;
+			}
+			String paging = util.paging(current_page, total_page, listUrl);
+
+			mav.addObject("list", list);
+			mav.addObject("dataCount", dataCount);
+			mav.addObject("size", size);
+			mav.addObject("page", current_page);
+			mav.addObject("total_page", total_page);
+			mav.addObject("articleUrl", articleUrl);
+			mav.addObject("paging", paging);
+			mav.addObject("schType", schType);
+			mav.addObject("kwd", kwd);
+			mav.addObject("lecture_code", lecture_code);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -328,32 +489,17 @@ public class ProhwController {
 		
 	}
 	
-	@RequestMapping(value = "/homework/download")
-	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Pro_hwDAO dao = new Pro_hwDAO();
-		FileManager fileManager = new FileManager();
-		
-		HttpSession session = req.getSession();
-		
-		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "homework";
-		
-		boolean b = false;
-		
-		try {
-			int homework_id = Integer.parseInt(req.getParameter("homework_id"));
-			
-			Pro_hwDTO dto = dao.findById(homework_id);
-			if(dto != null) {
-				b = fileManager.doFiledownload(dto.getSave_filename(), dto.getOriginal_filename(), pathname, resp);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if(!b) {
-			resp.sendRedirect(req.getContextPath() + "/professor/hw/list");
+	@RequestMapping(value = "/student/hw/submit", method = RequestMethod.GET)
+	public ModelAndView submitForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    ModelAndView mav = new ModelAndView("/student/hw/submit");
 
-		}
+	    int homework_id = Integer.parseInt(req.getParameter("homework_id"));
+	    mav.addObject("homework_id", homework_id);
+	    mav.addObject("mode", "submit");
+
+	    return mav;
 	}
-		
+	
+	
+
 }

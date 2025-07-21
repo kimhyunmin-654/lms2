@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lms2.model.DataDTO;
 import com.lms2.model.Pro_hwDTO;
 import com.lms2.util.DBConn;
 import com.lms2.util.DBUtil;
@@ -65,71 +66,69 @@ public class Pro_hwDAO {
 	}
 	
 	//데이터개수
-	public int dataCount() {
-		int result = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql;
-		
-		try {
-			sql = "SELECT COUNT (*) FROM homework";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				result = rs.getInt(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
-		}
-		
-		return result;
-	}
-	
-	//검색데이터 개수
-	public int dataCount(String schType, String kwd) {
-		int result = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql;
-		
-		try {
-	        if (schType.equals("all")) {
-	            sql = "SELECT COUNT(*) FROM homework WHERE (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1)";
-	        } else if (schType.equals("reg_date")) {
-	            kwd = kwd.replaceAll("(\\-|\\.|\\/)", ""); // yyyyMMdd 형태로 정규화
-	            sql = "SELECT COUNT(*) FROM homework WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ?";
-	        } else {
-	            sql = "SELECT COUNT(*) FROM homework WHERE INSTR(" + schType + ", ?) >= 1";
+	public int dataCount(String lecture_code) {
+	    int result = 0;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql;
+
+	    try {
+	        sql = "SELECT COUNT(*) FROM homework WHERE lecture_code = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, lecture_code);
+
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            result = rs.getInt(1);
 	        }
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, kwd);
-			if(schType.equals("all")) {
-				pstmt.setString(2, kwd);
-			}
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				result = rs.getInt(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
-		}
-		return result;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
+	    return result;
+	}
+
+	// 강의별 + 검색조건 데이터 개수
+	public int dataCount(String schType, String kwd, String lecture_code) {
+	    int result = 0;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql;
+
+	    try {
+	        if (schType.equals("all")) {
+	            sql = "SELECT COUNT(*) FROM homework WHERE lecture_code = ? AND (INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1)";
+	        } else if (schType.equals("reg_date")) {
+	            kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
+	            sql = "SELECT COUNT(*) FROM homework WHERE lecture_code = ? AND TO_CHAR(reg_date, 'YYYYMMDD') = ?";
+	        } else {
+	            sql = "SELECT COUNT(*) FROM homework WHERE lecture_code = ? AND INSTR(" + schType + ", ?) >= 1";
+	        }
+
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, lecture_code);
+	        pstmt.setString(2, kwd);
+	        if (schType.equals("all")) {
+	            pstmt.setString(3, kwd);
+	        }
+
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            result = rs.getInt(1);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
+	    return result;
 	}
 	
 	//과제 리스트
-	public List<Pro_hwDTO> listPro_hw(int offset, int size) {
+	public List<Pro_hwDTO> listPro_hw(int offset, int size, String lecture_code) {
 		List<Pro_hwDTO> list = new ArrayList<Pro_hwDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -174,7 +173,7 @@ public class Pro_hwDAO {
 		return list;
 	}
 	
-	public List<Pro_hwDTO> listPro_hw(int offset, int size, String schType, String kwd) {
+	public List<Pro_hwDTO> listPro_hw(int offset, int size, String schType, String kwd, String lecture_code) {
 		List<Pro_hwDTO> list = new ArrayList<Pro_hwDTO>();
 		
 		PreparedStatement pstmt = null;
@@ -462,4 +461,35 @@ public class Pro_hwDAO {
 			DBUtil.close(pstmt);
 		}
 	}
+	// 강의코드 - 강의명
+	public List<Pro_hwDTO> listLectureByMember(String member_id, String lecture_code) {
+		List<Pro_hwDTO> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "SELECT lecture_code, subject FROM lecture WHERE member_id = ? ";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member_id);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Pro_hwDTO dto = new Pro_hwDTO();
+				dto.setLecture_code(rs.getString("lecture_code"));
+				dto.setSubject(rs.getString("subject"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+
+		return list;
+	}
+
 }
+
+
