@@ -29,7 +29,7 @@
 				<div class="row my-4 gx-3">
 				<!-- 전체 구성원 -->
 				<div class="col-md-6">
-				    <div class="card shadow-sm h-100">
+				    <div class="card shadow-sm">
 				        <div class="card-header fw-bold bg-light">
 				             전체 구성원
 				        </div>
