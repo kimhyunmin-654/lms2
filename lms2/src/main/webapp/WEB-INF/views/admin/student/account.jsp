@@ -204,7 +204,7 @@
 							value="false">
 
 						<c:if test="${mode == 'update'}">
-							<input type="hidden" name="profile_photo" value="${dto.avatar}">
+							<input type="hidden" name="avatar" value="${dto.avatar}">
 						</c:if>
 					</div>
 				</form>
