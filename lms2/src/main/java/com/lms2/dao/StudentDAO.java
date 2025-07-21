@@ -591,7 +591,11 @@ public class StudentDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}  finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
 		}
+
 
 		return list;
 
