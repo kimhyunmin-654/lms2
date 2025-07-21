@@ -8,8 +8,9 @@
 <title>공지사항 등록</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 
@@ -20,10 +21,17 @@
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-    <div class="container" style="margin-left: 220px; padding: 30px;">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-8">
-                <h3 class="mb-4">공지사항 등록</h3>
+    <div class="container mt-5">
+	<div style="margin-top: 100px;">
+	<div class="main-wrapper">
+            <div class="col-md-15 row">
+            <table class="table" style="margin-bottom: 30px;">
+				<tr>
+					<td width="200px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항 등록</td>
+					<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+				</tr>
+			</table>
 
 				<form name="noticeForm" action="" method="post" enctype="multipart/form-data"
 				      class="border p-4 rounded bg-white shadow-sm">
@@ -118,6 +126,7 @@
             </div>
         </div>
     </div>
+</div>
 </main>
 
 <script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>
