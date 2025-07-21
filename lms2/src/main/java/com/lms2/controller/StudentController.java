@@ -53,7 +53,7 @@ public class StudentController {
 			mav.addObject("list", list);
 
 			// 공지사항
-			List<NoticeDTO> listNotice = noticeDao.listNotice(0,5);
+			List<NoticeDTO> listNotice = noticeDao.listNotice();
 			mav.addObject("listNotice", listNotice);
 
 		} catch (Exception e) {
@@ -90,8 +90,7 @@ public class StudentController {
 		HttpSession session = req.getSession();
 		String message = "";
 
-		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "avatar";
+		String pathname = session.getServletContext().getRealPath("/") + "dist" + File.separator + "avatar";
 
 		FileManager fileManager = new FileManager();
 		String avatar = null;
@@ -284,8 +283,7 @@ public class StudentController {
 		StudentDAO dao = new StudentDAO();
 		HttpSession session = req.getSession();
 
-		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "avatar";
+		String pathname = session.getServletContext().getRealPath("/") + "dist" + File.separator + "avatar";
 
 		FileManager fileManager = new FileManager();
 		String avatar = null;
