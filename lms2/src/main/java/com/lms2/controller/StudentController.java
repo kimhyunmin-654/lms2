@@ -145,8 +145,8 @@ public class StudentController {
 	        StudentDTO dto = new StudentDTO();
 
 	        dto.setMember_id(req.getParameter("member_id"));
-	        // dto.setName(req.getParameter("name"));
-	        // dto.setPassword(req.getParameter("password"));
+	        dto.setName(req.getParameter("name"));
+	        dto.setPassword(req.getParameter("password"));
 	        dto.setEmail(req.getParameter("email1") + "@" + req.getParameter("email2"));
 	        dto.setPhone(req.getParameter("phone"));
 	        dto.setBirth(req.getParameter("birth"));
