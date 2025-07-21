@@ -259,14 +259,14 @@ public class AttendanceDAO {
 	    PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
-	  
 
 	    try {
 	    	
-	   		sql = "SELECT a.* FROM ATTENDANCE_RECORD a "
-	               + "JOIN COURSE_APPLICATION c ON a.course_id = c.course_id "
-	               + "WHERE c.lecture_code = ? AND c.member_id = ? "
-	               + "ORDER BY a.week ASC";
+	   		sql = "SELECT a.* "
+	   				+ " FROM ATTENDANCE_RECORD a "
+	               + " JOIN COURSE_APPLICATION c ON a.course_id = c.course_id "
+	               + " WHERE c.lecture_code = ? AND c.member_id = ? "
+	               + " ORDER BY a.week ASC ";
 	   		
 	   		pstmt = conn.prepareStatement(sql);
 	    
@@ -276,7 +276,8 @@ public class AttendanceDAO {
 	        
 	            while (rs.next()) {
 	                Attendance_recordDTO dto = new Attendance_recordDTO();
-
+	                
+	                dto.setAttend_id(rs.getInt("attend_id"));
 	                dto.setWeek(rs.getInt("week"));
 	                Integer status = rs.getObject("status", Integer.class);
 					dto.setStatus(status != null ? status : -1);

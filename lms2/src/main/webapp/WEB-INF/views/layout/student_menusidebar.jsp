@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout.css">
 
 	<div class="text-white p-3 position-fixed blackbox2">

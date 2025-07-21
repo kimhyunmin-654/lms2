@@ -196,21 +196,26 @@ public class AttendanceController {
 
 		try {
 			String member_id = info.getMember_id();
-			if (info != null) {
-			    String memberId = String.valueOf(info.getMember_id());
-			    List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
-			    mav.addObject("lectureList", lectures);
+			List<LectureDTO> lectures = lectureDao.std_listsidebar(member_id);
+			mav.addObject("lectureList", lectures);
+
+			String lecture_code = req.getParameter("lecture_code");
+
+			List<Attendance_recordDTO> list;
+			if (lecture_code != null && !lecture_code.isEmpty()) {
+				// 특정 강의 출석 목록만 조회
+				list = aDao.listAttendanceByLectureAndStudent(lecture_code, member_id);
+			} else {
+				// 전체 강의 출석 목록 조회
+				list = dao.listAttendance(member_id);
 			}
 
-			List<Attendance_recordDTO> list = dao.listAttendance(member_id);
 			mav.addObject("list", list);
 
 			int present = aDao.dataCountAll(member_id, 1); // 출석
 			int absent = aDao.dataCountAll(member_id, 0); // 결석
 			int late = aDao.dataCountAll(member_id, 2); // 지각
 			
-			String lecture_code = req.getParameter("lecture_code");
-
 			mav.addObject("present", present);
 			mav.addObject("absent", absent);
 			mav.addObject("late", late);
