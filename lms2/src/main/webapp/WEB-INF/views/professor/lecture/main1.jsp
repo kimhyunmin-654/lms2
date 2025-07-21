@@ -53,7 +53,7 @@
 						<div class="border px-2">
 							<c:forEach var="dto" items="${listNotice}" varStatus="status">
 								<div class="text-truncate px-2 subject-list">
-									<a href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.notice_id}">
+									<a href="${pageContext.request.contextPath}/professor/notice/article?notice_id=${dto.notice_id}">
 										${dto.subject}
 									</a>
 								</div>
@@ -64,7 +64,7 @@
 							</c:forEach>
 						</div>
 						<div class="pt-2 text-end">
-							<a href="${pageContext.request.contextPath}/admin/notice/list"
+							<a href="${pageContext.request.contextPath}/professor/notice/list"
 								class="text-reset">더보기</a>
 						</div>
 					</div>
