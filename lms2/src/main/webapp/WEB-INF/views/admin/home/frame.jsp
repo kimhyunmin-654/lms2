@@ -15,7 +15,8 @@
 	href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/dist/css/mainPage.css">
-	
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/board.css">
 </head>
 <header>
 	<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
@@ -25,9 +26,17 @@
 		<jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
 		<div class="container mt-5" >
-
-			<div class="main-wrapper body-container row justify-content-center mt-4">
-				<h3 style="font-size: 29px;">관리자 메인페이지</h3>
+		<div style="margin-top: 100px;">
+			<div class="main-wrapper body-container row justify-content-center">
+				
+				<!-- <h3 style="font-size: 29px;">관리자 메인페이지</h3> -->
+				<table class="table" style="margin-bottom: 30px;">
+					<tr>
+						<td width="250px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">관리자 메인페이지</td>
+						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					</tr>
+				</table>
 				
 				<div class="row my-4 gx-3">
 				<div class="row mt-4">
@@ -118,6 +127,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	</main>
 	<script

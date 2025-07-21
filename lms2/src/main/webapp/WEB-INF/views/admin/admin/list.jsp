@@ -1,14 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
+<title>관리자 관리</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 
@@ -19,12 +22,19 @@
 
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
-
-    <div class="container" style="margin-left: 220px; padding: 30px;">
+	<div class="container mt-5 ">
+	<div style="margin-top: 100px;">
+	<div class="main-wrapper">
         <div class="row">
             <div class="col">
-                <h3 class="mb-4" style="margin-top: 50px;">관리자 관리</h3>
-               
+            
+            	<table class="table" style="margin-bottom: 30px;">
+					<tr>
+						<td width="180px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">관리자 관리</td>
+						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					</tr>
+				</table>
 
                 <!-- 상단: 삭제/페이지 선택/글쓰기 -->
                 <div class="d-flex justify-content-between mb-2 align-items-center">
@@ -89,7 +99,7 @@
                 </form>
 
                 <!-- 페이징 -->
-                <div class="d-flex justify-content-center my-4">
+                <div class="d-flex justify-content-center my-4 page-navigation">
                     ${dataCount == 0 ? "등록된 관리자가 없습니다." : paging}
                 </div>
 
@@ -122,6 +132,8 @@
 
             </div>
         </div>
+	</div>
+</div>
 </main>
 
 <script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>
@@ -156,6 +168,7 @@ function searchList() {
     location.href = '${pageContext.request.contextPath}/admin/admin/list?' + params;
 }
 </script>
+<script>console.log("${pageContext.request.contextPath}");</script>
 
 </body>
 </html>
