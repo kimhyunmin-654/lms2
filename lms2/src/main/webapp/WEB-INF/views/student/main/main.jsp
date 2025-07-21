@@ -23,10 +23,10 @@
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
-			<div class="body-container row justify-content-center"
-				style="margin: 100px;">
+			<div class="body-container row justify-content-center" style="margin: 100px;">
+								
 				<h3 style="font-size: 29px;">학생 메인페이지</h3>
-
+		
 				<!-- 수강과목 -->
 				<div class="row g-3">
 					<div class="col-md-12">
