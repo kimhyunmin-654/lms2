@@ -12,8 +12,6 @@ public class StudentDTO extends MemberDTO {
 	private String lecture_code;
 	private String apply_status;
 
-	private int status_id;
-
 	public String getLecture_code() {
 		return lecture_code;
 	}
@@ -76,15 +74,6 @@ public class StudentDTO extends MemberDTO {
 
 	public void setAcademic_status(String academic_status) {
 		this.academic_status = academic_status;
-	}
-	
-
-	public int getStatus_id() {
-	    return status_id;
-	}
-
-	public void setStatus_id(int status_id) {
-	    this.status_id = status_id;
 	}
 	
 }
