@@ -53,7 +53,7 @@ public class StudentController {
 			mav.addObject("list", list);
 
 			// 공지사항
-			List<NoticeDTO> listNotice = noticeDao.listNotice();
+			List<NoticeDTO> listNotice = noticeDao.listNotice(0,5);
 			mav.addObject("listNotice", listNotice);
 
 		} catch (Exception e) {
