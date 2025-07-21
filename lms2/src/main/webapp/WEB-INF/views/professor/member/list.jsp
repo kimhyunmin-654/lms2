@@ -30,7 +30,7 @@
 
 			<div class="body-container row justify-content-center bbs-header" style="margin: 100px;">
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
+					<img src="${pageContext.request.contextPath}/dist/images/sugangseng.png">
 				</div>
 
 				<table class="table table-hover board-list">

@@ -44,7 +44,7 @@
 				<div
 					style="font-size: 29px; text-align: center; margin-bottom: 30px;">
 					<img
-						src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
+						src="${pageContext.request.contextPath}/dist/images/lecturelist.png">
 				</div>
 
 					<div class="container mt-4">
