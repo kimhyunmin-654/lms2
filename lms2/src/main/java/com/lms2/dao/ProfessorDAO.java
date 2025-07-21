@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lms2.model.DeparmentDTO;
+import com.lms2.model.DepartmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.ProfessorDTO;
 import com.lms2.util.DBConn;
@@ -437,8 +437,8 @@ public class ProfessorDAO {
 	}
 	
 	// 강의
-	public List<DeparmentDTO> listDepartment(){
-		List<DeparmentDTO> list = new ArrayList<DeparmentDTO>();
+	public List<DepartmentDTO> listDepartment(){
+		List<DepartmentDTO> list = new ArrayList<DepartmentDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
@@ -452,7 +452,7 @@ public class ProfessorDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				DeparmentDTO dto = new DeparmentDTO();
+				DepartmentDTO dto = new DepartmentDTO();
 				
 				dto.setDepartment_id(rs.getString("department_id"));
 				dto.setDepartment_name(rs.getString("department_name"));
