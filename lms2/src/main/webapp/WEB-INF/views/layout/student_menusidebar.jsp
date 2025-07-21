@@ -56,6 +56,7 @@
 
 		<div class="accordion accordion-flush" id="sidebarAccordion">
 			<div class="accordion-item">
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/main/main">메인페이지</a></div>
 				<h2 class="accordion-header">
 					<button class="accordion-button custom-accordion-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
 						강의실 <span class="ms-auto toggle-icon">+</span>
@@ -66,7 +67,6 @@
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/list?lecture_code=${dto.lecture_code}">수강 과목</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/rating">성적 관리</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/attendance?lecture_code=${lecture_code}">출석 관리</a></div>
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/schedule">수업 일정</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/lecture/list">수강신청</a></div>
 				</div>
 			</div>

@@ -6,7 +6,7 @@
 		
 			<img src="${pageContext.request.contextPath}/uploads/member/${dto.avatar}" alt="프로필" class="rounded-circle profile-img">
 			<div class="username" style="font-size: 18px;">${sessionScope.member.name}(${sessionScope.member.member_id})</div>
-			<div class="department" style="font-size: 12px;">>>학과자리</div>
+			<div class="department" style="font-size: 12px;">${sessionScope.member.department}</div>
 		</div>
 
 		<div class="accordion accordion-flush" id="sidebarAccordion">
@@ -21,7 +21,6 @@
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/list?lecture_code=${dto.lecture_code}">수강 과목</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/rating?lecture_code=${dto.lecture_code}">성적 관리</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/attendance?lecture_code=${dto.lecture_code}">출석 관리</a></div>
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/study/schedule">수업 일정</a></div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/student/lecture/list">수강신청</a></div>
 				</div>
 			</div>

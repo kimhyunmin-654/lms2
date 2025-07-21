@@ -28,7 +28,7 @@
 		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
-		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
