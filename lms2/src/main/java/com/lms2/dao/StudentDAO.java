@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jasper.tagplugins.jstl.core.Catch;
+
 import com.lms2.model.Attendance_recordDTO;
 import com.lms2.model.Course_ApplicationDTO;
 import com.lms2.model.DepartmentDTO;
@@ -545,6 +547,34 @@ public class StudentDAO {
 			DBUtil.close(pstmt);
 		}
 
+	}
+	
+	// 수강신청 확인
+	public boolean isAlready(String member_id, String lecture_code) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+	   
+	    try {
+	    	sql = " SELECT COUNT(*) FROM COURSE_APPLICATION WHERE member_id = ? AND lecture_code = ? ";
+	    		
+	    	pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, member_id);
+	        pstmt.setString(2, lecture_code);
+	        
+	        rs = pstmt.executeQuery();
+	    		   
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+	        
+	    } catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(pstmt);
+			DBUtil.close(rs);
+		}
+	    return false;
 	}
 
 	// 수강 신청한 리스트
