@@ -183,7 +183,7 @@ public class AttendanceController {
 			mav.addObject("absent", absent);
 			mav.addObject("late", late);
 			mav.addObject("lecture_code", lecture_code);
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -191,4 +191,48 @@ public class AttendanceController {
 		return mav;
 	}
 
+	@RequestMapping(value = "/student/attendance", method = RequestMethod.GET)
+	public ModelAndView std_list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		AttendanceDAO dao = new AttendanceDAO();
+		LectureDAO lectureDao = new LectureDAO();
+		ModelAndView mav = new ModelAndView("student/attendance");
+		
+		HttpSession session = req.getSession(false);
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		try {
+
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if (page != null) {
+				current_page = Integer.parseInt(page);
+			}
+
+			String lecture_code = req.getParameter("lecture_code");
+			if (info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+			}
+			
+			String weekStr = req.getParameter("week");
+			int selectedWeek = 1;
+			if(weekStr != null) {
+				selectedWeek = Integer.parseInt(weekStr);
+			}
+			mav.addObject("selectedWeek", selectedWeek);
+
+			List<Attendance_recordDTO> list = dao.listAttendanceByWeek(lecture_code, selectedWeek);
+
+			mav.addObject("list", list);
+			mav.addObject("page", current_page);
+			mav.addObject("lecture_code", lecture_code);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mav;
+	}
+	
 }

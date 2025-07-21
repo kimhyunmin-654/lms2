@@ -13,7 +13,7 @@
 <body>
 
 <header>
-    <jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
+    <jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
 </header>
 
 
