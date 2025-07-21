@@ -53,7 +53,7 @@ public class StudentController {
 			mav.addObject("list", list);
 
 			// 공지사항
-			List<NoticeDTO> listNotice = noticeDao.listNotice();
+			List<NoticeDTO> listNotice = noticeDao.listNotice(0,5);
 			mav.addObject("listNotice", listNotice);
 
 		} catch (Exception e) {
@@ -90,7 +90,8 @@ public class StudentController {
 		HttpSession session = req.getSession();
 		String message = "";
 
-		String pathname = session.getServletContext().getRealPath("/") + "dist" + File.separator + "avatar";
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "avatar";
 
 		FileManager fileManager = new FileManager();
 		String avatar = null;
@@ -283,7 +284,8 @@ public class StudentController {
 		StudentDAO dao = new StudentDAO();
 		HttpSession session = req.getSession();
 
-		String pathname = session.getServletContext().getRealPath("/") + "dist" + File.separator + "avatar";
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "avatar";
 
 		FileManager fileManager = new FileManager();
 		String avatar = null;
@@ -431,10 +433,12 @@ public class StudentController {
 			}
 
 			String password = req.getParameter("password");
+			String mode = req.getParameter("mode");
 
 			if (!dto.getPassword().equals(password)) {
 				ModelAndView mav = new ModelAndView("student/student/pwd");
-
+				
+				mav.addObject("mode", mode);
 				mav.addObject("message", "패스워드가 일치하지 않습니다.");
 
 				return mav;
@@ -444,6 +448,7 @@ public class StudentController {
 			ModelAndView mav = new ModelAndView("student/student/update");
 
 			mav.addObject("dto", dto);
+			mav.addObject("mode", "update");
 
 			return mav;
 
