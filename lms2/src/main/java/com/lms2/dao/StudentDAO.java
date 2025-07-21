@@ -373,18 +373,19 @@ public class StudentDAO {
 		String sql;
 
 		try {
-			sql = " UPDATE member SET modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ?, zip = ? "
+			sql = " UPDATE member SET password = ?, modify_date = SYSDATE, avatar = ?, email = ?, phone = ?, birth = TO_DATE(?, 'YYYY-MM-DD'), addr1 = ?, addr2 = ?, zip = ? "
 					+ " WHERE member_id = ? ";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getAvatar());
-			pstmt.setString(2, dto.getEmail());
-			pstmt.setString(3, dto.getPhone());
-			pstmt.setString(4, dto.getBirth());
-			pstmt.setString(5, dto.getAddr1());
-			pstmt.setString(6, dto.getAddr2());
-			pstmt.setString(7, dto.getZip());
-			pstmt.setString(8, dto.getMember_id());
+			pstmt.setString(1, dto.getPassword());
+			pstmt.setString(2, dto.getAvatar());
+			pstmt.setString(3, dto.getEmail());
+			pstmt.setString(4, dto.getPhone());
+			pstmt.setString(5, dto.getBirth());
+			pstmt.setString(6, dto.getAddr1());
+			pstmt.setString(7, dto.getAddr2());
+			pstmt.setString(8, dto.getZip());
+			pstmt.setString(9, dto.getMember_id());
 
 			pstmt.executeUpdate();
 
