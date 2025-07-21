@@ -61,10 +61,10 @@
 							    <input type="hidden" name="course_id" value="${dto.course_id}" />
 							</td>
 					        <td>${dto.name}</td>
-					        <td><input type="number" name="middletest_rating" value="${dto.middletest_rating}" /></td>
-					        <td><input type="number" name="finaltest_rating" value="${dto.finaltest_rating}" /></td>
-					        <td><input type="number" name="attendance_rating" value="${dto.attendance_rating}" /></td>
-					        <td><input type="number" name="homework_rating" value="${dto.homework_rating}" /></td>
+					        <td><input type="number" name="middletest_rating" value="${dto.middletest_rating}" min="0" max="100" required /></td>
+							<td><input type="number" name="finaltest_rating" value="${dto.finaltest_rating}" min="0" max="100" required /></td>
+							<td><input type="number" name="attendance_rating" value="${dto.attendance_rating}" min="0" max="100" required /></td>
+							<td><input type="number" name="homework_rating" value="${dto.homework_rating}" min="0" max="100" required /></td>
 					        <td><input type="number" name="total_rating" readonly /></td>
 					        <td><input type="text" name="rating" readonly /></td>
 					    </tr>
@@ -139,6 +139,34 @@
 
 	// 페이지 로드 시 자동 계산
 	window.addEventListener('load', calculateScores);
+	
+	function okSend() {
+		const f = document.submitForm;
+
+		// 성적 입력값 확인
+		const inputs = f.querySelectorAll('input[name="middletest_rating"], input[name="finaltest_rating"], input[name="attendance_rating"], input[name="homework_rating"]');
+		for (let input of inputs) {
+			const value = input.value.trim();
+
+			if (value === "") {
+				alert("모든 성적 항목을 입력해주세요.");
+				input.focus();
+				return false;
+			}
+			const num = parseFloat(value);
+			if (isNaN(num) || num < 0 || num > 100) {
+				alert("성적은 0부터 100 사이의 숫자여야 합니다.");
+				input.focus();
+				return false;
+			}
+		}
+
+		if (!confirm('성적 처리 하시겠습니까?')) {
+			return false;
+		}
+
+		f.submit();
+	}
 	</script>
 </body>
 </html>

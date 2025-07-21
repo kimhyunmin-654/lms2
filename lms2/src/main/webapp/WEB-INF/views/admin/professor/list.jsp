@@ -90,7 +90,7 @@
 
                 <!-- 페이징 -->
                 <div class="d-flex justify-content-center my-4">
-                    ${dataCount == 0 ? "등록된 관리자가 없습니다." : paging}
+                    ${dataCount == 0 ? "" : paging}
                 </div>
 
                 <!-- 검색 -->
