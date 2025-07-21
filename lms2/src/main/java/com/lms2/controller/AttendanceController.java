@@ -160,36 +160,19 @@ public class AttendanceController {
 		try {
 			HttpSession session = req.getSession(false);
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			if (info != null) {
-				String memberId = String.valueOf(info.getMember_id());
-				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
-				mav.addObject("lectureList", lectures);
-			}
-
-			String page = req.getParameter("page");
-			int current_page = 1;
-			if (page != null) {
-				current_page = Integer.parseInt(page);
-			}
-
-			String lecture_code = req.getParameter("lecture_code");
-			if (lecture_code != null) {
-				mav.addObject("lecture_code", lecture_code);
-			}
 			
-			String weekStr = req.getParameter("week");
-			int selectedWeek = 1;
-			if(weekStr != null) {
-				selectedWeek = Integer.parseInt(weekStr);
-			}
-			mav.addObject("selectedWeek", selectedWeek);
-
-			List<Attendance_recordDTO> list = dao.listAttendanceByWeek(lecture_code, selectedWeek);
-
-			mav.addObject("list", list);
-			mav.addObject("page", current_page);
-			mav.addObject("lecture_code", lecture_code);
-
+			String memberId = String.valueOf(info.getMember_id());
+			
+			List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
+            mav.addObject("lectureList", lectures);
+			
+			String lecture_code = req.getParameter("lecture_code");
+            if (lecture_code != null && !lecture_code.isEmpty()) {
+                List<Attendance_recordDTO> list = dao.listAttendanceByLectureAndStudent(lecture_code, memberId);
+                mav.addObject("lecture_code", lecture_code);
+                mav.addObject("list", list);
+            }
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

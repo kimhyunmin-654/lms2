@@ -60,7 +60,6 @@ public class AttendanceDAO {
 				pstmt.setInt(1, dto.getStatus());
 				pstmt.setInt(2, dto.getCourse_id());
 				pstmt.setInt(3, dto.getWeek());
-				
 			}
 			
 			pstmt.executeUpdate();
@@ -178,7 +177,7 @@ public class AttendanceDAO {
 			sb.append(" SELECT c.member_id, m.name, c.course_id, ");
 			sb.append(" a.attend_date, a.checkin_time, a.checkout_time, a.status, a.week ");
 			sb.append(" FROM COURSE_APPLICATION c ");
-			sb.append(" LEFT JOIN MEMBER m ON c.member_id = m.member_id ");
+			sb.append(" JOIN MEMBER m ON c.member_id = m.member_id ");
 			sb.append(" LEFT JOIN ATTENDANCE_RECORD a ON c.course_id = a.course_id AND a.week = ? ");
 			sb.append(" WHERE c.lecture_code = ? ");
 			sb.append(" ORDER BY c.member_id ");
@@ -252,6 +251,46 @@ public class AttendanceDAO {
 		}
 		return result;
 
+	}
+	
+	public List<Attendance_recordDTO> listAttendanceByLectureAndStudent(String lecture_code, String member_id) throws SQLException {
+	    List<Attendance_recordDTO> list = new ArrayList<>();
+	    
+	    PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+	  
+
+	    try {
+	    	
+	   		sql = "SELECT a.* FROM ATTENDANCE_RECORD a "
+	               + "JOIN COURSE_APPLICATION c ON a.course_id = c.course_id "
+	               + "WHERE c.lecture_code = ? AND c.member_id = ? "
+	               + "ORDER BY a.week ASC";
+	   		
+	   		pstmt = conn.prepareStatement(sql);
+	    
+	        pstmt.setString(1, lecture_code);
+	        pstmt.setString(2, member_id);
+	        rs = pstmt.executeQuery();
+	        
+	            while (rs.next()) {
+	                Attendance_recordDTO dto = new Attendance_recordDTO();
+
+	                dto.setWeek(rs.getInt("week"));
+	                Integer status = rs.getObject("status", Integer.class);
+					dto.setStatus(status != null ? status : -1);
+	                
+	                list.add(dto);
+	            }
+	        } catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
+			}
+	    
+	    return list;
 	}
 
 }
