@@ -48,12 +48,12 @@
 									<div class="border rounded p-2 bg-white">&nbsp;</div>
 								</c:forEach>
 							</div>
-							<div class="text-end pt-2 pe-2">
+						</div>
+						<div class="text-end pt-2 pe-2">
 								<a
 									href="${pageContext.request.contextPath}/student/lecture/compList"
 									class="text-decoration-none"> 더보기 </a>
 							</div>
-						</div>
 					</div>
 				</div>
 
@@ -68,7 +68,7 @@
 								<c:forEach var="dto" items="${listNotice}">
 									<div class="border rounded p-2 bg-white">
 										<a
-											href="${pageContext.request.contextPath}/admin/notice/article?notice_id=${dto.notice_id}"
+											href="${pageContext.request.contextPath}/student/notice/article?notice_id=${dto.notice_id}"
 											class="text-decoration-none text-dark text-truncate d-block">
 											<i class="bi bi-pin-angle-fill me-2 text-secondary"></i>
 											${dto.subject}
@@ -81,7 +81,7 @@
 							</div>
 						</div>
 						<div class="text-end pt-2">
-							<a href="${pageContext.request.contextPath}/admin/notice/list"
+							<a href="${pageContext.request.contextPath}/student/notice/list"
 								class="text-decoration-none">더보기</a>
 						</div>
 					</div>
