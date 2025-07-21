@@ -203,10 +203,8 @@ public class AttendanceController {
 
 			List<Attendance_recordDTO> list;
 			if (lecture_code != null && !lecture_code.isEmpty()) {
-				// 특정 강의 출석 목록만 조회
 				list = aDao.listAttendanceByLectureAndStudent(lecture_code, member_id);
 			} else {
-				// 전체 강의 출석 목록 조회
 				list = dao.listAttendance(member_id);
 			}
 
