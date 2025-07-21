@@ -35,6 +35,8 @@
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">강의코드</div>
 				        <div class="col-sm-10 bg-white py-3">
 				            <input type="text" class="form-control" name="lecture_code" value="${dto.lecture_code}" placeholder="예: CS24101 → 컴공과(24년도 1학기 01번 강의)"  required>
+				            <p class="form-text text-muted small">영어영문학과: ELL, 컴퓨터공학과: CS, 영어교육과: ENGED, 국어국문학과: KLL, 역사학과: HIS, 철학과: PHIL, 심리학과: PSY, 사회학과: SOC, 경영학과:	BA, 경제학과: ECON, 행정학과: PAD, 정치외교학과: POL, 소프트웨어학과: SW, 전자공학과: EE, 
+								기계공학과: ME, 화학공학과: CHE, 산업공학과: IE, 수학과: MA, 생명과학과: BIO, 물리학과: PH</p>
 				        </div>
 				    </div>
 				
