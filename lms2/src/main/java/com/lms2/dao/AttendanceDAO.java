@@ -218,7 +218,7 @@ public class AttendanceDAO {
 	
 	
 	// 전체 주차 (학생용)
-	public int dataCountAll(String member_id, int status) {
+	public int dataCountAll(String member_id, int status, String lecture_code) {
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -231,11 +231,12 @@ public class AttendanceDAO {
 					+ " FROM attendance_record r "
 					+ " JOIN COURSE_APPLICATION m ON r.course_id = m.course_id "
 					+ " JOIN STUDENT s ON m.member_id = s.member_id "
-					+ " WHERE s.member_id=? AND status=?";
+					+ " WHERE s.member_id=? AND status=? AND lecture_code = ? ";
 		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member_id);
 			pstmt.setInt(2, status);
+			pstmt.setString(3, lecture_code);
 			
 			rs = pstmt.executeQuery();
 				

@@ -210,9 +210,9 @@ public class AttendanceController {
 
 			mav.addObject("list", list);
 
-			int present = aDao.dataCountAll(member_id, 1); // 출석
-			int absent = aDao.dataCountAll(member_id, 0); // 결석
-			int late = aDao.dataCountAll(member_id, 2); // 지각
+			int present = aDao.dataCountAll(member_id, 1, lecture_code); // 출석
+			int absent = aDao.dataCountAll(member_id, 0, lecture_code); // 결석
+			int late = aDao.dataCountAll(member_id, 2, lecture_code); // 지각
 			
 			mav.addObject("present", present);
 			mav.addObject("absent", absent);
