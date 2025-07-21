@@ -100,11 +100,7 @@
 							<option value="4" ${dto.grade == 4 ? "selected" : ""}>4학년</option>
 						</select>
 					</div>
-					
-					<div class="col-md-6">
-					    <label class="form-label">졸업일자</label>
-					    <input type="date" name="graduate_date" class="form-control" value="${dto.graduate_date}">
-					</div>
+
 
 					<div class="row mt-3">
 						<label class="col-md-2 form-label fw-medium">이메일</label>
@@ -165,14 +161,21 @@
 					<div class="row mt-3">
 						<div class="col-md-6">
 							<label class="form-label">학과코드</label> 
-							<input type="text" name="department_id" class="form-control" value="${dto.department_id}">
+							<select name="department_id" class="form-control">
+							    <c:forEach var="department" items="${departmentList}">
+							        <option value="${department.department_id}"
+							            <c:if test="${dto.department_id == department.department_id}">selected</c:if>>
+							            ${department.department_name}
+							        </option>
+							    </c:forEach>
+							</select>
 						</div>
 					</div>
 					<c:if test="${mode == 'update'}">
 						<div class="row mt-3">
 							<div class="col-md-6">
-								<label class="form-label">학적 상태</label> <select name="status_id"
-									class="form-select">
+								<label class="form-label">학적 상태</label> 
+								<select name="status_id" class="form-select">
 									<c:forEach var="status" items="${statusList}">
 										<option value="${status.status_id}"
 											${status.status_id == dto.status_id ? "selected" : ""}>

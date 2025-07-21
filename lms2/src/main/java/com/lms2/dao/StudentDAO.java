@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.lms2.model.Attendance_recordDTO;
 import com.lms2.model.Course_ApplicationDTO;
+import com.lms2.model.DepartmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.StudentDTO;
 import com.lms2.util.DBConn;
@@ -562,5 +563,32 @@ public class StudentDAO {
 		}
 
 		return list;
+	}
+	
+	// 학과 선택(조회)
+	public List<DepartmentDTO> listDepartment() throws SQLException {
+	    List<DepartmentDTO> list = new ArrayList<>();
+
+	    String sql = "SELECT department_id, department_name FROM department ORDER BY department_id";
+
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            DepartmentDTO dto = new DepartmentDTO();
+	            dto.setDepartment_id(rs.getString("department_id"));
+	            dto.setDepartment_name(rs.getString("department_name"));
+	            list.add(dto);
+	        }
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
+
+	    return list;
 	}
 }

@@ -34,7 +34,7 @@
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">강의코드</div>
 				        <div class="col-sm-10 bg-white py-3">
-				            <input type="text" class="form-control" name="lecture_code" value="${dto.lecture_code}" required>
+				            <input type="text" class="form-control" name="lecture_code" value="${dto.lecture_code}" placeholder="예: CS24101 → 컴공과(24년도 1학기 01번 강의)"  required>
 				        </div>
 				    </div>
 				
@@ -81,7 +81,7 @@
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">개설 년도</div>
 				        <div class="col-sm-10 bg-white py-3">
-				            <input type="number" class="form-control" name="lecture_year" value="${dto.lecture_year}" required>
+				            <input type="number" class="form-control" name="lecture_year" value="${dto.lecture_year}" placeholder="개설연도는 2000~2099 사이의 4자리 숫자" required>
 				        </div>
 				    </div>
 				    
@@ -99,14 +99,14 @@
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">수강인원</div>
 				        <div class="col-sm-10 bg-white py-3">
-				            <input type="number" class="form-control" name="capacity" value="${dto.capacity}" required>
+				            <input type="number" class="form-control" name="capacity" value="${dto.capacity}" placeholder="수강인원은 1~999 사이여야 합니다." required>
 				        </div>
 				    </div>				    				    				    
 				    
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">학점</div>
 				        <div class="col-sm-10 bg-white py-3">
-				            <input type="number" class="form-control" name="credit" value="${dto.credit}" required>
+				            <input type="number" class="form-control" name="credit" value="${dto.credit}" placeholder="학점은 0.5 단위로 1 ~ 6 사이여야 합니다. (예: 2, 3.5, 4)" required>
 				        </div>
 				    </div>					    
 				    
@@ -114,8 +114,25 @@
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">학과코드</div>
 				        <div class="col-sm-10 bg-white py-3">
 							<select name="department_id">
-								<option value="CS01">영어영문학과</option>
-								<option value="EN01">컴퓨터공학과</option>
+								<option value="ELL">영어영문학과(ELL)</option>
+								<option value="CS">컴퓨터공학과(CS)</option>
+								<option value="KLL">국어국문학과(KLL)</option>
+								<option value="HIS">역사학과(HIS)</option>
+								<option value="PHIL">철학과(PHIL)</option>
+								<option value="PSY">심리학과(PSY)</option>
+								<option value="SOC">사회학과(SOC)</option>
+								<option value="BA">경영학과(BA)</option>
+								<option value="ECON">경제학과(ECON)</option>
+								<option value="PAD">행정학과(PAD)</option>
+								<option value="POL">정치외교학과(POL)</option>
+								<option value="SW">소프트웨어학과(SW)</option>
+								<option value="EE">전자공학과(EE)</option>
+								<option value="ME">기계공학과(ME)</option>
+								<option value="CHE">화학공학과(CHE)</option>
+								<option value="IE">산업공학과(IE)</option>
+								<option value="MA">수학과(MA)</option>
+								<option value="BIO">생명과학과(BIO)</option>
+								<option value="PH">물리학과(PH)</option>
 							</select>
 				        </div>
 				    </div>				    
@@ -189,23 +206,96 @@
 <script type="text/javascript">
 function lectureSubmit(form) {
 	const f = document.postForm;
-	let str;
+	let str, p;
+	
+	p = /^[A-Z]{2,4}[0-9]{2}[1-3][0-9]{2}$/;
+	str = f.lecture_code.value.trim();
+	if( ! p.test(str) ) {
+		alert('강의코드를 입력하세요. ');
+		f.lecture_code.focus();
+		return false;
+	}
 	
 	str = f.subject.value.trim();
 	if( ! str ) {
-		alert('제목을 입력하세요. ');
+		alert('강의 명을 입력하세요. ');
 		f.subject.focus();
 		return false;
 	}
-
-
+	
+	str = f.grade.value.trim();
+	if( ! str ) {
+		alert('학년을 등록하세요. ');
+		f.grade.focus();
+		return false;
+	}	
+	
+	str = f.classroom.value.trim();
+	if( ! str ) {
+		alert('강의실을 입력하세요. ');
+		f.classroom.focus();
+		return false;
+	}	
+	
+	str = f.division.value.trim();
+	if( ! str ) {
+		alert('분류(전공,교양)을 등록하세요. ');
+		f.division.focus();
+		return false;
+	}	
+	
+	
+	p = /^(20)[0-9]{2}$/;
+	str = f.lecture_year.value.trim();
+	if( ! p.test(str) ) {
+		alert('개설연도는 2000~2099 사이의 4자리 숫자여야 합니다. ');
+		f.lecture_year.focus();
+		return false;
+	}
+	
+	str = f.semester.value.trim();
+	if( ! str ) {
+		alert('학기 등록하세요. ');
+		f.semester.focus();
+		return false;
+	}		
+		
+	
+	p = /^[1-9][0-9]{0,2}$/;
+	str = f.capacity.value.trim();
+	if( ! p.test(str) ) {
+		alert('수강인원은 1~999 사이여야 합니다. ');
+		f.capacity.focus();
+		return false;
+	}
+	
+	p = /^(?:[1-5](?:\.5)?|6(?:\.0)?)$/;
+	str = f.credit.value.trim();
+	if( ! p.test(str) ) {
+		alert('학점은 0.5 단위로 1 ~ 6 사이여야 합니다. (예: 2, 3.5, 4) ');
+		f.credit.focus();
+		return false;
+	}
+	
+	str = f.department_id.value.trim();
+	if( ! str ) {
+		alert('학과코드를 입력하세요. ');
+		f.department_id.focus();
+		return false;
+	}	
+	
+	str = f.member_id.value.trim();
+	if( ! str ) {
+		alert('담당교수를 입력하세요. ');
+		f.member_id.focus();
+		return false;
+	}		
 	
 	f.action = '${pageContext.request.contextPath}/admin/lecture/${mode}';
-	form.submit();
+	f.submit();
 	
 	return true;
-	
-	
+		
 }
 
 <c:if test="${mode=='update'}">
