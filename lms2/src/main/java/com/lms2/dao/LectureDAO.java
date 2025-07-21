@@ -94,8 +94,8 @@ public class LectureDAO {
 		try {
 			sb.append(" SELECT l.member_id, m.name, lecture_code, subject, grade, classroom, division, lecture_year, semester, capacity, credit, l.department_id, d.department_name ");	
 			sb.append(" FROM lecture l ");
-			sb.append(" JOIN member m ON l.member_id = m.member_id ");
-			sb.append(" JOIN department d ON l.department_id = d.department_id ");
+			sb.append(" LEFT JOIN member m ON l.member_id = m.member_id ");
+			sb.append(" LEFT JOIN department d ON l.department_id = d.department_id ");
 			sb.append(" ORDER BY lecture_code DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
