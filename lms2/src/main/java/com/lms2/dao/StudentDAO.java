@@ -119,6 +119,52 @@ public class StudentDAO {
 		return result;
 
 	}
+	
+	// 검색 조건이 있는 학생 수 조회
+	public int dataCount(String schType, String kwd) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			sb.append("SELECT COUNT(*) ");
+			sb.append("FROM member m ");
+			sb.append("JOIN student s ON m.member_id = s.member_id ");
+			sb.append("LEFT JOIN department d ON s.department_id = d.department_id ");
+			sb.append("WHERE 1=1 ");
+
+			if (schType.equals("all")) {
+	            sb.append("AND (INSTR(m.member_id, ?) >= 1 OR INSTR(m.name, ?) >= 1) ");
+	        } else if (schType.equals("name")) {
+	            sb.append("AND INSTR(m.name, ?) >= 1 ");
+	        } else if (schType.equals("department_name")) {
+	            sb.append("AND INSTR(d.department_name, ?) >= 1 ");
+	        } else {
+	            sb.append("AND INSTR(" + schType + ", ?) >= 1 ");
+	        }
+			
+			pstmt = conn.prepareStatement(sb.toString());
+
+			pstmt.setString(1, kwd);
+			if (schType.equals("all")) {
+				pstmt.setString(2, kwd);
+			}
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+
+		return result;
+	}
 
 	// 학생 리스트
 	public List<StudentDTO> listStudent(int offset, int size) {
@@ -350,6 +396,7 @@ public class StudentDAO {
 
 	}
 
+	// 관리자 학생 수정
 	public void updateStudentByAdmin(StudentDTO dto) throws SQLException {
 	    PreparedStatement pstmt = null;
 	    String sql;
