@@ -29,14 +29,72 @@
 
 				<div class="container text-center">
 
-					<div class="row">
-						<div class="col-md-8 border border">강의자료</div>
+					<!-- 강의자료 -->
+					<div class="row my-3">
+						<div class="col-md-12">
+							<div class="card shadow-sm">
+								<div class="card-header fw-bold bg-light">
+									<i class="bi bi-folder2-open me-2 text-primary"></i> 강의자료
+								</div>
+								<div class="card-body d-flex flex-column gap-3 px-2">
+									<c:forEach var="dto" items="${lectureFileList}">
+										<div class="border rounded p-2 bg-white text-truncate">
+											<a
+												href="${pageContext.request.contextPath}/student/lecture/fileDownload?file_id=${dto.file_id}"
+												class="text-decoration-none text-dark d-block"> <i
+												class="bi bi-file-earmark-text me-2 text-secondary"></i>
+												${dto.original_filename}
+											</a>
+										</div>
+									</c:forEach>
+									<c:forEach var="n" begin="${lectureFileList.size() + 1}"
+										end="5">
+										<div class="border rounded p-2 bg-white">&nbsp;</div>
+									</c:forEach>
+								</div>
+							</div>
+							<div class="text-end pt-2 pe-2">
+								<a
+									href="${pageContext.request.contextPath}/student/lecture/fileList"
+									class="text-decoration-none">더보기</a>
+							</div>
+						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-8 border border">과제</div>
+
+					<!-- 과제 -->
+					<div class="row my-3">
+						<div class="col-md-12">
+							<div class="card shadow-sm">
+								<div class="card-header fw-bold bg-light">
+									<i class="bi bi-pencil-square me-2 text-success"></i> 과제 목록
+								</div>
+								<div class="card-body d-flex flex-column gap-3 px-2">
+									<c:forEach var="dto" items="${assignmentList}">
+										<div class="border rounded p-2 bg-white text-truncate">
+											<a
+												href="${pageContext.request.contextPath}/student/assignment/article?assignment_id=${dto.assignment_id}"
+												class="text-decoration-none text-dark d-block"> <i
+												class="bi bi-journal-text me-2 text-secondary"></i>
+												${dto.subject}
+											</a>
+										</div>
+									</c:forEach>
+									<c:forEach var="n" begin="${assignmentList.size() + 1}" end="5">
+										<div class="border rounded p-2 bg-white">&nbsp;</div>
+									</c:forEach>
+								</div>
+							</div>
+							<div class="text-end pt-2 pe-2">
+								<a
+									href="${pageContext.request.contextPath}/student/assignment/list"
+									class="text-decoration-none">더보기</a>
+							</div>
+						</div>
 					</div>
-					
-					
+
+
+
+
 				</div>
 
 

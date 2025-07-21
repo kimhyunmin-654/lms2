@@ -38,8 +38,7 @@
 								<c:forEach var="dto" items="${list}">
 									<div
 										class="border rounded p-2 bg-white text-truncate subject-list">
-										<a
-											href="${pageContext.request.contextPath}/student/lecture/compList?lecture_code=${dto.lecture.lecture_code}"
+										<a href="${pageContext.request.contextPath}/student/study/list?lecture_code=${dto.lecture.lecture_code}"
 											class="text-decoration-none text-dark d-block">
 											${dto.lecture.subject} (${dto.lecture.name}) </a>
 									</div>
@@ -67,8 +66,7 @@
 							<div class="card-body d-flex flex-column gap-3">
 								<c:forEach var="dto" items="${listNotice}">
 									<div class="border rounded p-2 bg-white">
-										<a
-											href="${pageContext.request.contextPath}/student/notice/article?notice_id=${dto.notice_id}"
+										<a href="${pageContext.request.contextPath}/student/notice/article?notice_id=${dto.notice_id}"
 											class="text-decoration-none text-dark text-truncate d-block">
 											<i class="bi bi-pin-angle-fill me-2 text-secondary"></i>
 											${dto.subject}
