@@ -115,7 +115,8 @@
 				    <div class="row border-bottom">
 				        <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">학과코드</div>
 				        <div class="col-sm-10 bg-white py-3">
-							<select name="department_id">
+							<select name="department_id" class="form-select">
+								<option value="">학과 코드를 선택하세요</option>
 								<option value="ELL">영어영문학과(ELL)</option>
 								<option value="CS">컴퓨터공학과(CS)</option>
 								<option value="KLL">국어국문학과(KLL)</option>
