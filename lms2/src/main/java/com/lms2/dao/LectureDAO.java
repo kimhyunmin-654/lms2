@@ -48,7 +48,7 @@ public class LectureDAO {
 			pstmt = null;
 			
 			if(dto.getListFile() != null && !dto.getListFile().isEmpty()) {
-				sql = "INSERT INTO LECTURE_FILE(file_id, save_filename, original_filename, file_size, lecture_code, reg_date) "
+				sql = "INSERT INTO LECTURE_FILE(file_num, save_filename, original_filename, file_size, lecture_code, reg_date) "
 						+ "VALUES(LECTURE_FILE_SEQ.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
 				
 				pstmt = conn.prepareStatement(sql);
