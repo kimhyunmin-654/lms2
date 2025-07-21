@@ -181,12 +181,13 @@
 						<div class="row mt-3">
 							<div class="col-md-6">
 								<label class="form-label">학적 상태</label> 
-								<select name="status_id" class="form-select">
-									<c:forEach var="status" items="${statusList}">
-										<option value="${status.status_id}"
-											${status.status_id == dto.status_id ? "selected" : ""}>
-											${status.status_name}</option>
-									</c:forEach>
+								<select name="academic_status" class="form-control">
+									<option value="">학적 상태 선택</option>
+									<option value="입학" ${dto.academic_status == '입학' ? 'selected' : ''}>입학</option>
+									<option value="휴학" ${dto.academic_status == '휴학' ? 'selected' : ''}>휴학</option>
+									<option value="재학" ${dto.academic_status == '재학' ? 'selected' : ''}>재학</option>
+									<option value="자퇴" ${dto.academic_status == '자퇴' ? 'selected' : ''}>자퇴</option>
+									<option value="졸업" ${dto.academic_status == '졸업' ? 'selected' : ''}>졸업</option>
 								</select>
 							</div>
 						</div>

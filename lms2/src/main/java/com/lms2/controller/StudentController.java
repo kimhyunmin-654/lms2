@@ -111,23 +111,6 @@ public class StudentController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/admin/student/account", method = RequestMethod.GET)
-	public ModelAndView accountStudentForm(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// 학생 등록 폼
-		ModelAndView mav = new ModelAndView("admin/student/account");
-		mav.addObject("mode", "account");
-		
-		try {
-			StudentDAO dao = new StudentDAO();
-			List<DepartmentDTO> departmentList = dao.listDepartment();
-			mav.addObject("departmentList", departmentList);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mav;
-	}
-
 	// 학생 등록
 	@RequestMapping(value = "/admin/student/account", method = RequestMethod.POST)
 	public ModelAndView accountStudentSubmit(HttpServletRequest req, HttpServletResponse resp)
@@ -163,9 +146,9 @@ public class StudentController {
 	        dto.setGrade(Integer.parseInt(req.getParameter("grade")));
 	        dto.setAdmission_date(req.getParameter("admission_date"));
 	        dto.setDepartment_id(req.getParameter("department_id"));
-	        dto.setStatus_id(1);
 	        dto.setAvatar(avatar);
 
+	        // 학적 상태는 DAO 내부에서 '입학'으로 처리
 	        dao.insertStudent(dto);
 
 	        session.setAttribute("mode", "account");
@@ -427,10 +410,6 @@ public class StudentController {
 		    String root = session.getServletContext().getRealPath("/");
 		    String pathname = root + "uploads" + File.separator + "avatar";
 	
-		    // *****
-		    System.out.println("RealPath = " + root);
-		    System.out.println("Upload Path = " + pathname);
-	
 		    FileManager fileManager = new FileManager();
 		    String avatar = null;
 	
@@ -466,12 +445,8 @@ public class StudentController {
 		        dto.setGrade(Integer.parseInt(req.getParameter("grade")));
 		        dto.setAdmission_date(req.getParameter("admission_date"));
 		        dto.setDepartment_id(req.getParameter("department_id"));
-	
-		        String statusIdStr = req.getParameter("status_id");
-		        if (statusIdStr != null && !statusIdStr.isEmpty()) {
-		            dto.setStatus_id(Integer.parseInt(statusIdStr));
-		        }
-	
+		        dto.setAcademic_status(req.getParameter("academic_status"));
+		        
 		        dto.setAvatar(avatar);
 	
 		        dao.updateStudentByAdmin(dto);

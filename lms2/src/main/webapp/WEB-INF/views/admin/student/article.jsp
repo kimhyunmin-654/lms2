@@ -72,7 +72,11 @@
                         </div>
                         <div class="row border-bottom py-2">
                             <div class="col-sm-3 fw-bold">학과 코드</div>
-                            <div class="col-sm-9">${dto.department_id}</div>
+                            <div class="col-sm-9">${dto.department_name}</div>
+                        </div>
+                        <div class="row border-bottom py-2">
+                            <div class="col-sm-3 fw-bold">학적 상태</div>
+                            <div class="col-sm-9">${dto.academic_status}</div>
                         </div>
                         <div class="row border-bottom py-2">
                             <div class="col-sm-3 fw-bold">주소</div>

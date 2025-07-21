@@ -176,96 +176,73 @@ public class StudentDAO {
 
 	// 학번으로 학생 찾기
 	public StudentDTO findById(String member_id) {
-		StudentDTO dto = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder();
+	    StudentDTO dto = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    StringBuilder sb = new StringBuilder();
 
-		try {
-			sb.append("SELECT m.member_id, m.name, m.password, m.role, ");
-			sb.append("TO_CHAR(m.create_date, 'YYYY-MM-DD') AS create_date, ");
-			sb.append("TO_CHAR(m.modify_date, 'YYYY-MM-DD') AS modify_date, ");
-			sb.append("m.avatar, m.email, m.phone, TO_CHAR(m.birth, 'YYYY-MM-DD') AS birth, ");
-			sb.append("m.addr1, m.addr2, m.zip, ");
-			sb.append("s.grade, TO_CHAR(s.admission_date, 'YYYY-MM-DD') AS admission_date, ");
-			sb.append("TO_CHAR(s.graduate_date, 'YYYY-MM-DD') AS graduate_date, ");
-			sb.append("s.department_id, d.department_name, ");
-			sb.append("(SELECT academic_status FROM student_status ss ");
-			sb.append(" WHERE ss.member_id = m.member_id ");
-			sb.append(" ORDER BY ss.reg_date DESC FETCH FIRST 1 ROWS ONLY) AS academic_status ");
-			sb.append("FROM member m ");
-			sb.append("JOIN student s ON m.member_id = s.member_id ");
-			sb.append("JOIN department d ON s.department_id = d.department_id ");
-			sb.append("WHERE m.member_id = ?");
+	    try {
+	        sb.append("SELECT m.member_id, m.name, m.password, m.role, ");
+	        sb.append("TO_CHAR(m.create_date, 'YYYY-MM-DD') AS create_date, ");
+	        sb.append("TO_CHAR(m.modify_date, 'YYYY-MM-DD') AS modify_date, ");
+	        sb.append("m.avatar, m.email, m.phone, TO_CHAR(m.birth, 'YYYY-MM-DD') AS birth, ");
+	        sb.append("m.addr1, m.addr2, m.zip, ");
+	        sb.append("s.grade, TO_CHAR(s.admission_date, 'YYYY-MM-DD') AS admission_date, ");
+	        sb.append("TO_CHAR(s.graduate_date, 'YYYY-MM-DD') AS graduate_date, ");
+	        sb.append("s.department_id, d.department_name, ");
+	        sb.append("(SELECT academic_status FROM student_status ss ");
+	        sb.append(" WHERE ss.member_id = m.member_id ");
+	        sb.append(" ORDER BY ss.reg_date DESC FETCH FIRST 1 ROWS ONLY) AS academic_status ");
+	        sb.append("FROM member m ");
+	        sb.append("JOIN student s ON m.member_id = s.member_id ");
+	        sb.append("JOIN department d ON s.department_id = d.department_id ");
+	        sb.append("WHERE m.member_id = ?");
 
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setString(1, member_id);
-			rs = pstmt.executeQuery();
+	        pstmt = conn.prepareStatement(sb.toString());
+	        pstmt.setString(1, member_id);
+	        rs = pstmt.executeQuery();
 
-			if (rs.next()) {
-				dto = new StudentDTO();
-				dto.setMember_id(rs.getString("member_id"));
-				dto.setName(rs.getString("name"));
-				dto.setPassword(rs.getString("password"));
-				dto.setRole(rs.getInt("role"));
-				dto.setCreate_date(rs.getString("create_date"));
-				dto.setModify_date(rs.getString("modify_date"));
-				dto.setAvatar(rs.getString("avatar"));
+	        if (rs.next()) {
+	            dto = new StudentDTO();
+	            dto.setMember_id(rs.getString("member_id"));
+	            dto.setName(rs.getString("name"));
+	            dto.setPassword(rs.getString("password"));
+	            dto.setRole(rs.getInt("role"));
+	            dto.setCreate_date(rs.getString("create_date"));
+	            dto.setModify_date(rs.getString("modify_date"));
+	            dto.setAvatar(rs.getString("avatar"));
 
-				String email = rs.getString("email");
-				dto.setEmail(email);
-				if (email != null) {
-					String[] ss = email.split("@");
-					if (ss.length == 2) {
-						dto.setEmail1(ss[0]);
-						dto.setEmail2(ss[1]);
-					}
-				}
+	            String email = rs.getString("email");
+	            dto.setEmail(email);
+	            if (email != null) {
+	                String[] ss = email.split("@");
+	                if (ss.length == 2) {
+	                    dto.setEmail1(ss[0]);
+	                    dto.setEmail2(ss[1]);
+	                }
+	            }
 
-				dto.setPhone(rs.getString("phone"));
-				dto.setBirth(rs.getString("birth"));
-				dto.setAddr1(rs.getString("addr1"));
-				dto.setAddr2(rs.getString("addr2"));
-				dto.setZip(rs.getString("zip"));
-				dto.setGrade(rs.getInt("grade"));
-				dto.setAdmission_date(rs.getString("admission_date"));
-				dto.setGraduate_date(rs.getString("graduate_date"));
-				dto.setDepartment_id(rs.getString("department_id"));
-				dto.setDepartment_name(rs.getString("department_name"));
+	            dto.setPhone(rs.getString("phone"));
+	            dto.setBirth(rs.getString("birth"));
+	            dto.setAddr1(rs.getString("addr1"));
+	            dto.setAddr2(rs.getString("addr2"));
+	            dto.setZip(rs.getString("zip"));
+	            dto.setGrade(rs.getInt("grade"));
+	            dto.setAdmission_date(rs.getString("admission_date"));
+	            dto.setGraduate_date(rs.getString("graduate_date"));
+	            dto.setDepartment_id(rs.getString("department_id"));
+	            dto.setDepartment_name(rs.getString("department_name"));
 
-				String status = rs.getString("academic_status");
-				dto.setAcademic_status(status);
+	            dto.setAcademic_status(rs.getString("academic_status"));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
 
-				int statusId = 0;
-				if (status != null) {
-				    switch (status) {
-				        case "입학":
-				            statusId = 1;
-				            break;
-				        case "휴학":
-				            statusId = 2;
-				            break;
-				        case "재학":
-				            statusId = 3;
-				            break;
-				        case "자퇴":
-				            statusId = 4;
-				            break;
-				        case "졸업":
-				            statusId = 5;
-				            break;
-				    }
-				}
-				dto.setStatus_id(statusId);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(pstmt);
-		}
-
-		return dto;
+	    return dto;
 	}
 
 	// 학생 수정(학생이 직접 수정)
@@ -328,12 +305,15 @@ public class StudentDAO {
 	        pstmt.executeUpdate();
 	        pstmt.close();
 
-	        // student_status 테이블에 변경사항 INSERT
-	        sql = "INSERT INTO STUDENT_STATUS(history_id, year, semester, grade, academic_status, reg_date, member_id) VALUES(STUDENT_STATUS_SEQ.NEXTVAL, SYSDATE, 1, ?, ?, SYSDATE, ?)";
+	        // 가장 최신 상태 UPDATE
+	        sql = "UPDATE student_status SET academic_status = ?, grade = ?, reg_date = SYSDATE "
+	            + "WHERE member_id = ? AND reg_date = ("
+	            + "SELECT MAX(reg_date) FROM student_status WHERE member_id = ?)";
 	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setInt(1, dto.getGrade());
-	        pstmt.setString(2, dto.getAcademic_status());
+	        pstmt.setString(1, dto.getAcademic_status());
+	        pstmt.setInt(2, dto.getGrade());
 	        pstmt.setString(3, dto.getMember_id());
+	        pstmt.setString(4, dto.getMember_id());
 	        pstmt.executeUpdate();
 
 	    } catch (Exception e) {

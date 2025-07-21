@@ -23,11 +23,10 @@
 
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 
-			<div class="body-container row justify-content-center"
-				style="margin: 100px;">
+			<div class="body-container row justify-content-center mt-4">
 				<h3 style="font-size: 29px;">관리자 메인페이지</h3>
 				
-				<div class="row my-4">
+				<div class="row my-4 gx-3">
 				<!-- 전체 구성원 -->
 				<div class="col-md-6">
 				    <div class="card shadow-sm">
@@ -55,7 +54,7 @@
 				</div>
 				<!-- 강의 목록 -->
 				<div class="col-md-6">
-				    <div class="card shadow-sm">
+				    <div class="card shadow-sm h-100">
 				        <div class="card-header fw-bold bg-light">
 				            <i class="bi bi-megaphone text-danger me-2"></i> 최근 강의 목록
 				        </div>
@@ -78,16 +77,17 @@
 				            <c:forEach var="n" begin="${listLecture.size() + 1}" end="5">
 				                <div class="border rounded p-2 bg-white">&nbsp;</div>
 				            </c:forEach>
+				            
+						    <div class="text-end pt-2 px-3">
+						        <a href="${pageContext.request.contextPath}/admin/lecture/list" class="text-decoration-none">더보기</a>
+						    </div>
 				        </div> 
 				    </div> 
 				    
-				    <div class="text-end pt-2 px-3">
-				        <a href="${pageContext.request.contextPath}/admin/lecture/list" class="text-decoration-none">더보기</a>
-				    </div>
 				</div>
 				
 				<!-- 최근 공지사항 -->
-				<div class="row my-3">
+				<div class="row mt-4">
 				    <div class="col-md-12">
 				        <div class="card shadow-sm">
 				            <div class="card-header fw-bold bg-light">
@@ -104,12 +104,13 @@
 				                 </c:forEach>
 				                 <c:forEach var="n" begin="${listNotice.size() + 1}" end="5">
 				                    <div class="border rounded p-2 bg-white">&nbsp;</div>
-				                 </c:forEach>				             
+				                 </c:forEach>
+				                 				             
+		        				<div class="text-end pt-2">
+		            				<a href="${pageContext.request.contextPath}/admin/notice/list" class="text-decoration-none">더보기</a>
+		        				</div>
 				            </div>
 				        </div>
-        				<div class="text-end pt-2">
-            				<a href="${pageContext.request.contextPath}/admin/notice/list" class="text-decoration-none">더보기</a>
-        				</div>
     				</div>
 				</div>
 			</div>
