@@ -10,7 +10,7 @@ public class Std_hwDTO {
 	private int file_id;
 	private String save_filename;
 	private String original_filename;
-	private int file_size;
+	private long file_size;
 	public int getAssign_id() {
 		return assign_id;
 	}
@@ -65,10 +65,10 @@ public class Std_hwDTO {
 	public void setOriginal_filename(String original_filename) {
 		this.original_filename = original_filename;
 	}
-	public int getFile_size() {
+	public long getFile_size() {
 		return file_size;
 	}
-	public void setFile_size(int file_size) {
+	public void setFile_size(long file_size) {
 		this.file_size = file_size;
 	}
 
