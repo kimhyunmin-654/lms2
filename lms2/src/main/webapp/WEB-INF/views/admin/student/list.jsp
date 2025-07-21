@@ -24,7 +24,6 @@
             <div class="col">
                 <h3 class="mb-4" style="margin-top: 50px;">학생관리</h3>
 
-                <!-- 상단: 삭제/페이지 선택/글쓰기 -->
                 <div class="d-flex justify-content-between mb-2 align-items-center">
 					${dataCount} 명( ${page} / ${total_page} 페이지)
                     <div class="d-flex align-items-center">
@@ -103,8 +102,7 @@
 					            <select name="schType" class="form-select" style="width: 140px;">
 					                <option value="all" ${schType=="all"?"selected":""}>학번+이름</option>
 					                <option value="name" ${schType=="name"?"selected":""}>이름</option>
-					                <option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
-					                <option value="division" ${schType=="division"?"selected":""}>부서</option>
+					                <option value="department_name" ${schType=="department_name"?"selected":""}>학과</option>
 					            </select>
 					
 					            <input type="text" name="kwd" value="${kwd}" class="form-control" placeholder="검색어 입력" style="width: 250px;">

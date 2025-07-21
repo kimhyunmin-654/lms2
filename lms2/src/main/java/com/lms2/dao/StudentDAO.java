@@ -173,6 +173,82 @@ public class StudentDAO {
 
 		return list;
 	}
+	
+	// 검색에서 학생 리스트
+	public List<StudentDTO> listStudent(int offset, int size, String schType, String kwd) {
+	    List<StudentDTO> list = new ArrayList<>();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    StringBuilder sb = new StringBuilder();
+
+	    try {
+	        sb.append("SELECT m.member_id, m.name, s.grade, ");
+	        sb.append("TO_CHAR(s.admission_date, 'YYYY-MM-DD') AS admission_date, ");
+	        sb.append("TO_CHAR(s.graduate_date, 'YYYY-MM-DD') AS graduate_date, ");
+	        sb.append("m.phone, TO_CHAR(m.birth, 'YYYY-MM-DD') AS birth, m.email, ");
+	        sb.append("s.department_id, d.department_name, ");
+	        sb.append("(SELECT academic_status FROM student_status ss ");
+	        sb.append(" WHERE ss.member_id = s.member_id ");
+	        sb.append(" ORDER BY ss.reg_date DESC FETCH FIRST 1 ROWS ONLY) AS academic_status ");
+	        sb.append("FROM member m ");
+	        sb.append("JOIN student s ON m.member_id = s.member_id ");
+	        sb.append("LEFT JOIN department d ON s.department_id = d.department_id ");
+	        sb.append("WHERE 1=1 ");
+
+	        if (schType.equals("all")) {
+	            sb.append("AND (INSTR(m.member_id, ?) >= 1 OR INSTR(m.name, ?) >= 1) ");
+	        } else if (schType.equals("name")) {
+	            sb.append("AND INSTR(m.name, ?) >= 1 ");
+	        } else if (schType.equals("department_name")) {
+	            sb.append("AND INSTR(d.department_name, ?) >= 1 ");
+	        } else {
+	            sb.append("AND INSTR(" + schType + ", ?) >= 1 ");
+	        }
+
+	        sb.append("ORDER BY m.member_id DESC ");
+	        sb.append("OFFSET ? ROWS FETCH FIRST ? ROWS ONLY");
+
+	        pstmt = conn.prepareStatement(sb.toString());
+
+	        if (schType.equals("all")) {
+	            pstmt.setString(1, kwd);
+	            pstmt.setString(2, kwd);
+	            pstmt.setInt(3, offset);
+	            pstmt.setInt(4, size);
+	        } else {
+	            pstmt.setString(1, kwd);
+	            pstmt.setInt(2, offset);
+	            pstmt.setInt(3, size);
+	        }
+
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            StudentDTO dto = new StudentDTO();
+	            dto.setMember_id(rs.getString("member_id"));
+	            dto.setName(rs.getString("name"));
+	            dto.setGrade(rs.getInt("grade"));
+	            dto.setAdmission_date(rs.getString("admission_date"));
+	            dto.setGraduate_date(rs.getString("graduate_date"));
+	            dto.setPhone(rs.getString("phone"));
+	            dto.setBirth(rs.getString("birth"));
+	            dto.setEmail(rs.getString("email"));
+	            dto.setDepartment_id(rs.getString("department_id"));
+	            dto.setDepartment_name(rs.getString("department_name"));
+	            dto.setAcademic_status(rs.getString("academic_status"));
+
+	            list.add(dto);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.close(rs);
+	        DBUtil.close(pstmt);
+	    }
+
+	    return list;
+	}
+
 
 	// 학번으로 학생 찾기
 	public StudentDTO findById(String member_id) {

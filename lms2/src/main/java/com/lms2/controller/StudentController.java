@@ -2,6 +2,7 @@ package com.lms2.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -191,23 +192,45 @@ public class StudentController {
 				current_page = Integer.parseInt(page);
 			}
 
-			int dataCount = dao.dataCount();
+			page = String.valueOf(current_page);
+			
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			
+			kwd = util.decodeUrl(kwd);
+			
+			String pageSize = req.getParameter("size");
+			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+			
+			int dataCount, total_page;
 
-			int size = 10;
-			int total_page = util.pageCount(dataCount, size);
-			if (current_page > total_page) {
+			dataCount = dao.dataCount();
+			
+			total_page = util.pageCount(dataCount, size);
+			
+			if(current_page > total_page) {
 				current_page = total_page;
 			}
-
+	
 			int offset = (current_page - 1) * size;
-			if (offset < 0)
-				offset = 0;
+			if(offset < 0) offset = 0;
 
-			List<StudentDTO> list = dao.listStudent(offset, size);
+			List<StudentDTO> list;
+			if (kwd.length() != 0) {
+				list = dao.listStudent(offset, size, schType, kwd);
+			} else {
+				list = dao.listStudent(offset, size);
+			}
 
 			String cp = req.getContextPath();
-			String listUrl = cp + "/admin/student/list";
-			String articleUrl = cp + "/admin/article?page=" + current_page;
+			String query = "size=" + size + "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+
+			String listUrl = cp + "/admin/student/list?" + query;
+			String articleUrl = cp + "/admin/student/article?page=" + current_page + "&" + query;
 
 			String paging = util.paging(current_page, total_page, listUrl);
 
@@ -218,6 +241,8 @@ public class StudentController {
 			mav.addObject("total_page", total_page);
 			mav.addObject("articleUrl", articleUrl);
 			mav.addObject("paging", paging);
+			mav.addObject("kwd", kwd);
+			mav.addObject("schType", schType);
 
 		} catch (Exception e) {
 			e.printStackTrace();
