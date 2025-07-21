@@ -14,13 +14,13 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/board.css">
+	href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <style type="text/css">
 .bbs-header img {
 	height: 50px;
 	margin-bottom: 10px;
 }
-
 </style>
 </head>
 <body>
@@ -30,67 +30,65 @@
 	<main>
 		<jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
-		<div class="container" style="margin-left: 220px; padding: 30px;">
-
-			<div class="body-container row justify-content-center bbs-header"
-				style="margin: 100px;">
-				<div
-					style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo2.png">성적 관리
-				</div>
+		<div class="container mt-5 ">
+			<div style="margin-top: 100px;">
+				<div class="main-wrapper bbs-header">
+					<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
+						<img src="${pageContext.request.contextPath}/dist/images/sungjuk.png">
+					</div>
 
 					<div class="col text-end mt-2">
 						<button type="button" class="btn btn-light"
 							onclick="location.href='${pageContext.request.contextPath}/student/study/rating'">새로고침</button>
 					</div>
-				<table class="table table-hover board-list mt-4">
-					<thead class="table-light">
-						<tr>
-							<th>학번</th>
-							<th>이름</th>
-						</tr>
-					</thead>
-					<tbody>
-					    <c:if test="${not empty list}">
-					        <tr>
-					            <td>${list[0].member_id}</td>
-					            <td>${list[0].studentName}</td>
-					        </tr>
-					    </c:if>
-					</tbody>
+					<table class="table table-hover board-list mt-4">
+						<thead class="table-light">
+							<tr>
+								<th>학번</th>
+								<th>이름</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:if test="${not empty list}">
+								<tr>
+									<td>${list[0].member_id}</td>
+									<td>${list[0].studentName}</td>
+								</tr>
+							</c:if>
+						</tbody>
 					</table>
 
-				<table class="table table-hover board-list mt-4">
-					<thead class="table-light">
-						<tr>
-							<th>강의제목</th>
-							<th>담당교수</th>
-							<th>중간</th>
-							<th>기말</th>
-							<th>출석</th>
-							<th>과제</th>
-							<th>등급</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="dto" items="${list}">
+					<table class="table table-hover board-list mt-4">
+						<thead class="table-light">
 							<tr>
-								<td>${dto.subject}</td>	
-								<td>${dto.professorName}</td>	
-								<td>${dto.middletest_rating}</td>
-								<td>${dto.finaltest_rating}</td>
-								<td>${dto.attendance_rating}</td>
-								<td>${dto.homework_rating}</td>							
-								<td>${dto.rating}</td>							
-						
+								<th>강의제목</th>
+								<th>담당교수</th>
+								<th>중간</th>
+								<th>기말</th>
+								<th>출석</th>
+								<th>과제</th>
+								<th>등급</th>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<c:forEach var="dto" items="${list}">
+								<tr>
+									<td>${dto.subject}</td>
+									<td>${dto.professorName}</td>
+									<td>${dto.middletest_rating}</td>
+									<td>${dto.finaltest_rating}</td>
+									<td>${dto.attendance_rating}</td>
+									<td>${dto.homework_rating}</td>
+									<td>${dto.rating}</td>
+
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+
+
 			</div>
-
-
-
 		</div>
 
 	</main>

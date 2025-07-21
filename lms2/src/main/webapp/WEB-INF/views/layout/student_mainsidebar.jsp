@@ -12,6 +12,7 @@
 	</div>
 
 	<div class="accordion accordion-flush" id="sidebarAccordion">
+		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/student/main/main">메인 페이지</a></div>
 		<div class="accordion-item">
 			<h2 class="accordion-header">
 				<button class="accordion-button custom-accordion-btn collapsed"

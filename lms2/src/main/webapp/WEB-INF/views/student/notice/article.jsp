@@ -9,22 +9,30 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 
 <header>
-    <jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
+    <jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 </header>
 
 <main>
     <jsp:include page="/WEB-INF/views/layout/student_menusidebar.jsp" />
 
-    <div class="container" style="margin-left: 220px; padding: 30px;">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
+    <div class="container mt-5 ">
+	<div style="margin-top: 100px;">
+	<div class="main-wrapper">
+            <div class="col-md-10 row">
 
-                <h3 class="mb-4 mt-5">공지사항</h3>
-
+                <table class="table" style="margin-bottom: 30px;">
+					<tr>
+						<td width="150px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항</td>
+						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					</tr>
+				</table>
                 <div class="row border-bottom">
                     <div class="col-sm-2 bg-light d-flex align-items-center fw-bold py-3">제목</div>
                     <div class="col-sm-10 bg-white py-3">${ndto.subject}</div>
@@ -90,13 +98,13 @@
 				                <c:otherwise>다음글이 없습니다.</c:otherwise>
 				            </c:choose>
 				        </div>
+				        <br><br>
 				    </div>
 				</div>
 
-    
                     <a href="${pageContext.request.contextPath}/student/notice/list?${query}" class="btn btn-secondary">목록</a>
                 </div>
-
+				<br><br>
             </div>
         </div>
     </div>

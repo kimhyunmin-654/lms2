@@ -8,7 +8,7 @@
 			<div class="username" style="font-size: 18px;">${sessionScope.member.name}</div>
 			<!-- <div class="department" style="font-size: 12px;">학과명</div> -->
 		</div>
-
+		<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/professor/main/main">메인 페이지</a></div>
 		<div class="accordion accordion-flush" id="sidebarAccordion">
 			<div class="accordion-item">
 				<h2 class="accordion-header">
