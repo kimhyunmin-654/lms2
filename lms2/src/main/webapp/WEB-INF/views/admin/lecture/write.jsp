@@ -252,14 +252,7 @@ function lectureSubmit(form) {
 		f.lecture_year.focus();
 		return false;
 	}
-	
-	p = /^{1}[1-4]$/;
-	str = f.semester.value.trim();
-	if( ! str ) {
-		alert('학기를 등록하세요. ');
-		f.semester.focus();
-		return false;
-	}	
+		
 	
 	p = /^[1-9][0-9]{0,2}$/;
 	str = f.capacity.value.trim();
@@ -292,7 +285,7 @@ function lectureSubmit(form) {
 	}		
 	
 	f.action = '${pageContext.request.contextPath}/admin/lecture/${mode}';
-	form.submit();
+	f.submit();
 	
 	return true;
 		
