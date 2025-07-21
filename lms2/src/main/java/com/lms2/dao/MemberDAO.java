@@ -21,7 +21,7 @@ public class MemberDAO {
 		String sql;
 
 		try {
-			sql = "SELECT  m1.member_id, name, m1.password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip, a1.division "
+			sql = "SELECT  m1.member_id, name, m1.password, role, create_date, modify_date, avatar, email, phone, birth, addr1, addr2, zip, a1.division, p1.department_id  "
 					+ " FROM member m1 " + " LEFT OUTER JOIN student s1 ON m1.member_id = s1.member_id "
 					+ " LEFT OUTER JOIN professor p1 ON m1.member_id = p1.member_id "
 					+ " LEFT OUTER JOIN admin a1 ON m1.member_id = a1.member_id "
