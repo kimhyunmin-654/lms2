@@ -180,79 +180,75 @@ public class StudentController {
 	// 학생 리스트
 	@RequestMapping(value = "/admin/student/list", method = RequestMethod.GET)
 	public ModelAndView studentList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		StudentDAO dao = new StudentDAO();
-		MyUtil util = new MyUtil();
+	    StudentDAO dao = new StudentDAO();
+	    MyUtil util = new MyUtil();
 
-		ModelAndView mav = new ModelAndView("admin/student/list");
+	    ModelAndView mav = new ModelAndView("admin/student/list");
 
-		try {
-			String page = req.getParameter("page");
-			int current_page = 1;
-			if (page != null) {
-				current_page = Integer.parseInt(page);
-			}
+	    try {
+	        String page = req.getParameter("page");
+	        int current_page = 1;
+	        if (page != null) {
+	            current_page = Integer.parseInt(page);
+	        }
 
-			page = String.valueOf(current_page);
-			
-			String schType = req.getParameter("schType");
-			String kwd = req.getParameter("kwd");
-			if(schType == null) {
-				schType = "all";
-				kwd = "";
-			}
-			
-			kwd = util.decodeUrl(kwd);
-			
-			String pageSize = req.getParameter("size");
-			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
-			
-			int dataCount, total_page;
+	        String pageSize = req.getParameter("size");
+	        int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
 
-			dataCount = dao.dataCount();
-			
-			total_page = util.pageCount(dataCount, size);
-			
-			if(current_page > total_page) {
-				current_page = total_page;
-			}
-	
-			int offset = (current_page - 1) * size;
-			if(offset < 0) offset = 0;
+	        String schType = req.getParameter("schType");
+	        String kwd = req.getParameter("kwd");
+	        if (schType == null) {
+	            schType = "all";
+	            kwd = "";
+	        }
 
-			List<StudentDTO> list;
-			if (kwd.length() != 0) {
-				list = dao.listStudent(offset, size, schType, kwd);
-			} else {
-				list = dao.listStudent(offset, size);
-			}
+	        kwd = util.decodeUrl(kwd);
 
-			String cp = req.getContextPath();
-			String query = "size=" + size + "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+	        int dataCount = (kwd.length() != 0)
+	    			? dao.dataCount(schType, kwd)
+	    			: dao.dataCount();
 
-			String listUrl = cp + "/admin/student/list?" + query;
-			String articleUrl = cp + "/admin/student/article?page=" + current_page + "&" + query;
+	        int total_page = util.pageCount(dataCount, size);
+	        if (current_page > total_page) {
+	            current_page = total_page;
+	        }
 
-			String paging = util.paging(current_page, total_page, listUrl);
+	        int offset = (current_page - 1) * size;
+	        if (offset < 0) offset = 0;
 
-			mav.addObject("list", list);
-			mav.addObject("dataCount", dataCount);
-			mav.addObject("size", size);
-			mav.addObject("page", current_page);
-			mav.addObject("total_page", total_page);
-			mav.addObject("articleUrl", articleUrl);
-			mav.addObject("paging", paging);
-			mav.addObject("kwd", kwd);
-			mav.addObject("schType", schType);
+	        List<StudentDTO> list;
+	        if (kwd.length() != 0) {
+	            list = dao.listStudent(offset, size, schType, kwd);
+	        } else {
+	            list = dao.listStudent(offset, size);
+	        }
+	        String cp = req.getContextPath();
+	        String query = "size=" + size + "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mav;
+	        String listUrl = cp + "/admin/student/list?" + query;
+	        String articleUrl = cp + "/admin/student/article?page=" + current_page + "&" + query;
+	        String paging = util.paging(current_page, total_page, listUrl);
+
+	        mav.addObject("list", list);
+	        mav.addObject("dataCount", dataCount);
+	        mav.addObject("size", size);
+	        mav.addObject("page", current_page);
+	        mav.addObject("total_page", total_page);
+	        mav.addObject("articleUrl", articleUrl);
+	        mav.addObject("paging", paging);
+	        mav.addObject("kwd", kwd);
+	        mav.addObject("schType", schType);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return mav;
 	}
 
 	// 학생 수정폼
 	@RequestMapping(value = "/admin/student/update", method = RequestMethod.GET)
-	public ModelAndView updateStudentForm(HttpServletRequest req, HttpServletResponse resp) 	throws ServletException, IOException {
+	public ModelAndView updateStudentForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String member_id = req.getParameter("member_id");
 
 		StudentDAO dao = new StudentDAO();
@@ -374,8 +370,7 @@ public class StudentController {
 
 	// 학생 상세정보 출력
 	@RequestMapping(value = "/admin/article", method = RequestMethod.GET)
-	public ModelAndView viewStudent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	public ModelAndView viewStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String member_id = req.getParameter("member_id");
 
 		StudentDAO dao = new StudentDAO();
@@ -398,8 +393,7 @@ public class StudentController {
 
 	@ResponseBody
 	@RequestMapping(value = "/admin/student/userIdCheck", method = RequestMethod.POST)
-	public Map<String, Object> studentUserIdCheck(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	public Map<String, Object> studentUserIdCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		Map<String, Object> model = new HashMap<>();
 
@@ -462,9 +456,8 @@ public class StudentController {
 		return new ModelAndView("redirect:/student/main/main");
 	}
 
-	@RequestMapping(value = "/student/lecture/list", method = RequestMethod.GET)
-	public ModelAndView lectureList(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	@RequestMapping(value = "/student/lecture/list", method = RequestMethod.GET) 
+	public ModelAndView lectureList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의 리스트
 		LectureDAO dao = new LectureDAO();
 		MyUtil util = new MyUtil();
