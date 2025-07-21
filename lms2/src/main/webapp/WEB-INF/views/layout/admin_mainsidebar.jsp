@@ -4,7 +4,8 @@
 
 <div class="blackbox">
 	<div class="text-center mb-4">
-		<img src="${pageContext.request.contextPath}/uploads/member/${sessionScope.member.avatar}" alt="프로필" class="rounded-circle profile-img">
+		<img src="${not empty sessionScope.member.avatar ? pageContext.request.contextPath.concat('/uploads/member/').concat(sessionScope.member.avatar) : pageContext.request.contextPath.concat('/dist/images/user.png')}" 
+     alt="프로필" class="rounded-circle profile-img">
 		<div class="username" style="font-size:18px;">${sessionScope.member.name}</div>
 		<div class="department" style="font-size:12px;">${sessionScope.member.division}</div>
 	</div>
