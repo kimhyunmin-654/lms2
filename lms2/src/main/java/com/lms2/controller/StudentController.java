@@ -314,7 +314,7 @@ public class StudentController {
 		try {
 			if (info != null) {
 				String memberId = String.valueOf(info.getMember_id());
-				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
 				mav.addObject("lectureList", lectures);
 			}
 
@@ -345,7 +345,7 @@ public class StudentController {
 
 			if (info != null) {
 				String memberId = String.valueOf(info.getMember_id());
-				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
 				mav.addObject("lectureList", lectures);
 			}
 			
