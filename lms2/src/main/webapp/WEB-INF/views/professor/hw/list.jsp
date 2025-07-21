@@ -30,7 +30,7 @@
 
 			<div class="body-container row justify-content-center hw-header" style="margin: 100px;">
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img src="${pageContext.request.contextPath}/dist/images/gwaje.png">
+					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_hw3..png">
 				</div>
 
 				<table class="table table-hover board-list">
