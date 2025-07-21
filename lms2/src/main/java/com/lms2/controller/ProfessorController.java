@@ -13,7 +13,7 @@ import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.ProfessorDAO;
 import com.lms2.model.DataDTO;
-import com.lms2.model.DeparmentDTO;
+import com.lms2.model.DepartmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.NoticeDTO;
@@ -121,7 +121,7 @@ public class ProfessorController {
 		ModelAndView mav = new ModelAndView("admin/professor/write");
 		ProfessorDAO professorDao = new ProfessorDAO();
 		
-		 List<DeparmentDTO> listDepartment = professorDao.listDepartment();
+		 List<DepartmentDTO> listDepartment = professorDao.listDepartment();
 		    
 		 mav.addObject("listDepartment", listDepartment);
 		 mav.addObject("mode", "write");
@@ -436,7 +436,7 @@ public class ProfessorController {
 	    ProfessorDAO dao = new ProfessorDAO();
 	    ProfessorDTO dto = dao.findById(member_id);
 	    
-	    List<DeparmentDTO> listDepartment = dao.listDepartment();
+	    List<DepartmentDTO> listDepartment = dao.listDepartment();
 
 	    if (dto == null) {
 	        return new ModelAndView("redirect:/admin/professor/list");
