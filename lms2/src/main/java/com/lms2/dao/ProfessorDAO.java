@@ -334,7 +334,7 @@ public class ProfessorDAO {
 		
 
 		try {
-			sb.append(" SELECT lecture_code, grade, subject, classroom, division, capacity ");
+			sb.append(" SELECT lecture_code, grade, subject, classroom, division, capacity, credit ");
 			sb.append(" FROM LECTURE ");
 			sb.append(" WHERE member_id = ? ");
 			sb.append(" ORDER BY Lecture_year DESC ");
@@ -352,6 +352,7 @@ public class ProfessorDAO {
 				dto.setClassroom(rs.getString("classroom"));
 				dto.setDivision(rs.getString("division")); // 분류
 				dto.setCapacity(rs.getInt("capacity")); // 수강정원
+				dto.setCredit(rs.getDouble("credit"));
 				list.add(dto);
 			}
 
