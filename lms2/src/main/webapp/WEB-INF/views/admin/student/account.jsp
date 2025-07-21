@@ -159,18 +159,24 @@
 					</div>
 
 					<div class="row mt-3">
-						<div class="col-md-6">
-							<label class="form-label">학과코드</label> 
-							<select name="department_id" class="form-control">
-							    <c:forEach var="department" items="${departmentList}">
-							        <option value="${department.department_id}"
-							            <c:if test="${dto.department_id == department.department_id}">selected</c:if>>
-							            ${department.department_name}
-							        </option>
-							    </c:forEach>
-							</select>
-						</div>
+					    <div class="col-md-6">
+					        <label class="form-label">학과</label> 
+					        <select name="department_id" class="form-control">
+					            <option value="" 
+					            	<c:if test="${mode != 'update'}">selected</c:if>>
+					                학과를 선택하세요
+					            </option>
+
+					            <c:forEach var="department" items="${departmentList}">
+					                <option value="${department.department_id}"
+					                    <c:if test="${dto.department_id == department.department_id}">selected</c:if>>
+					                    ${department.department_name}
+					                </option>
+					            </c:forEach>
+					        </select>
+					    </div>
 					</div>
+					
 					<c:if test="${mode == 'update'}">
 						<div class="row mt-3">
 							<div class="col-md-6">
@@ -293,7 +299,6 @@ function isValidDateString(dateString) {
 }
 
 function sendOk() {
-    // console.log("sendOk() 실행됨");
 	const f = document.insertForm;
 	let str, p;
 	
@@ -304,7 +309,6 @@ function sendOk() {
 		f.member_id.focus();
 		return;
 	}
-	
 	
 	let mode = '${mode}';
 	if( mode === 'account' && f.userIdValid.value === 'false' ) {
@@ -364,7 +368,12 @@ function sendOk() {
         f.phone.focus();
         return;
     }
-
+    
+    str = f.department_id.value.trim();
+    if (! str) {
+    	alert('학과를 선택하세요.');
+    	return;
+    }
 	
     f.action = '${pageContext.request.contextPath}/admin/student/${mode}';
 	f.submit();

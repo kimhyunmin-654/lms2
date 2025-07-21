@@ -385,159 +385,161 @@ public class StudentController {
 	}
 
 	// 학생 수정폼
-	@RequestMapping(value = "/admin/student/update", method = RequestMethod.GET)
-	public ModelAndView updateStudentForm(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String member_id = req.getParameter("member_id");
-
-		StudentDAO dao = new StudentDAO();
-		StudentDTO dto = null;
-		List<Map<String, Object>> statusList = null;
-
-		try {
-			dto = dao.findById(member_id);
-			statusList = dao.getStudentStatusList();
-		} catch (Exception e) {
-			e.printStackTrace();
+		@RequestMapping(value = "/admin/student/update", method = RequestMethod.GET)
+		public ModelAndView updateStudentForm(HttpServletRequest req, HttpServletResponse resp)
+				throws ServletException, IOException {
+			String member_id = req.getParameter("member_id");
+	
+			StudentDAO dao = new StudentDAO();
+			StudentDTO dto = null;
+			List<Map<String, Object>> statusList = null;
+			List<DepartmentDTO> departmentList = null;
+	
+			try {
+				dto = dao.findById(member_id);
+				statusList = dao.getStudentStatusList();
+				departmentList = dao.listDepartment();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	
+			if (dto == null) {
+				return new ModelAndView("redirect:/admin/student/list");
+			}
+	
+			ModelAndView mav = new ModelAndView("admin/student/account");
+			mav.addObject("dto", dto);
+			mav.addObject("mode", "update");
+			mav.addObject("statusList", statusList);
+			mav.addObject("departmentList", departmentList);
+	
+			return mav;
 		}
-
-		if (dto == null) {
+	
+		// 학생 수정
+		@RequestMapping(value = "/admin/student/update", method = RequestMethod.POST)
+		public ModelAndView updateStudent(HttpServletRequest req, HttpServletResponse resp)
+		        throws ServletException, IOException {
+	
+		    StudentDAO dao = new StudentDAO();
+		    HttpSession session = req.getSession();
+	
+		    String root = session.getServletContext().getRealPath("/");
+		    String pathname = root + "uploads" + File.separator + "avatar";
+	
+		    // *****
+		    System.out.println("RealPath = " + root);
+		    System.out.println("Upload Path = " + pathname);
+	
+		    FileManager fileManager = new FileManager();
+		    String avatar = null;
+	
+		    try {
+		        // 기존 아바타
+		        String originalAvatar = req.getParameter("originalAvatar");
+	
+		        Part part = req.getPart("selectFile");
+		        MyMultipartFile multiFile = fileManager.doFileUpload(part, pathname);
+	
+		        if (multiFile != null && multiFile.getSize() > 0) {
+		            avatar = multiFile.getSaveFilename();
+	
+		            // 기존 파일 삭제
+		            if (originalAvatar != null && !originalAvatar.isEmpty()) {
+		            	fileManager.doFiledelete(pathname, originalAvatar);
+		            }
+	
+		        } else {
+		            avatar = originalAvatar; // 새 파일 없으면 기존 유지
+		        }
+	
+		        StudentDTO dto = new StudentDTO();
+	
+		        dto.setMember_id(req.getParameter("member_id"));
+		        dto.setName(req.getParameter("name"));
+		        dto.setPassword(req.getParameter("password"));
+		        dto.setEmail(req.getParameter("email1") + "@" + req.getParameter("email2"));
+		        dto.setPhone(req.getParameter("phone"));
+		        dto.setBirth(req.getParameter("birth"));
+		        dto.setAddr1(req.getParameter("addr1"));
+		        dto.setAddr2(req.getParameter("addr2"));
+		        dto.setGrade(Integer.parseInt(req.getParameter("grade")));
+		        dto.setAdmission_date(req.getParameter("admission_date"));
+		        dto.setDepartment_id(req.getParameter("department_id"));
+	
+		        String statusIdStr = req.getParameter("status_id");
+		        if (statusIdStr != null && !statusIdStr.isEmpty()) {
+		            dto.setStatus_id(Integer.parseInt(statusIdStr));
+		        }
+	
+		        dto.setAvatar(avatar);
+	
+		        dao.updateStudentByAdmin(dto);
+	
+		        session.setAttribute("mode", "update");
+		        session.setAttribute("name", dto.getName());
+	
+		        return new ModelAndView("redirect:/admin/student/complete");
+	
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+	
+		    ModelAndView mav = new ModelAndView("admin/student/account");
+		    mav.addObject("mode", "update");
+	
+		    try {
+		        StudentDTO dto = dao.findById(req.getParameter("member_id"));
+		        mav.addObject("dto", dto);
+		        mav.addObject("statusList", dao.getStudentStatusList());
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+	
+		    mav.addObject("message", "수정에 실패했습니다.");
+		    return mav;
+		}
+	
+		// 학생 삭제
+		@RequestMapping(value = "/admin/student/delete", method = RequestMethod.GET)
+		public ModelAndView deleteStudent(HttpServletRequest req, HttpServletResponse resp)
+				throws ServletException, IOException {
+	
+			StudentDAO dao = new StudentDAO();
+			String member_id = req.getParameter("member_id");
+	
+			try {
+				dao.deleteStudentByAdmin(member_id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	
 			return new ModelAndView("redirect:/admin/student/list");
 		}
 
-		ModelAndView mav = new ModelAndView("admin/student/account");
-		mav.addObject("dto", dto);
-		mav.addObject("mode", "update");
-		mav.addObject("statusList", statusList);
+		// 학생 상세정보 출력
+		@RequestMapping(value = "/admin/article", method = RequestMethod.GET)
+		public ModelAndView viewStudent(HttpServletRequest req, HttpServletResponse resp)
+				throws ServletException, IOException {
+			String member_id = req.getParameter("member_id");
 
-		return mav;
-	}
+			StudentDAO dao = new StudentDAO();
+			StudentDTO dto = null;
 
-	// 학생 수정
-	@RequestMapping(value = "/admin/student/update", method = RequestMethod.POST)
-	public ModelAndView updateStudent(HttpServletRequest req, HttpServletResponse resp)
-	        throws ServletException, IOException {
+			try {
+				dto = dao.findById(member_id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-	    StudentDAO dao = new StudentDAO();
-	    HttpSession session = req.getSession();
+			if (dto == null) {
+				return new ModelAndView("redirect:/admin/student/list");
+			}
 
-	    String root = session.getServletContext().getRealPath("/");
-	    String pathname = root + "uploads" + File.separator + "avatar";
-
-	    // *****
-	    System.out.println("RealPath = " + root);
-	    System.out.println("Upload Path = " + pathname);
-
-	    FileManager fileManager = new FileManager();
-	    String avatar = null;
-
-	    try {
-	        // 기존 아바타
-	        String originalAvatar = req.getParameter("originalAvatar");
-
-	        Part part = req.getPart("selectFile");
-	        MyMultipartFile multiFile = fileManager.doFileUpload(part, pathname);
-
-	        if (multiFile != null && multiFile.getSize() > 0) {
-	            avatar = multiFile.getSaveFilename();
-
-	            // 기존 파일 삭제
-	            if (originalAvatar != null && !originalAvatar.isEmpty()) {
-	            	fileManager.doFiledelete(pathname, originalAvatar);
-	            }
-
-	        } else {
-	            avatar = originalAvatar; // 새 파일 없으면 기존 유지
-	        }
-
-	        StudentDTO dto = new StudentDTO();
-
-	        dto.setMember_id(req.getParameter("member_id"));
-	        dto.setName(req.getParameter("name"));
-	        dto.setPassword(req.getParameter("password"));
-	        dto.setEmail(req.getParameter("email1") + "@" + req.getParameter("email2"));
-	        dto.setPhone(req.getParameter("phone"));
-	        dto.setBirth(req.getParameter("birth"));
-	        dto.setAddr1(req.getParameter("addr1"));
-	        dto.setAddr2(req.getParameter("addr2"));
-	        dto.setGrade(Integer.parseInt(req.getParameter("grade")));
-	        dto.setAdmission_date(req.getParameter("admission_date"));
-	        dto.setDepartment_id(req.getParameter("department_id"));
-
-	        String statusIdStr = req.getParameter("status_id");
-	        if (statusIdStr != null && !statusIdStr.isEmpty()) {
-	            dto.setStatus_id(Integer.parseInt(statusIdStr));
-	        }
-
-	        dto.setAvatar(avatar);
-
-	        dao.updateStudentByAdmin(dto);
-
-	        session.setAttribute("mode", "update");
-	        session.setAttribute("name", dto.getName());
-
-	        return new ModelAndView("redirect:/admin/student/complete");
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    ModelAndView mav = new ModelAndView("admin/student/account");
-	    mav.addObject("mode", "update");
-
-	    try {
-	        StudentDTO dto = dao.findById(req.getParameter("member_id"));
-	        mav.addObject("dto", dto);
-	        mav.addObject("statusList", dao.getStudentStatusList());
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    mav.addObject("message", "수정에 실패했습니다.");
-	    return mav;
-	}
-
-	// 학생 삭제
-	@RequestMapping(value = "/admin/student/delete", method = RequestMethod.GET)
-	public ModelAndView deleteStudent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		StudentDAO dao = new StudentDAO();
-		String member_id = req.getParameter("member_id");
-
-		try {
-			dao.deleteStudentByAdmin(member_id);
-		} catch (Exception e) {
-			e.printStackTrace();
+			ModelAndView mav = new ModelAndView("admin/student/article");
+			mav.addObject("dto", dto);
+			return mav;
 		}
-
-		return new ModelAndView("redirect:/admin/student/list");
-	}
-
-	// 학생 상세정보 출력
-	@RequestMapping(value = "/admin/article", method = RequestMethod.GET)
-	public ModelAndView viewStudent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String member_id = req.getParameter("member_id");
-
-		StudentDAO dao = new StudentDAO();
-		StudentDTO dto = null;
-
-		try {
-			dto = dao.findById(member_id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		if (dto == null) {
-			return new ModelAndView("redirect:/admin/student/list");
-		}
-
-		ModelAndView mav = new ModelAndView("admin/student/article");
-		mav.addObject("dto", dto);
-		return mav;
-	}
-
 	@ResponseBody
 	@RequestMapping(value = "/admin/student/userIdCheck", method = RequestMethod.POST)
 	public Map<String, Object> studentUserIdCheck(HttpServletRequest req, HttpServletResponse resp)
