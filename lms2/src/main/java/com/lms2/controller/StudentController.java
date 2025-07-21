@@ -11,8 +11,8 @@ import com.lms2.dao.AdminDAO;
 import com.lms2.dao.LectureDAO;
 import com.lms2.dao.NoticeDAO;
 import com.lms2.dao.StudentDAO;
-import com.lms2.model.AdminDTO;
 import com.lms2.model.Course_ApplicationDTO;
+import com.lms2.model.DepartmentDTO;
 import com.lms2.model.LectureDTO;
 import com.lms2.model.MemberDTO;
 import com.lms2.model.NoticeDTO;
@@ -117,10 +117,18 @@ public class StudentController {
 		// 학생 등록 폼
 		ModelAndView mav = new ModelAndView("admin/student/account");
 		mav.addObject("mode", "account");
-
+		
+		try {
+			StudentDAO dao = new StudentDAO();
+			List<DepartmentDTO> departmentList = dao.listDepartment();
+			mav.addObject("departmentList", departmentList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return mav;
 	}
 
+	// 학생 등록
 	@RequestMapping(value = "/admin/student/account", method = RequestMethod.POST)
 	public ModelAndView accountStudentSubmit(HttpServletRequest req, HttpServletResponse resp)
 	        throws ServletException, IOException {

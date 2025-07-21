@@ -94,7 +94,7 @@
 					<div class="row board-list-footer justify-content-between align-items-center mt-3">
 					    <div class="col-auto">
 					        <button type="button" class="btn btn-light"
-					            onclick="location.href='${pageContext.request.contextPath}/admin/admin/list';"
+					            onclick="location.href='${pageContext.request.contextPath}/admin/student/list';"
 					            title="새로고침">새로고침</button>
 					    </div>
 					

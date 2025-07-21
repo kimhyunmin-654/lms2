@@ -93,8 +93,7 @@
                         </c:when>
 
                         <c:when test="${sessionScope.member.member_id == dto.member_id}">
-                            <button type="button" class="btn btn-light"
-                                    onclick="location.href='${pageContext.request.contextPath}/admin/student/update?member_id=${dto.member_id}&page=${page}&size=${size}';">수정</button>
+                            <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/student/update?member_id=${dto.member_id}&page=${page}&size=${size}';">수정</button>
                         </c:when>            
                         <c:otherwise>
                         </c:otherwise>
