@@ -72,6 +72,7 @@ public class Stuhw_DAO {
 	            dto.setSave_filename(rs.getString("save_filename"));
 	            dto.setOriginal_filename(rs.getString("original_filename"));
 	            dto.setFile_size(rs.getInt("file_size"));
+	            
 	            list.add(dto);
 	        }
 	    } catch (Exception e) {

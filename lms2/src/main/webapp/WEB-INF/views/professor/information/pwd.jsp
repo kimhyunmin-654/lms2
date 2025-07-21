@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/pwd.css">
 
+
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 </head>
 <body>

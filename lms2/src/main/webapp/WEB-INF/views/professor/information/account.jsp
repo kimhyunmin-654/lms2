@@ -122,6 +122,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>	
 
+
 <script type="text/javascript">
 let img = '${dto.avatar}';
 const avatarEL = document.querySelector('.profile-img');
