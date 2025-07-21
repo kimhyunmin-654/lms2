@@ -36,8 +36,7 @@
 				style="margin: 100px;">
 				<div
 					style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img
-						src="${pageContext.request.contextPath}/dist/images/sangyong_logo2.png">
+					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo2.png">성적 관리
 				</div>
 
 					<div class="col text-end mt-2">

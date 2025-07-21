@@ -42,8 +42,7 @@
 				style="margin: 100px;">
 				<div
 					style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img
-						src="${pageContext.request.contextPath}/dist/images/sangyong_logo_bbs.png">
+					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo2.png">수강 신청
 				</div>
 				
 				<form method="post" name="insertForm">
@@ -82,7 +81,7 @@
 					</table>
 				
 
-				<div class="page-navigation">${dataCount == 0 ? "등록된 강의가 없습니다." : paging}
+				<div class="page-navigation">${dataCount == 0 ? "등록된 강의가 없습니다." : ''}
 				</div>
 
 				<div class="row board-list-footer">
