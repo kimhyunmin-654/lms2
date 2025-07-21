@@ -1,5 +1,9 @@
 @charset "UTF-8";
-.content-box {
-	border: none;
-	
+.main-wrapper {
+  margin-left: 220px;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
