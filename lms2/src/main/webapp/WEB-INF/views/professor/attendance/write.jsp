@@ -6,15 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <title>출석관리</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/menuheader.jsp" />
 	</header>
 	<main>
 		<jsp:include page="/WEB-INF/views/layout/prof_menusidebar.jsp" />
-		<div class="container" style="margin-left: 240px; margin-top: 70px;">
+		<div class="container mt-5 ">
+		<div style="margin-top: 100px;">
+		<div class="main-wrapper">
 			<form method="post" action="${pageContext.request.contextPath}/professor/attendance/write" name="submitForm">
 				<input type="hidden" name="lecture_code" value="${lecture_code}" />
 				
@@ -51,7 +55,8 @@
 					<button type="submit" class="btn btn-light" onclick="okSend()">출석 등록</button>
 				</div>
 			</form>
-
+		</div>
+		</div>
 		</div>
 	</main>
 

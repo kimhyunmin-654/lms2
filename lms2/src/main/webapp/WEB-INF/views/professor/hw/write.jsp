@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자료실</title>
+<title>과제 등록</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
@@ -23,7 +23,7 @@
 				<div class="body-container row justify-content-center" style="margin: 100px;">
 					<div class="col-md-10 my-3 p-3">
 					<div class="body-title">
-						<h3>자료실</h3>
+						<h3>과제 등록</h3>
 					</div>
 					
 					<div class="body-main">

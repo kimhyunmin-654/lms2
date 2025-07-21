@@ -6,6 +6,7 @@ public class SessionInfo {
 	private int role;
 	private String avatar; // profile photo
 	private String division;
+	private String department;
 	
 	public String getMember_id() {
 		return member_id;
@@ -36,6 +37,12 @@ public class SessionInfo {
 	}
 	public void setDivision(String division) {
 		this.division = division;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 	
 	

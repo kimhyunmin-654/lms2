@@ -3,7 +3,9 @@ package com.lms2.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.lms2.dao.LectureDAO;
 import com.lms2.dao.RatingDAO;
+import com.lms2.model.LectureDTO;
 import com.lms2.model.RatingDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
@@ -22,6 +24,7 @@ public class std_ratingController {
     public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ModelAndView mav = new ModelAndView("student/study/rating");
         RatingDAO dao = new RatingDAO();
+        LectureDAO lectureDao = new LectureDAO();
 
         try {
             HttpSession session = req.getSession(false);
@@ -38,6 +41,8 @@ public class std_ratingController {
             int size = 10;
             int offset = (current_page - 1) * size;
 
+            List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
+			mav.addObject("lectureList", lectures);
             List<RatingDTO> list = dao.std_listrating(offset, size, memberId);
             mav.addObject("list", list);
             mav.addObject("page", current_page);

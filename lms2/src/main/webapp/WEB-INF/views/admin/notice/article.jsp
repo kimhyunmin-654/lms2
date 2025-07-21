@@ -27,7 +27,7 @@
             <div class="col-md-10 row">
 				<table class="table" style="margin-bottom: 30px;">
 					<tr>
-						<td width="180px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항</td>
+						<td width="140px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항</td>
 						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 					</tr>

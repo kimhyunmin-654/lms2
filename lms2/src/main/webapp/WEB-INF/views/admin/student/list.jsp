@@ -8,9 +8,9 @@
 <title>학생 리스트</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main1.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <header>
     <jsp:include page="/WEB-INF/views/layout/mainheader.jsp" />
@@ -19,11 +19,17 @@
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-    <div class="container" style="margin-left: 220px; padding: 30px;">
-        <div class="row">
+   	<div class="container mt-5 ">
+		<div style="margin-top: 100px;">
+		<div class="main-wrapper">
             <div class="col">
-                <h3 class="mb-4" style="margin-top: 50px;">학생관리</h3>
-
+                <table class="table" style="margin-bottom: 30px;">
+					<tr>
+						<td width="150px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">학생 관리</td>
+						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					</tr>
+				</table>
                 <div class="d-flex justify-content-between mb-2 align-items-center">
 					${dataCount} 명( ${page} / ${total_page} 페이지)
                     <div class="d-flex align-items-center">
@@ -117,6 +123,7 @@
 
             </div>
         </div>
+	</div>
 </main>
 
 <script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>

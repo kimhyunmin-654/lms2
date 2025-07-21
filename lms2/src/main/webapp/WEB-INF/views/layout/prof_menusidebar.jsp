@@ -7,12 +7,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<style>
+<style type="text/css">
+	a {
+	  text-decoration: none;  
+	  color: inherit;         
+	}
     #lesson-select { 
         background-color: #fff;
         border: 1px solid;
@@ -44,6 +48,7 @@
 			    </select>
 
 			</form>
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/professor/main/main">메인 페이지</a></div>
 			<div class="accordion-item">
 				<h2 class="accordion-header">
 					<button class="accordion-button custom-accordion-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -80,9 +85,8 @@
 					</button>
 				</h2>
 				<div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu">학사 공지사항</div>
 					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/notice/list">학사 공지사항</a></div>
-					<div class="accordion-body custom-submenu">내 정보 관리</div>
+					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/information/pwd">내 정보 관리</a></div>
 				</div>
 			</div>
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/home/logout">로그아웃</a></div>

@@ -30,7 +30,7 @@ public class DataDAO {
 	        pstmt.setString(2, dto.getContent());
 	        pstmt.setString(3, dto.getLecture_code());
 	        pstmt.executeUpdate();
-	        pstmt.close();
+	        //pstmt.close();
 	        
 	        sql = "SELECT DATA_SEQ.CURRVAL FROM dual";
 	        pstmt = conn.prepareStatement(sql);

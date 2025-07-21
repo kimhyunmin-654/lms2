@@ -474,6 +474,12 @@ public class StudentController {
 		ModelAndView mav = new ModelAndView("student/lecture/list");
 
 		try {
+			
+			HttpSession session = req.getSession(false);
+            SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+            String memberId = String.valueOf(info.getMember_id());
+
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null) {
@@ -499,6 +505,9 @@ public class StudentController {
 			String articleUrl = cp + "/student/lecture/view?page=" + current_page;
 
 			String paging = util.paging(current_page, total_page, listUrl);
+			
+			List<LectureDTO> lectures = dao.std_listsidebar(memberId);
+			mav.addObject("lectureList", lectures);
 
 			mav.addObject("list", list);
 			mav.addObject("dataCount", dataCount);
