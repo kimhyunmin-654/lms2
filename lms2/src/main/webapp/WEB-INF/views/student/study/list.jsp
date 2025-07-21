@@ -39,27 +39,24 @@
 								<div class="card-body d-flex flex-column gap-3 px-2">
 									<c:forEach var="dto" items="${lectureFileList}">
 										<div class="border rounded p-2 bg-white text-truncate">
-											<a
-												href="${pageContext.request.contextPath}/student/lecture/fileDownload?file_id=${dto.file_id}"
-												class="text-decoration-none text-dark d-block"> <i
-												class="bi bi-file-earmark-text me-2 text-secondary"></i>
-												${dto.original_filename}
+											<a href="${pageContext.request.contextPath}/student/bbs/article?data_id=${dto.data_id}"
+											   class="text-decoration-none text-dark d-block">
+												<i class="bi bi-file-earmark-text me-2 text-secondary"></i>
+												${dto.subject}
 											</a>
 										</div>
 									</c:forEach>
-									<c:forEach var="n" begin="${lectureFileList.size() + 1}"
-										end="5">
+									<c:forEach var="n" begin="${list.size() + 1}" end="5">
 										<div class="border rounded p-2 bg-white">&nbsp;</div>
 									</c:forEach>
 								</div>
 							</div>
 							<div class="text-end pt-2 pe-2">
-								<a
-									href="${pageContext.request.contextPath}/student/lecture/fileList"
-									class="text-decoration-none">더보기</a>
+								<a href="${pageContext.request.contextPath}/student/bbs/list" class="text-decoration-none">더보기</a>
 							</div>
 						</div>
 					</div>
+
 
 					<!-- 과제 -->
 					<div class="row my-3">
@@ -69,10 +66,10 @@
 									<i class="bi bi-pencil-square me-2 text-success"></i> 과제 목록
 								</div>
 								<div class="card-body d-flex flex-column gap-3 px-2">
-									<c:forEach var="dto" items="${assignmentList}">
+									<c:forEach var="dto" items="${hwList}">
 										<div class="border rounded p-2 bg-white text-truncate">
 											<a
-												href="${pageContext.request.contextPath}/student/assignment/article?assignment_id=${dto.assignment_id}"
+												href="${pageContext.request.contextPath}/student/hw/article?homework_id=${dto.homework_id}"
 												class="text-decoration-none text-dark d-block"> <i
 												class="bi bi-journal-text me-2 text-secondary"></i>
 												${dto.subject}
