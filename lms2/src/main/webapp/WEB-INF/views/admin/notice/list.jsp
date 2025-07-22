@@ -20,7 +20,7 @@
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-    <div class="container">
+    <div class="container"> 
         <div class="row">
             <div class="col">
                 <h3 class="mb-4" style="margin-top: 50px;">공지사항</h3>
