@@ -564,11 +564,20 @@ public class NoticeController {
 	public ModelAndView studentNoticelist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// (학생)공지사항 리스트
 		NoticeDAO dao = new NoticeDAO();
+		LectureDAO lectureDao = new LectureDAO();
 		MyUtil util = new MyUtil();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		ModelAndView mav = new ModelAndView("student/notice/list");
 		
 		try {
+			String member_id = info.getMember_id();
+			List<LectureDTO> lectures = lectureDao.std_listsidebar(member_id);
+			mav.addObject("lectureList", lectures);
+
+			
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null && !page.equals("") && !page.equals("null")) {
