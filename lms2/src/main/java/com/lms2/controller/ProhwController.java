@@ -287,8 +287,30 @@ public class ProhwController {
 	public ModelAndView writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//글쓰기 폼
 		ModelAndView mav = new ModelAndView("professor/hw/write");
-		
 		mav.addObject("mode", "write");
+		LectureDAO lectureDao = new LectureDAO();
+		
+		try {
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
+			if(info != null) {
+				String memberId = String.valueOf(info.getMember_id());
+				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
+				mav.addObject("lectureList", lectures);
+				
+			}
+			
+			String lecture_code = req.getParameter("lecture_code");
+			
+			Pro_hwDAO dao = new Pro_hwDAO();
+			List<Pro_hwDTO> lectureList = dao.listLectureByMember(info.getMember_id(), lecture_code);
+			mav.addObject("hwLectureList", lectureList);
+			mav.addObject("lecture_code", lecture_code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return mav;
 	}
 	
@@ -302,7 +324,8 @@ public class ProhwController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "homework";
+		String pathname = root + "uploads" + File.separator + "lecture";
+		String lecture_code = req.getParameter("lecture_code");
 		
 		try {
 			Part p = req.getPart("selectFile");
@@ -326,7 +349,7 @@ public class ProhwController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/professor/hw/list");
+		return new ModelAndView("redirect:/professor/hw/list?lecture_code=" + lecture_code);
 	}
 	
 	@RequestMapping(value = "/professor/hw/article", method = RequestMethod.GET)

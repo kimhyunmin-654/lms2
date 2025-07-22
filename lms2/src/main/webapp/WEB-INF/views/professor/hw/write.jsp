@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>과제 등록</title>
+<title>자료실</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
@@ -23,33 +23,18 @@
 				<div class="body-container row justify-content-center" style="margin: 100px;">
 					<div class="col-md-10 my-3 p-3">
 					<div class="body-title">
-						<h3>과제 등록</h3>
+						<h3>자료실</h3>
 					</div>
 					
 					<div class="body-main">
 						<form name="hwForm" action="${pageContext.request.contextPath}/professor/hw/${mode}" method="post" enctype="multipart/form-data">
-
+							<input type="hidden" name="lecture_code" value="${lecture_code}" />
 							<table class="table">
 								<tr>
 									<td>제목
 									</td>
 									<td>
 										<input type="text" name="subject" maxlength="100" class="form-control" value="${dto.subject}">
-									</td>
-								</tr>
-								
-								<tr>
-									<td>강의 과목
-									</td>
-									<td>
-										<select name="lecture_code" id="lesson-select">
-											<option value="CS01">a</option>
-											<option value="CS02">b</option>
-											<option value="CS03">c</option>
-											<option value="CS04">d</option>
-											<option value="CS05">e</option>
-											<option value="CS06">f</option>
-										</select>
 									</td>
 								</tr>
 								

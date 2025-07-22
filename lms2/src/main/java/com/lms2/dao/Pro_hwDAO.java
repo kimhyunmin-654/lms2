@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lms2.model.DataDTO;
 import com.lms2.model.Pro_hwDTO;
 import com.lms2.model.Std_hwDTO;
 import com.lms2.util.DBConn;
@@ -541,4 +540,6 @@ public class Pro_hwDAO {
 	        DBUtil.close(pstmt);
 	    }
 	}
+	
+	
 }
