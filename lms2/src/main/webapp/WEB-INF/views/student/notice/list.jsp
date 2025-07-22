@@ -37,7 +37,6 @@
                 <!-- 상단: 삭제/페이지 선택/글쓰기 -->
                 <div class="d-flex justify-content-between mb-2 align-items-center">
 
-					일반글 ${dataCount} 개 / 공지글 ${dataCount2} 개( ${page} / ${total_page} 페이지)
                     <div class="d-flex align-items-center">
                         <c:if test="${dataCount != 0}">
                             <form name="pageSizeForm" class="me-2">
