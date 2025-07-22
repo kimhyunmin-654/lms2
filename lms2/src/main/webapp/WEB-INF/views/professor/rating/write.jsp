@@ -32,10 +32,8 @@
 		<div class="container" style="margin-left: 220px; padding: 30px;">
 		<div class="body-container row justify-content-center bbs-header"
 				style="margin: 100px;">
-				<div
-					style="font-size: 29px; text-align: center; margin-bottom: 30px;">
+				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
 					<img src="${pageContext.request.contextPath}/dist/images/sungjuk.png">
-					성적 관리
 				</div>
 					
 			<form method="post" action="${pageContext.request.contextPath}/professor/rating/write" name="submitForm">
