@@ -22,7 +22,6 @@
 			<div class="body-container row justify-content-center" style="margin: 100px;">
 				<div class="col-md-10 my-3 p-3">
 					<div class="body-title">
-						
 						<table class="table" style="margin-bottom: 30px;">
 							<tr>
 								<td width="100px;" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">과제</td>
@@ -68,7 +67,7 @@
 											<i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/homework/download?homework_id=${dto.homework_id}">${dto.original_filename}</a>
 										</div>
 									</td>
-									</c:if>
+								</c:if>
 								</tr>
 
 								<tr>
@@ -90,13 +89,21 @@
 
 						<table class="table table-borderless mb-2">
 							<tr>
-								<td width="10%"><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/update?homework_id=${dto.homework_id}&page=${page}';">수정</button>
-								<td width="10%"><button type="button" class="btn btn-light" onclick="Delete('${dto.homework_id}', '${page}');">삭제</button>
+								<td width="10%">
+									<button type="button" class="btn btn-light"
+										onclick="location.href='${pageContext.request.contextPath}/professor/hw/update?homework_id=${dto.homework_id}&page=${page}&lecture_code=${dto.lecture_code}';">수정</button>
+								</td>
+								<td width="10%">
+									<button type="button" class="btn btn-light"
+										onclick="Delete('${dto.homework_id}', '${page}', '${dto.lecture_code}');">삭제</button>
+								</td>
 								<td class="text-end">
-									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/list?${query}';">리스트</button>
+									<button type="button" class="btn btn-light"
+										onclick="location.href='${pageContext.request.contextPath}/professor/hw/list?${query}';">리스트</button>
 								</td>
 							</tr>
 						</table>
+
 					</div>
 				</div>
 			</div>
@@ -107,44 +114,11 @@
 		function login() {
 			location.href = '${pageContext.request.contextPath}/member/login';
 		}
-		
-		function sendAjaxRequest(url, method, params, responseType, fn, file = false) {
-			const settings = {
-				type: method,
-				data: params,
-				dataType: responseType,
-				success: function(data) {
-					fn(data);	
-				},
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader('AJAX', true);
-				},
-				complete: function() {
-				},
-				error: function(xhr) {
-					if (xhr.status === 403) {
-						login();
-						return false;
-					} else if (xhr.status === 406) {
-						alert('요청 처리가 실패했습니다.');
-						return false;
-					}
-					
-					console.log(xhr.responseText);
-				}
-			};
-			
-			if (file) {
-				settings.processData = false;
-				settings.contentType = false;
-			}
-			
-			$.ajax(url, settings);
-	
-		}
-		function Delete(homework_id, page) {
-			if(confirm('삭제 하시겠습니까?')) {
-				location.href = '${pageContext.request.contextPath}/professor/hw/delete?homework_id=' + homework_id + '&page=' + page;
+
+		function Delete(homework_id, page, lecture_code) {
+			if (confirm('삭제 하시겠습니까?')) {
+				location.href = '${pageContext.request.contextPath}/professor/hw/delete?homework_id='
+					+ homework_id + '&page=' + page + '&lecture_code=' + lecture_code;
 			}
 		}
 	</script>
