@@ -30,7 +30,7 @@
 
 			<div class="body-container row justify-content-center hw-header" style="margin: 100px;">
 				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
-					<img src="${pageContext.request.contextPath}/dist/images/gwaje.png">
+					<img src="${pageContext.request.contextPath}/dist/images/sangyong_logo_hw3..png">
 				</div>
 
 				<table class="table table-hover board-list">
@@ -50,7 +50,7 @@
 							<td>${dataCount - (page - 1) * size - status.index}</td>
 							<td class="left">
 								<div class="text-wrap">
-									<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${dto.homework_id}&page=${page}" class="text-reset">${dto.subject}</a>
+									<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${dto.homework_id}&page=${page}&lecture_code=${lecture_code}" class="text-reset">${dto.subject}</a>
 								</div>
 							</td>
 							<td>${dto.reg_date}</td>
@@ -69,15 +69,17 @@
 					</tbody>
 				</table>
 
-				<div class="page-navigation">${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
+				<div class="page-navigation">${dataCount == 0 ? "" : paging}
 				</div>
 
 				<div class="row board-list-footer">
 					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/list';">새로고침</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/list?lecture_code=${lecture_code}';">새로고침</button>
 					</div>
 					<div class="col-6 d-flex justify-content-center">
 						<form class="row" name="searchForm">
+							<input type="hidden" name="lecture_code" value="${lecture_code}"> <!-- ✅ 추가 -->
+
 							<div class="col-auto p-1">
 								<select name="schType" class="form-select">
 									<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
@@ -88,27 +90,23 @@
 								</select>
 							</div>
 							<div class="col-auto p-1">
-								<input type="text" name="kwd" value="${kwd}"
-									class="form-control">
+								<input type="text" name="kwd" value="${kwd}" class="form-control">
 							</div>
 							<div class="col-auto p-1">
-								<button type="button" class="btn btn-light" onclick="searchList()">
-									검색
-								</button>
+								<button type="button" class="btn btn-light" onclick="searchList()">검색</button>
 							</div>
 						</form>
 					</div>
 
 					<div class="col text-end">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/write';">글올리기</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/hw/write?lecture_code=${lecture_code}';">글올리기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
 	</main>
-	<script
-		src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>
+	<script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>
 	<script type="text/javascript">
 		// 검색 키워드 입력란에서 엔터를 누른 경우 서버 전송 막기 
 		window.addEventListener('DOMContentLoaded', () => {
@@ -116,7 +114,6 @@
 			inputEL.addEventListener('keydown', function (evt) {
 			    if(evt.key === 'Enter') {
 			    	evt.preventDefault();
-			    	
 			    	searchList();
 			    }
 			});
@@ -128,10 +125,6 @@
 				return;
 			}
 			
-			// form 요소는 FormData를 이용하여 URLSearchParams 으로 변환
-			// formData = 2진데이터 형식 
-			// FormData(f)가 자동으로 인코딩해줌
-			// 검색은 무조건 GET 방식
 			const formData = new FormData(f);
 			let params = new URLSearchParams(formData).toString();
 			

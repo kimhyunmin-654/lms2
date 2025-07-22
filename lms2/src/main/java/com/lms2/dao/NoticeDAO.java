@@ -145,8 +145,8 @@ public class NoticeDAO {
 			sql = "SELECT NVL(COUNT(*), 0) FROM notice n "
 					+ " JOIN admin a ON n.member_id = a.member_id "
 					+ " JOIN member m ON a.member_id = m.member_id ";
-			if (schType.equals("all")) {
-				sql += "  WHERE INSTR(n.subject, ?) >= 1 OR INSTR(n.content, ?) >= 1 ";
+			if (schType.equals("subject")) {
+				sql += "  WHERE INSTR(n.subject, ?) >= 1 ";
 			} else if (schType.equals("n.reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
 				sql += "  WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
@@ -191,8 +191,8 @@ public class NoticeDAO {
 			sql = "SELECT NVL(COUNT(*), 0) FROM notice n "
 					+ " JOIN admin a ON n.member_id = a.member_id "
 					+ " JOIN member m ON a.member_id = m.member_id ";
-			if (schType.equals("all")) {
-				sql += "  WHERE is_notice = 1 AND INSTR(n.subject, ?) >= 1 OR INSTR(n.content, ?) >= 1 ";
+			if (schType.equals("subject")) {
+				sql += "  WHERE is_notice = 1 AND INSTR(n.subject, ?) >= 1 ";
 			} else if (schType.equals("n.reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
 				sql += "  WHERE is_notice = 1 AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
@@ -287,15 +287,15 @@ public class NoticeDAO {
 			sb.append(" FROM notice n ");
 			sb.append(" JOIN admin a ON n.member_id = a.member_id");
 			sb.append(" JOIN member m ON a.member_id = m.member_id");
-			if (schType.equals("all")) {
-				sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ");
+			if (schType.equals("subject")) {
+				sb.append(" WHERE  INSTR(subject, ?) >= 1");
 			} else if (schType.equals("reg_date")) {
 				kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
-				sb.append(" WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ?");
+				sb.append(" WHERE  TO_CHAR(reg_date, 'YYYYMMDD') = ?");
 			} else if (schType.equals("name")) {
 				sb.append( " WHERE INSTR(m.name, ?) >= 1");
 			} else {
-				sb.append(" WHERE INSTR(" + schType + ", ?) >= 1 ");
+				sb.append(" WHERE  INSTR(" + schType + ", ?) >= 1 ");
 			}
 		
 			sb.append(" ORDER BY n.notice_id DESC ");
@@ -441,8 +441,8 @@ public class NoticeDAO {
 				sb.append(" FROM notice n ");
 				sb.append(" JOIN admin a ON n.member_id = a.member_id ");
 				sb.append(" WHERE ( notice_id > ? ) ");
-				if (schType.equals("all")) {
-					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
+				if (schType.equals("subject")) {
+					sb.append("   AND ( INSTR(subject, ?) >= 1) ");
 				} else if (schType.equals("reg_date")) {
 					kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
 					sb.append("   AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");
@@ -502,8 +502,8 @@ public class NoticeDAO {
 				sb.append(" FROM notice n ");
 				sb.append(" JOIN admin a ON n.member_id = a.member_id ");
 				sb.append(" WHERE ( notice_id < ? ) ");
-				if (schType.equals("all")) {
-					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
+				if (schType.equals("subject")) {
+					sb.append("   AND ( INSTR(subject, ?) >= 1) ");
 				} else if (schType.equals("reg_date")) {
 					kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
 					sb.append("   AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");

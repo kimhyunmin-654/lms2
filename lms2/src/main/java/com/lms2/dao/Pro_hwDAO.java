@@ -139,16 +139,18 @@ public class Pro_hwDAO {
 			sb.append(" SELECT h.homework_id, h.subject, ");
 			sb.append(" TO_CHAR(h.reg_date, 'YYYY-MM-DD') reg_date, ");
 			sb.append(" h.hit_count, TO_CHAR(h.deadline_date, 'YYYY-MM-DD') AS deadline_date, ");
-			sb.append(" f.save_filename, f.original_filename ");
+			sb.append(" f.save_filename, f.original_filename, h.lecture_code, l.subject ");
 			sb.append(" FROM homework h ");
 			sb.append(" LEFT JOIN homework_file f ON h.homework_id = f.homework_id ");
+			sb.append(" LEFT JOIN LECTURE l ON h.lecture_code = l.lecture_code ");
+			sb.append(" WHERE h.lecture_code = ? ");
 			sb.append(" ORDER BY h.homework_id DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
-			
-			pstmt.setInt(1, offset);
-			pstmt.setInt(2, size);
+			pstmt.setString(1, lecture_code);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

@@ -30,100 +30,109 @@ public class ProhwController {
 
 	@RequestMapping(value = "/professor/hw/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//리스트보기
-		ModelAndView mav = new ModelAndView("/professor/hw/list");
-		Pro_hwDAO dao = new Pro_hwDAO();
-		LectureDAO lectureDao = new LectureDAO();
-		MyUtil util = new MyUtil();
-		
-		try {
-			HttpSession session = req.getSession(false);
-			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			if (info != null) {
-				String memberId = String.valueOf(info.getMember_id());
-				List<LectureDTO> lectures = lectureDao.listsidebar(memberId);
-				mav.addObject("lectureList", lectures);
-			}
-			
-			String page = req.getParameter("page");
-			int current_page = 1;
-			if (page != null) {
-				current_page = Integer.parseInt(page);
-			}
+	    // 리스트 보기
+	    ModelAndView mav = new ModelAndView("/professor/hw/list");
+	    Pro_hwDAO dao = new Pro_hwDAO();
+	    LectureDAO lectureDao = new LectureDAO();
+	    MyUtil util = new MyUtil();
 
-			String schType = req.getParameter("schType");
-			String kwd = req.getParameter("kwd");
-			if (schType == null) {
-				schType = "all";
-				kwd = "";
-			}
-			kwd = util.decodeUrl(kwd);
+	    try {
+	        HttpSession session = req.getSession(false);
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        String lecture_code = null;
 
-			String query = "";
-			if (kwd.length() != 0) {
-				query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
-			}
+	        List<LectureDTO> lectures = null;
+	        if (info != null) {
+	            String memberId = String.valueOf(info.getMember_id());
+	            lectures = lectureDao.listsidebar(memberId);
+	            mav.addObject("lectureList", lectures);
+	        }
 
-			// lecture_code 넘기기
-			String lecture_code = req.getParameter("lecture_code");
-			if (lecture_code != null) {
-				if (!query.isEmpty()) {
-					query += "&";
-				}
-				query += "lecture_code=" + lecture_code;
-			}
+	        String page = req.getParameter("page");
+	        int current_page = 1;
+	        if (page != null) {
+	            current_page = Integer.parseInt(page);
+	        }
 
-			int dataCount;
-			if (kwd.length() == 0) {
-				dataCount = dao.dataCount(lecture_code);
-			} else {
-				dataCount = dao.dataCount(schType, kwd, lecture_code);
-			}
+	        String schType = req.getParameter("schType");
+	        String kwd = req.getParameter("kwd");
+	        if (schType == null) {
+	            schType = "all";
+	            kwd = "";
+	        }
+	        kwd = util.decodeUrl(kwd);
 
-			int size = 10;
-			int total_page = util.pageCount(dataCount, size);
-			if (current_page > total_page) {
-				current_page = total_page;
-			}
+	        String query = "";
+	        if (kwd.length() != 0) {
+	            query = "schType=" + schType + "&kwd=" + util.encodeUrl(kwd);
+	        }
 
-			int offset = (current_page - 1) * size;
-			if (offset < 0)
-				offset = 0;
+	        lecture_code = req.getParameter("lecture_code");
 
-			List<Pro_hwDTO> list = null;
-			if (kwd.length() == 0) {
-				list = dao.listPro_hw(offset, size, lecture_code);
-			} else {
-				list = dao.listPro_hw(offset, size, schType, kwd, lecture_code);
-			}
+	        if (lecture_code == null || lecture_code.trim().isEmpty()) {
+	            if (lectures != null && !lectures.isEmpty()) {
+	                lecture_code = lectures.get(0).getLecture_code();
+	            }
+	        }
 
-			String cp = req.getContextPath();
-			String listUrl = cp + "/professor/hw/list";
-			String articleUrl = cp + "/professor/hw/article?page=" + current_page;
-			if (query.length() != 0) {
-				listUrl += "?" + query;
-				articleUrl += "&" + query;
-			}
+	        if (lecture_code != null && !lecture_code.trim().isEmpty()) {
+	            if (!query.isEmpty()) {
+	                query += "&";
+	            }
+	            query += "lecture_code=" + lecture_code;
+	        }
 
-			String paging = util.paging(current_page, total_page, listUrl);
+	        int dataCount;
+	        if (kwd.length() == 0) {
+	            dataCount = dao.dataCount(lecture_code);
+	        } else {
+	            dataCount = dao.dataCount(schType, kwd, lecture_code);
+	        }
 
-			mav.addObject("list", list);
-			mav.addObject("dataCount", dataCount);
-			mav.addObject("size", size);
-			mav.addObject("page", current_page);
-			mav.addObject("total_page", total_page);
-			mav.addObject("articleUrl", articleUrl);
-			mav.addObject("paging", paging);
-			mav.addObject("schType", schType);
-			mav.addObject("kwd", kwd);
-			mav.addObject("lecture_code", lecture_code);
+	        int size = 10;
+	        int total_page = util.pageCount(dataCount, size);
+	        if (current_page > total_page) {
+	            current_page = total_page;
+	        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mav;
+	        int offset = (current_page - 1) * size;
+	        if (offset < 0)
+	            offset = 0;
+
+	        List<Pro_hwDTO> list = null;
+	        if (kwd.length() == 0) {
+	            list = dao.listPro_hw(offset, size, lecture_code);
+	        } else {
+	            list = dao.listPro_hw(offset, size, schType, kwd, lecture_code);
+	        }
+
+	        String cp = req.getContextPath();
+	        String listUrl = cp + "/professor/hw/list";
+	        String articleUrl = cp + "/professor/hw/article?page=" + current_page;
+
+	        if (query.length() != 0) {
+	            listUrl += "?" + query;
+	            articleUrl += "&" + query;
+	        }
+
+	        String paging = util.paging(current_page, total_page, listUrl);
+
+	        mav.addObject("list", list);
+	        mav.addObject("dataCount", dataCount);
+	        mav.addObject("size", size);
+	        mav.addObject("page", current_page);
+	        mav.addObject("total_page", total_page);
+	        mav.addObject("articleUrl", articleUrl);
+	        mav.addObject("paging", paging);
+	        mav.addObject("schType", schType);
+	        mav.addObject("kwd", kwd);
+	        mav.addObject("lecture_code", lecture_code); // ✅ JSP로 넘김
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return mav;
 	}
-	
 	//학생과제보기
 	@RequestMapping(value = "/student/hw/article", method = RequestMethod.GET)
 	public ModelAndView sArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
