@@ -120,11 +120,9 @@
 					    <div class="col d-flex justify-content-center">
 					        <form name="searchForm" class="d-flex align-items-center gap-2">
 					            <select name="schType" class="form-select" style="width: 140px;">
-					                <option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
+					                <option value="subject" ${schType=="subject"?"selected":""}>제목</option>
 					                <option value="name" ${schType=="name"?"selected":""}>작성자</option>
 					                <option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
-					                <option value="subject" ${schType=="subject"?"selected":""}>제목</option>
-					                <option value="content" ${schType=="content"?"selected":""}>내용</option>
 					            </select>
 					
 					            <input type="text" name="kwd" value="${kwd}" class="form-control" placeholder="검색어 입력" style="width: 250px;">
