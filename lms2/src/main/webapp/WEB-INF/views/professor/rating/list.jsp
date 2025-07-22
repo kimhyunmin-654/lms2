@@ -69,7 +69,7 @@
             <c:when test="${empty list}">
                 <tr>
                     <td colspan="8" class="text-center text-muted">
-                        성적관리 리스트에 추가할 데이터가 없습니다. 수강 학생이 없습니다.
+                        수강 학생이 없습니다.
                     </td>
                 </tr>
             </c:when>

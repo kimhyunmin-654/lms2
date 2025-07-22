@@ -32,7 +32,7 @@
 					<img src="${pageContext.request.contextPath}/dist/images/chulsuk.png">
 				</div>
 
-				<div class="row text-center mb-3">
+				<div class="row text-center mb-3 justify-content-center">
 					<div class="col-auto">
 						<span class="badge bg-success px-3 py-2">출석 (${present})</span>
 					</div>
@@ -51,7 +51,7 @@
 				</div>
 
 				<div class="row justify-content-center">
-					<div class="col-md-4">
+					<div class="col-md-8">
 						<table class="table table-bordered text-center small align-middle">
 							<thead class="table-light">
 								<tr>

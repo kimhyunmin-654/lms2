@@ -50,18 +50,10 @@
 
 			</form>
 			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/professor/main/main">메인 페이지</a></div>
-			<div class="accordion-item">
-				<h2 class="accordion-header">
-					<button class="accordion-button custom-accordion-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-						강의실 <span class="ms-auto toggle-icon">+</span>
-					</button>
-				</h2>
-				<div id="collapseOne" class="accordion-collapse collapse"
-					data-bs-parent="#sidebarAccordion">
-					<div class="accordion-body custom-submenu"><a href="${pageContext.request.contextPath}/professor/lecture/compList?lecture_code=${dto.lecture_code}">강의 목록</a></div>
-					<div class="accordion-body custom-submenu">수업 일정</div>
-				</div>
-			</div>
+
+
+			<div class="accordion-button custom-accordion-btn collapsed"><a href="${pageContext.request.contextPath}/professor/lecture/compList?lecture_code=${dto.lecture_code}">강의 목록</a></div>
+
 
 			<div class="accordion-item">
 				<h2 class="accordion-header">

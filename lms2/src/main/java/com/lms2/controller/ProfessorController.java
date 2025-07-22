@@ -259,6 +259,8 @@ public class ProfessorController {
 	    LectureDAO lectureDao = new LectureDAO();
 	    NoticeDAO noticeDao = new NoticeDAO();
 	    DataDAO dataDao = new DataDAO();
+	    
+	    ModelAndView mav = new ModelAndView("/professor/lecture/main1");
 
 	    String page = req.getParameter("page");
 	    String size = req.getParameter("size");
@@ -271,7 +273,7 @@ public class ProfessorController {
 	    try {
 	        String lecture_code = req.getParameter("lecture_code");
 
-	        ModelAndView mav = new ModelAndView("professor/lecture/main1");
+	        // ModelAndView mav = new ModelAndView("professor/lecture/main1");
 
 	        // 강의 정보 조회
 	        LectureDTO dto = dao.findById1(lecture_code);
@@ -295,14 +297,16 @@ public class ProfessorController {
 	        mav.addObject("query", query);
 	        mav.addObject("page", page);
 	        mav.addObject("size", size);
+	        mav.addObject("lecture_code", lecture_code);
 
-	        return mav;
+	        // return mav;
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 
-	    return new ModelAndView("redirect:/professor/lecture/compList?" + query);
+	   // return new ModelAndView("redirect:/professor/lecture/compList?" + query);
+	    return mav;
 	}
 	
 	

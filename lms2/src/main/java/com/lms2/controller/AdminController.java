@@ -10,7 +10,6 @@ import java.util.Map;
 import com.lms2.dao.AdminDAO;
 import com.lms2.model.AdminDTO;
 import com.lms2.model.MemberDTO;
-import com.lms2.model.NoticeDTO;
 import com.lms2.model.SessionInfo;
 import com.lms2.mvc.annotation.Controller;
 import com.lms2.mvc.annotation.RequestMapping;
@@ -186,8 +185,6 @@ public class AdminController {
 		AdminDAO dao = new AdminDAO();;
 		MyUtil util = new MyUtil();
 		
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		String page = req.getParameter("page");
 		String size = req.getParameter("size");

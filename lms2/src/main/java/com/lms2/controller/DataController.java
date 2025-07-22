@@ -256,28 +256,29 @@ public class DataController {
 	public ModelAndView writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    DataDAO dao = new DataDAO();
 	    FileManager fileManager = new FileManager();
-	    
+
 	    HttpSession session = req.getSession();
 	    SessionInfo info = (SessionInfo) session.getAttribute("member");
-	    
+
 	    String root = session.getServletContext().getRealPath("/");
 	    String pathname = root + "uploads" + File.separator + "lecture";
 	    String lecture_code = req.getParameter("lecture_code");
-	   
 
 	    try {
-	        Part p = req.getPart("selectFile"); 
-	        
+	        Part p = req.getPart("select_file");
+
 	        DataDTO dto = new DataDTO();
 	        dto.setMember_id(info.getMember_id());
 	        dto.setSubject(req.getParameter("subject"));
 	        dto.setContent(req.getParameter("content"));
-	        dto.setLecture_code(req.getParameter("lecture_code"));
+	        dto.setLecture_code(lecture_code);
 
-	        MyMultipartFile multiFile = fileManager.doFileUpload(p, pathname);
-	        if (multiFile != null) {
-	            dto.setSave_filename(multiFile.getSaveFilename());
-	            dto.setOriginal_filename(multiFile.getOriginalFilename());
+	        if (p != null && p.getSize() > 0) {
+	            MyMultipartFile multiFile = fileManager.doFileUpload(p, pathname);
+	            if (multiFile != null) {
+	                dto.setSave_filename(multiFile.getSaveFilename());
+	                dto.setOriginal_filename(multiFile.getOriginalFilename());
+	            }
 	        }
 
 	        dao.insertData(dto);
@@ -333,8 +334,8 @@ public class DataController {
 			dto.setContent(util.htmlSymbols(dto.getContent()));
 
 			// 이전글 다음글
-			DataDTO prevDto = dao.findByPrev(dto.getData_id(), schType, kwd);
-			DataDTO nextDto = dao.findByNext(dto.getData_id(), schType, kwd);
+			DataDTO prevDto = dao.findByPrev(dto.getData_id(), schType, kwd, lecture_code);
+			DataDTO nextDto = dao.findByNext(dto.getData_id(), schType, kwd, lecture_code);
 
 			ModelAndView mav = new ModelAndView("/professor/bbs/article");
 			mav.addObject("dto", dto);
@@ -403,8 +404,8 @@ public class DataController {
 			dto.setContent(util.htmlSymbols(dto.getContent()));
 
 			// 이전글 다음글
-			DataDTO prevDto = dao.findByPrev(dto.getData_id(), schType, kwd);
-			DataDTO nextDto = dao.findByNext(dto.getData_id(), schType, kwd);
+			DataDTO prevDto = dao.findByPrev(dto.getData_id(), schType, kwd, lecture_code);
+			DataDTO nextDto = dao.findByNext(dto.getData_id(), schType, kwd, lecture_code);
 
 			ModelAndView mav = new ModelAndView("/student/bbs/article");
 			mav.addObject("dto", dto);
@@ -662,7 +663,7 @@ public class DataController {
 
 		// 파일 저장 경로
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "lecture";
+		String pathname = root + "uploads" + File.separator + "bbs";
 
 		boolean b = false;
 

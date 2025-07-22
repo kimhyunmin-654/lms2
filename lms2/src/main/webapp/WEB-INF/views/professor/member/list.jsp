@@ -68,26 +68,20 @@
 					<div class="col">
 						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/professor/member/list?lecture_code=${lecture_code}';">새로고침</button>
 					</div>
-					<div class="col-6 d-flex justify-content-center">
-						<form class="row" name="searchForm">
-							<div class="col-auto p-1">
-								<select name="schType" class="form-select">
-									<option value="member_id" ${schType=="member_id"?"selected":""}>학번</option>
-									<option value="department_name" ${schType=="department_name"?"selected":""}>학과</option>
-									<option value="name" ${schType=="name"?"selected":""}>이름</option>
-								</select>
-							</div>
-							<div class="col-auto p-1">
-								<input type="text" name="kwd" value="${kwd}"
-									class="form-control">
-							</div>
-							<div class="col-auto p-1">
-								<button type="button" class="btn btn-light" onclick="searchList()">
-									검색
-								</button>
-							</div>
-						</form>
-					</div>
+					<div class="col d-flex justify-content-center">
+					        <form name="searchForm" class="d-flex align-items-center gap-2">
+					            <select name="schType" class="form-select" style="width: 140px;">
+					                <option value="number" ${schType=="number"?"selected":""}>학번</option>
+					                <option value="name" ${schType=="name"?"selected":""}>이름</option>
+					                <option value="department_name" ${schType=="department_name"?"selected":""}>학과명</option>
+					            </select>
+					
+					            <input type="text" name="kwd" value="${kwd}" class="form-control" placeholder="검색어 입력" style="width: 250px;">
+					           	<input type="hidden" name="lecture_code" value="${lecture_code}">
+
+					            <button type="button" class="btn btn-light border" onclick="searchList()">검색</button>
+					        </form>
+					    </div>		
 				</div>
 			</div>
 		</div>
@@ -113,16 +107,10 @@
 			if(! f.kwd.value.trim()) {
 				return;
 			}
-			
-			// form 요소는 FormData를 이용하여 URLSearchParams 으로 변환
-			// formData = 2진데이터 형식 
-			// FormData(f)가 자동으로 인코딩해줌
-			// 검색은 무조건 GET 방식
 			const formData = new FormData(f);
 			let params = new URLSearchParams(formData).toString();
 			
-			let url = '${pageContext.request.contextPath}/professor/member/list';
-			location.href = url + '?' + params;
+			location.href = '${pageContext.request.contextPath}/professor/member/list?' + params;
 		}
 	</script>
 </body>
