@@ -50,7 +50,7 @@
 <div class="col-md-6 wrap-member_id">
     <label class="form-label">아이디(교번)</label>
     <div class="input-group">
-        <input type="text" name="member_id" id="member_id" class="form-control" 
+        <input type="text" name="member_id" id="member_id" class="form-control" placeholder="아이디 (숫자 6자리)"
                value="${dto.member_id}" ${mode=="update" ? "readonly" : ""} autofocus>
         <c:if test="${mode == 'account'}">
             <button type="button" class="btn btn-outline-secondary" onclick="userIdCheck();">아이디 중복검사</button>
@@ -64,15 +64,15 @@
 </div>
 			<div class="col-md-6">
 				<label class="form-label">이름</label>
-				<input type="text" name="name" class="form-control" value="${dto.name}">
+				<input type="text" name="name" class="form-control" value="${dto.name}" placeholder="이름 (한글 2~5자)">
 			</div>
 			<div class="col-md-6">
 				<label class="form-label">비밀번호</label>
-				<input type="password" name="password" class="form-control">
+				<input type="password" name="password" class="form-control" placeholder="비밀번호 (영문, 숫자, 특수문자 포함 5~10자)">
 			</div>
 			<div class="col-md-6">
 				<label class="form-label">비밀번호 확인</label>
-				<input type="password" name="password2" class="form-control">
+				<input type="password" name="password2" class="form-control" placeholder="비밀번호 확인">
 			</div>
 			<div class="col-md-6">
 				<label class="form-label">생년월일</label>
@@ -160,6 +160,8 @@
 		</c:if>
 		</div>
 	</form>
+	</div>
+	</div>
 </div>
 </main>
 
