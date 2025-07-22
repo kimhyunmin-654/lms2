@@ -23,7 +23,7 @@
     <div class="container"> 
         <div class="row">
             <div class="col">
-                <h3 class="mb-4" style="margin-top: 50px;">공지사항</h3>
+                <h3 class="mb-4" style="margin-top: 100px;">공지사항</h3>
 
                 <!-- 상단: 삭제/페이지 선택/글쓰기 -->
                 <div class="d-flex justify-content-between mb-2 align-items-center">
