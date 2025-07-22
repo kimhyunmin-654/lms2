@@ -481,7 +481,7 @@ public class DataController {
 		FileManager fileManager = new FileManager();
 		
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "bbs";
+		String pathname = root + "uploads" + File.separator + "lecture";
 		
 		String page = req.getParameter("page");
 		String lecture_code = req.getParameter("lecture_code");
@@ -663,7 +663,7 @@ public class DataController {
 
 		// 파일 저장 경로
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "bbs";
+		String pathname = root + "uploads" + File.separator + "lecture";
 
 		boolean b = false;
 
