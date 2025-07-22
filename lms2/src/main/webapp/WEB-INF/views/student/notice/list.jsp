@@ -28,7 +28,7 @@
             <div class="col row">
                <table class="table" style="margin-bottom: 30px;">
 					<tr>
-						<td width="150px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">공지사항</td>
+						<td width="150px" align="left" class="page-title" style="border-bottom: 3px solid #CF1C31; border-top:none; ">공지사항</td>
 						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 					</tr>
@@ -120,11 +120,9 @@
 					    <div class="col d-flex justify-content-center">
 					        <form name="searchForm" class="d-flex align-items-center gap-2">
 					            <select name="schType" class="form-select" style="width: 140px;">
-					                <option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
+					                <option value="subject" ${schType=="subject"?"selected":""}>제목</option>
 					                <option value="name" ${schType=="name"?"selected":""}>작성자</option>
 					                <option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
-					                <option value="subject" ${schType=="subject"?"selected":""}>제목</option>
-					                <option value="content" ${schType=="content"?"selected":""}>내용</option>
 					            </select>
 					
 					            <input type="text" name="kwd" value="${kwd}" class="form-control" placeholder="검색어 입력" style="width: 250px;">
@@ -134,7 +132,7 @@
 					            <button type="button" class="btn btn-light border" onclick="searchList()">검색</button>
 					        </form>
 					    </div>					
-					</div>
+					</div> 
 				</div>
 			</div>
 		</div>
