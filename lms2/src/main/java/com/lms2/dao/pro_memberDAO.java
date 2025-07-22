@@ -3,6 +3,7 @@ package com.lms2.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,8 +86,12 @@ public class pro_memberDAO {
 				result = rs.getInt(1);
 			}
 						
+		} catch (SQLException e) {
+			DBUtil.rollback(conn);
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+
 		} finally {
 			DBUtil.close(rs);
 			DBUtil.close(pstmt);
@@ -157,8 +162,8 @@ public class pro_memberDAO {
 		    sb.append(" WHERE c.apply_status = '신청' ");		
 		    sb.append(" AND c.lecture_code = ? ");
 		    
-			if(schType.equals("all")) {
-				sb.append(" AND ( INSTR(m.member_id, ?) >= 1 OR INSTR(m.name, ?) >= 1 ) ");
+			if(schType.equals("number")) {
+				sb.append(" AND ( INSTR(m.member_id, ?) >= 1) ");
 			} else if(schType.equals("birth")) { 
 				kwd = kwd.replaceAll("(\\-|\\.|\\/)", "");
 				sb.append("AND TO_CHAR(m.birth, 'YYYYMMDD') = ? ");
@@ -174,17 +179,12 @@ public class pro_memberDAO {
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 	
 			pstmt = conn.prepareStatement(sb.toString());
-			
-			if(schType.equals("all")) {
-				pstmt.setString(1, kwd);
+
+				pstmt.setString(1, lecture_code);
 				pstmt.setString(2, kwd);
 				pstmt.setInt(3, offset);
 				pstmt.setInt(4, size);
-			} else {
-				pstmt.setString(1, kwd);
-				pstmt.setInt(2, offset);
-				pstmt.setInt(3, size);
-			}
+			
 						
 			rs = pstmt.executeQuery();
 			
@@ -220,7 +220,7 @@ public class pro_memberDAO {
 	       StringBuilder sb = new StringBuilder();
 
 	       try {
-	    	   sb.append(" SELECT m.member_id, m.name, TO_CHAR(birth, 'YYYY-MM-DD') birth, ");
+	    	    sb.append(" SELECT m.member_id, m.name, TO_CHAR(birth, 'YYYY-MM-DD') birth, ");
 		        sb.append(" m.email, m.phone, m.role, d.department_name, c.lecture_code");
 		        sb.append(" FROM course_application c ");
 		        sb.append(" JOIN student s ON c.member_id = s.member_id ");
