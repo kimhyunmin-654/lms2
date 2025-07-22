@@ -703,5 +703,42 @@ public class StudentController {
 		return new ModelAndView("redirect:/student/main/main");
 
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/student/student/deleteAvatar", method = RequestMethod.POST)
+	public Map<String, Object> deleteAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 프로파일 포토 삭제 - AJAX
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		AdminDAO dao = new AdminDAO();
+		FileManager fileManager = new FileManager();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "member";
+		
+		String state = "false";
+		
+		try {
+			String avatar = req.getParameter("avatar");
+			if(avatar != null && avatar.length() != 0) {
+				fileManager.doFiledelete(pathname, avatar);
+				
+				dao.deleteAvatar(info.getMember_id());
+				
+				info.setAvatar("");
+				state = "true";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.put("state", state);
+		
+		return model;
+	}
+	
 
 }

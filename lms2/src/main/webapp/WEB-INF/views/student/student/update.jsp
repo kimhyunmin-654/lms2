@@ -190,7 +190,7 @@ window.addEventListener('DOMContentLoaded', ev => {
 			avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
 			
 			// 등록 이미지 삭제
-			let url = '${pageContext.request.contextPath}/admin/admin/deleteAvatar';
+			let url = '${pageContext.request.contextPath}/student/student/deleteAvatar';
 			$.post(url, {avatar: img}, function(data) {
 				let state = data.state;
 				
