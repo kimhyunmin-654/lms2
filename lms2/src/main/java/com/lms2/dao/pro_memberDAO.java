@@ -171,19 +171,17 @@ public class pro_memberDAO {
 				sb.append(" AND INSTR(m.name, ?) >= 1");
 			} else if (schType.equals("department_name")) {
 				sb.append(" AND INSTR(d.department_name, ?) >= 1");		
-			} else {
-				sb.append(" AND INSTR(" + schType + ", ?) >= 1") ; 
-			}
-								
+			} 
+			
 			sb.append(" ORDER BY m.member_id ASC");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 	
 			pstmt = conn.prepareStatement(sb.toString());
 
-				pstmt.setString(1, lecture_code);
-				pstmt.setString(2, kwd);
-				pstmt.setInt(3, offset);
-				pstmt.setInt(4, size);
+			pstmt.setString(1, lecture_code);
+			pstmt.setString(2, kwd);
+			pstmt.setInt(3, offset);
+			pstmt.setInt(4, size);
 			
 						
 			rs = pstmt.executeQuery();
