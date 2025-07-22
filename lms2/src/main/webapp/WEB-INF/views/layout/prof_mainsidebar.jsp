@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout.css">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/font.css">
 	<div class="blackbox">
 		<div class="text-center mb-4">
 			<img src="${not empty sessionScope.member.avatar ? pageContext.request.contextPath.concat('/uploads/member/').concat(sessionScope.member.avatar) : pageContext.request.contextPath.concat('/dist/images/user.png')}" 
