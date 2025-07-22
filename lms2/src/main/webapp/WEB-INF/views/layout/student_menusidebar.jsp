@@ -17,31 +17,17 @@
 	  text-decoration: none;  
 	  color: inherit;         
 	}
+    #lesson-select { 
+        background-color: #fff;
+        border: 1px solid;
+        border-radius: 8px;
+        width: 100%;
+        text-align: center;
+    }
 </style>
 </head>
 <body>
 	<div class="text-white p-3 position-fixed blackbox2">
-	<%-- 	
-		<form>
-			<select name="lecture_code" id="lesson-select"
-				onchange="location.href=this.value;">
-				<option value="">-- 강의 선택 --</option>
-
-				<c:if test="${empty lectureList}">
-					<option disabled>강의 없음</option>
-				</c:if>
-
-				<c:set var="thisPage" value="${pageContext.request.requestURI}" />
-				<c:forEach var="dto" items="${lectureList}">
-				  <option value="${thisPage}?lecture_code=${dto.lecture_code}"
-				    <c:if test="${dto.lecture_code == lecture_code}">selected</c:if>>
-				    ${dto.subject}
-				  </option>
-				</c:forEach>
-
-			</select>
-		</form>
-		 --%>
 
 		<form>
 			<select name="lecture_code" id="lesson-select"
