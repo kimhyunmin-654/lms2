@@ -274,21 +274,22 @@ function sendOk() {
 		return;
 	}
 	
-	p = /^[가-힣]{2,5}$/; 
-    str = f.name.value;
-    if( ! p.test(str) ) {
-        alert('이름을 다시 입력하세요. ');
-        f.name.focus();
-        return;
+    p = /^(?=.*[a-z])(?=.*[!@#$%^*+=-]|.*[0-9]).{5,10}$/i;
+    str = f.password.value;
+    if (mode === 'update') {
+        if (!p.test(str)) {
+            alert('패스워드를 다시 입력 하세요.');
+            f.password.focus();
+            return;
+        }
+    } else {
+        p = /^(admin|\d{6})$/;
+        if (!p.test(str)) {
+            alert('초기 비밀번호는 생년월일 6자리 숫자로 입력하세요.');
+            f.password.focus();
+            return;
+        }
     }
-	
-	p =/^(?=.*[a-z])(?=.*[!@#$%^*+=-]|.*[0-9]).{5,10}$/i;
-	str = f.password.value;
-	if( ! (p.test(str) || str === "admin") ) { 
-		alert('패스워드를 다시 입력 하세요. ');
-		f.password.focus();
-		return;
-	}
 
 	if( str !== f.password2.value ) {
         alert('패스워드가 일치하지 않습니다. ');
