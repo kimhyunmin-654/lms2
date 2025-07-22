@@ -71,9 +71,9 @@
 					<div class="col d-flex justify-content-center">
 					        <form name="searchForm" class="d-flex align-items-center gap-2">
 					            <select name="schType" class="form-select" style="width: 140px;">
-					                <option value="all" ${schType=="number"?"selected":""}>학번</option>
+					                <option value="number" ${schType=="number"?"selected":""}>학번</option>
 					                <option value="name" ${schType=="name"?"selected":""}>이름</option>
-					                <option value="department_id" ${schType=="department_id"?"selected":""}>학과코드</option>
+					                <option value="department_name" ${schType=="department_name"?"selected":""}>학과명</option>
 					            </select>
 					
 					            <input type="text" name="kwd" value="${kwd}" class="form-control" placeholder="검색어 입력" style="width: 250px;">
