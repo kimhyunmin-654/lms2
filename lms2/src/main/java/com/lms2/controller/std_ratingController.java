@@ -40,12 +40,15 @@ public class std_ratingController {
 
             int size = 10;
             int offset = (current_page - 1) * size;
+            String lecture_code = req.getParameter("lecture_code");
 
             List<LectureDTO> lectures = lectureDao.std_listsidebar(memberId);
 			mav.addObject("lectureList", lectures);
             List<RatingDTO> list = dao.std_listrating(offset, size, memberId);
             mav.addObject("list", list);
+            
             mav.addObject("page", current_page);
+            mav.addObject("lecture_code", lecture_code);
 
         } catch (Exception e) {
             e.printStackTrace();

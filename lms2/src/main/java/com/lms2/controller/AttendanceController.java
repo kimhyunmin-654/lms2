@@ -59,7 +59,6 @@ public class AttendanceController {
 
 			mav.addObject("list", list);
 			mav.addObject("page", current_page);
-			mav.addObject("lecture_code", lecture_code);
 
 
 		} catch (Exception e) {
