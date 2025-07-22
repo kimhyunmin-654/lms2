@@ -9,6 +9,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 
@@ -20,11 +22,17 @@
 <main>
     <jsp:include page="/WEB-INF/views/layout/admin_mainsidebar.jsp" />
 
-    <div class="container"> 
-        <div class="row">
-            <div class="col">
-                <h3 class="mb-4" style="margin-top: 100px;">공지사항</h3>
-
+    <div class="container mt-5">
+		<div style="margin-top: 100px;">
+		<div class="main-wrapper">
+            <div class="col-md-12 row">
+				<table class="table" style="margin-bottom: 30px;">
+					<tr>
+						<td width="140px" align="left" class="page-title" style="border-bottom: 3px solid #CF1C31; border-top:none; ">공지사항</td>
+						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
+					</tr>
+				</table>
                 <!-- 상단: 삭제/페이지 선택/글쓰기 -->
                 <div class="d-flex justify-content-between mb-2 align-items-center">
                     <button class="btn btn-danger" id="btnDeleteList">삭제</button>
@@ -138,6 +146,7 @@
 
             </div>
         </div>
+	</div>
 </main>
 
 <script src="${pageContext.request.contextPath}/dist/js/sidebar-toggle.js"></script>

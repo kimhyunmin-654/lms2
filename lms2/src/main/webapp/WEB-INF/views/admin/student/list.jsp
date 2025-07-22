@@ -25,7 +25,7 @@
             <div class="col">
                 <table class="table" style="margin-bottom: 30px;">
 					<tr>
-						<td width="150px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">학생 관리</td>
+						<td width="150px" align="left" class="page-title" style="border-bottom: 3px solid #CF1C31; border-top:none; ">학생 관리</td>
 						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 					</tr>

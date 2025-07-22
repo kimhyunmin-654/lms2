@@ -25,7 +25,7 @@
 	<div class="main-wrapper">
 		<table class="table" style="margin-bottom: 30px;">
 			<tr>
-				<td width="180px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">교수 등록</td>
+				<td width="180px" align="left" class="page-title" style="border-bottom: 3px solid #CF1C31; border-top:none; ">교수 등록</td>
 				<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 				<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 			</tr>
