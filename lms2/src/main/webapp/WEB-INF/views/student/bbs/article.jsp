@@ -53,10 +53,7 @@
 
 								<tr>
 								<c:if test="${not empty dto.save_filename}">
-									<td colspan="2" align="justify">파일명</td>
-										<div>
-											<i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
-										</div>
+									<td colspan="2" align="justify">파일명: <i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a></td>
 									</c:if>
 								
 								</tr>
@@ -64,14 +61,14 @@
 								<tr>
 									<td colspan="2">이전글:
 										<c:if test="${not empty prevDto}">
-											<a href="${pageContext.request.contextPath}/professor/bbs/article?num=${prevDto.data_id}&${query}">${prevDto.subject}</a>
+											<a href="${pageContext.request.contextPath}/student/bbs/article?num=${prevDto.data_id}&${query}">${prevDto.subject}</a>
 										</c:if>
 									</td>
 								</tr>
 								<tr style="border-bottom: 2px solid gray;">
 									<td colspan="2">다음글:
 										<c:if test="${not empty nextDto}">
-											<a href="${pageContext.request.contextPath}/professor/bbs/article?num=${nextDto.data_id}&${query}">${nextDto.subject}</a>
+											<a href="${pageContext.request.contextPath}/student/bbs/article?num=${nextDto.data_id}&${query}">${nextDto.subject}</a>
 										</c:if>
 									</td>
 								</tr>

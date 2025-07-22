@@ -45,7 +45,7 @@
 							<tr>
 								<td>첨부 파일</td>
 								<td> 
-									<input type="file" name="selectFile" class="form-control">
+									<input type="file" name="select_file" class="form-control">
 									<c:if test="${mode=='update' && not empty dto.save_filename}">
 										<p class="form-control-plaintext mt-2">
 											현재 파일: <a href="${pageContext.request.contextPath}/lecture/download?num=${dto.data_id}">${dto.original_filename}</a>
@@ -72,6 +72,8 @@
 											<input type="hidden" name="num" value="${dto.data_id}">
 											<input type="hidden" name="page" value="${page}">
 											<input type="hidden" name="lecture_code" value="${lecture_code}">
+											<input type="hidden" name="save_filename" value="${dto.save_filename}" />
+											<input type="hidden" name="original_filename" value="${dto.original_filename}" />
 										</c:if>
 									</td>
 								</tr>
