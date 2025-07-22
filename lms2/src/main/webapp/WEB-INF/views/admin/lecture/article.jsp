@@ -9,7 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main2.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">/css/font.css">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
@@ -27,7 +27,7 @@
             <div class="col-md-10 row">
 				<table class="table" style="margin-bottom: 30px;">
 					<tr>
-						<td width="150px" align="left" style="border-bottom: 3px solid #CF1C31; border-top:none; font-size: 30px; padding-bottom: 0px;">강의 정보</td>
+						<td width="150px" align="left" class="page-title" style="border-bottom: 3px solid #CF1C31; border-top:none; ">강의 정보</td>
 						<td align="left" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 						<td align="right" style="border-bottom: 1px solid gray; border-top:none;">&nbsp;</td>
 					</tr>

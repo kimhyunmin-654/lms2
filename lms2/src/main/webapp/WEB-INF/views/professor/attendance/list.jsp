@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/board.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-X0sP..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/mainPage.css">.request.contextPath}/dist/css/font.css">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <style type="text/css">
 .bbs-header img {

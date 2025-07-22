@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/font.css">
 
 <div class="blackbox">
 	<div class="text-center mb-4">
