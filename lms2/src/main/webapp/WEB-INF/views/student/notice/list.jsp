@@ -132,7 +132,7 @@
 					            <button type="button" class="btn btn-light border" onclick="searchList()">검색</button>
 					        </form>
 					    </div>					
-					</div>
+					</div> 
 				</div>
 			</div>
 		</div>
