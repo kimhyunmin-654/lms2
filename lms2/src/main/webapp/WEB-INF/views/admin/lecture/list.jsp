@@ -129,7 +129,7 @@
 					    <div class="col d-flex justify-content-center">
 					        <form name="searchForm" class="d-flex align-items-center gap-2">
 					            <select name="schType" class="form-select" style="width: 140px;">
-					                <option value="all" ${schType=="all"?"selected":""}>과목+분류</option>
+					                <option value="all" ${schType=="all"?"selected":""}>강의 명+분류</option>
 					                <option value="division" ${schType=="division"?"selected":""}>분류(전공,교양)</option>
 					                <option value="lecture_year" ${schType=="lecture_year"?"selected":""}>개설 연도</option>
 					            </select>
