@@ -93,8 +93,7 @@
 				        <div class="card-body d-flex flex-column gap-3">
 				            <c:forEach var="dto" items="${listData}">
 				                <div class="border rounded p-2 bg-white">
-				                    <a href="${pageContext.request.contextPath}/professor/bbs/article?page=${page}&lecture_code=${dto.lecture_code}&num=${dto.data_id}"
-									   class="text-decoration-none text-dark text-truncate d-block">
+				                    <a href="${pageContext.request.contextPath}/professor/bbs/article?page=${page}&lecture_code=${dto.lecture_code}&num=${dto.data_id}" class="text-decoration-none text-dark text-truncate d-block">
 									    ${dto.subject}
 									</a>
 				                </div>

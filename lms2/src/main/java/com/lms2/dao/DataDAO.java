@@ -352,7 +352,7 @@ public class DataDAO {
 	}
 
 	// 이전글
-	public DataDTO findByPrev(int data_id, String schType, String kwd) {
+	public DataDTO findByPrev(int data_id, String schType, String kwd, String lecture_code) {
 		DataDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -362,42 +362,44 @@ public class DataDAO {
 			if (kwd != null && kwd.length() != 0) {
 				sb.append(" SELECT data_id, subject ");
 				sb.append(" FROM DATA ");
-				sb.append(" WHERE data_id < ? ");
+				sb.append(" WHERE data_id < ? AND lecture_code = ? ");
 
 				if (schType.equals("all")) {
 					sb.append(" AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
 				} else if (schType.equals("reg_date")) {
 					kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
-					sb.append(" AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");
+					sb.append(" AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ");
 				} else {
-					sb.append(" AND ( INSTR(" + schType + ", ?) >= 1  ) ");
+					sb.append(" AND INSTR(" + schType + ", ?) >= 1 ");
 				}
 
-				sb.append(" ORDER BY data_id ASC ");
+				sb.append(" ORDER BY data_id DESC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, data_id);
+				int idx = 1;
+				pstmt.setInt(idx++, data_id);
+				pstmt.setString(idx++, lecture_code);
 
 				if (schType.equals("all")) {
-					pstmt.setString(2, kwd);
-					pstmt.setString(3, kwd);
+					pstmt.setString(idx++, kwd);
+					pstmt.setString(idx++, kwd);
 				} else {
-					pstmt.setString(2, kwd);
+					pstmt.setString(idx++, kwd);
 				}
 			} else {
 				sb.append(" SELECT data_id, subject ");
 				sb.append(" FROM DATA ");
-				sb.append(" WHERE data_id < ? ");
+				sb.append(" WHERE data_id < ? AND lecture_code = ? ");
 				sb.append(" ORDER BY data_id DESC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
 				pstmt.setInt(1, data_id);
+				pstmt.setString(2, lecture_code);
 			}
 
 			rs = pstmt.executeQuery();
-
 			if (rs.next()) {
 				dto = new DataDTO();
 				dto.setData_id(rs.getInt("data_id"));
@@ -414,7 +416,7 @@ public class DataDAO {
 	}
 
 	// 다음글
-	public DataDTO findByNext(int data_id, String schType, String kwd) {
+	public DataDTO findByNext(int data_id, String schType, String kwd, String lecture_code) {
 		DataDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -424,7 +426,7 @@ public class DataDAO {
 			if (kwd != null && kwd.length() != 0) {
 				sb.append(" SELECT data_id, subject ");
 				sb.append(" FROM DATA ");
-				sb.append(" WHERE data_id > ? ");
+				sb.append(" WHERE data_id > ? AND lecture_code = ? ");
 
 				if (schType.equals("all")) {
 					sb.append(" AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
@@ -435,27 +437,30 @@ public class DataDAO {
 					sb.append(" AND INSTR(" + schType + ", ?) >= 1 ");
 				}
 
-				sb.append(" ORDER BY data_id DESC ");
+				sb.append(" ORDER BY data_id ASC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, data_id);
+				int idx = 1;
+				pstmt.setInt(idx++, data_id);
+				pstmt.setString(idx++, lecture_code);
 
 				if (schType.equals("all")) {
-					pstmt.setString(2, kwd);
-					pstmt.setString(3, kwd);
+					pstmt.setString(idx++, kwd);
+					pstmt.setString(idx++, kwd);
 				} else {
-					pstmt.setString(2, kwd);
+					pstmt.setString(idx++, kwd);
 				}
 			} else {
 				sb.append(" SELECT data_id, subject ");
 				sb.append(" FROM DATA ");
-				sb.append(" WHERE data_id > ? ");
+				sb.append(" WHERE data_id > ? AND lecture_code = ? ");
 				sb.append(" ORDER BY data_id ASC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
 				pstmt.setInt(1, data_id);
+				pstmt.setString(2, lecture_code);
 			}
 
 			rs = pstmt.executeQuery();
@@ -494,16 +499,30 @@ public class DataDAO {
 			pstmt.close();
 			
 			if (dto.getOriginal_filename() != null && dto.getSave_filename() != null) {
-	            sql = "UPDATE data_file SET save_filename = ?, original_filename = ?, file_size = ? "
-	                + "WHERE data_id = ?";
-	            pstmt = conn.prepareStatement(sql);
-	            pstmt.setString(1, dto.getSave_filename());
-	            pstmt.setString(2, dto.getOriginal_filename());
-	            pstmt.setInt(3, dto.getFile_size());
-	            pstmt.setLong(4, dto.getData_id());
-	            pstmt.executeUpdate();
-			}
-        } catch (Exception e) {
+			    sql = "UPDATE data_file SET save_filename = ?, original_filename = ?, file_size = ? "
+			        + "WHERE data_id = ?";
+			    pstmt = conn.prepareStatement(sql);
+			    pstmt.setString(1, dto.getSave_filename());
+			    pstmt.setString(2, dto.getOriginal_filename());
+			    pstmt.setInt(3, dto.getFile_size());
+			    pstmt.setInt(4, dto.getData_id());
+			    
+			    int result = pstmt.executeUpdate();
+			    pstmt.close();
+
+			    if (result == 0) {
+
+			        sql = "INSERT INTO data_file(file_id, save_filename, original_filename, file_size, data_id) "
+			            + "VALUES(DATA_FILE_SEQ.NEXTVAL, ?, ?, ?, ?)";
+			        pstmt = conn.prepareStatement(sql);
+			        pstmt.setString(1, dto.getSave_filename());
+			        pstmt.setString(2, dto.getOriginal_filename());
+			        pstmt.setInt(3, dto.getFile_size());
+			        pstmt.setInt(4, dto.getData_id());
+			        pstmt.executeUpdate();
+			        pstmt.close();
+			    }
+			}        } catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {

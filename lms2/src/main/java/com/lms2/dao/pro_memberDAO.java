@@ -99,7 +99,7 @@ public class pro_memberDAO {
 		
 		return result;
 	}
-	
+	/*
 	// 검색데이터 개수
 	public int dataCount(String schType, String kwd, String lecture_code) {
 		int result = 0;
@@ -146,7 +146,7 @@ public class pro_memberDAO {
 		}
 		return result;
 	}
-	
+	*/
 	public List<MemberDTO> listmember(String lecture_code, int offset, int size, String schType, String kwd) {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
 		PreparedStatement pstmt = null;

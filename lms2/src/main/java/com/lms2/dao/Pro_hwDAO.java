@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lms2.model.DataDTO;
 import com.lms2.model.Pro_hwDTO;
 import com.lms2.model.Std_hwDTO;
 import com.lms2.util.DBConn;
@@ -25,14 +24,15 @@ public class Pro_hwDAO {
 		String sql;
 		
 		try {
-			sql = "INSERT INTO homework(homework_id, subject, content, reg_date, modify_date, hit_count, deadline_date, lecture_code)"
-					+ " VALUES(HOMEWORK_SEQ.NEXTVAL, ?, ?, SYSDATE, SYSDATE, 0, TO_DATE(?, 'YYYY-MM-DD'), ?)";
+			sql = "INSERT INTO homework(homework_id, subject, content, reg_date, modify_date, hit_count, deadline_date, lecture_code, member_id)"
+					+ " VALUES(HOMEWORK_SEQ.NEXTVAL, ?, ?, SYSDATE, SYSDATE, 0, TO_DATE(?, 'YYYY-MM-DD'), ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSubject());
 			pstmt.setString(2, dto.getContent());
 			pstmt.setString(3, dto.getDeadline_date());
 			pstmt.setString(4, dto.getLecture_code());
+			pstmt.setString(5, dto.getMember_id());
 	        pstmt.executeUpdate();
 	        pstmt.close();
 	        
@@ -267,7 +267,7 @@ public class Pro_hwDAO {
 			sql = "SELECT h.homework_id, h.subject, h.content, h.hit_count, "
 					+ " TO_CHAR(h.reg_date, 'YYYYMMDD') reg_date, h.deadline_date, "
 					+ " NVL(l.subject, '강의없음') AS lecture_subject, "
-					+ " f.save_filename, f.original_filename, f.file_size "
+					+ " f.save_filename, f.original_filename, f.file_size, l.member_id  "
 					+ " FROM homework h "
 					+ " LEFT JOIN LECTURE l ON h.lecture_code = l.lecture_code "
 					+ " LEFT JOIN homework_file f ON h.homework_id = f.homework_id "
@@ -286,6 +286,7 @@ public class Pro_hwDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setHit_count(rs.getInt("hit_count"));
 				dto.setDeadline_date(rs.getString("deadline_date"));
+				dto.setMember_id(rs.getString("member_id"));
 				dto.setLecture_code(rs.getString("lecture_subject"));
 				dto.setSave_filename(rs.getString("save_filename"));
 				dto.setOriginal_filename(rs.getString("original_filename"));
@@ -303,7 +304,7 @@ public class Pro_hwDAO {
 	}
 	
 	//이전글
-	public Pro_hwDTO findByPrev(int homework_id, String schType, String kwd) {
+	public Pro_hwDTO findByPrev(int homework_id, String lecture_code, String schType, String kwd) {
 		Pro_hwDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -313,7 +314,7 @@ public class Pro_hwDAO {
 			if(kwd != null && kwd.length() != 0) {
 				sb.append(" SELECT homework_id, subject ");
 				sb.append(" FROM homework");
-				sb.append(" WHERE homework_id < ? ");
+				sb.append(" WHERE homework_id < ? AND lecture_code = ?");
 				
 				if(schType.equals("all")) {
 					sb.append(" AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
@@ -329,6 +330,7 @@ public class Pro_hwDAO {
 				
 				pstmt = conn.prepareStatement(sb.toString());
 				pstmt.setInt(1, homework_id);
+				pstmt.setString(2, lecture_code);
 				
 				if(schType.equals("all")) {
 					pstmt.setString(2, kwd);
@@ -364,7 +366,7 @@ public class Pro_hwDAO {
 	}
 	
 	//다음글
-	public Pro_hwDTO findByNext(int homework_id, String schType, String kwd) {
+	public Pro_hwDTO findByNext(int homework_id, String lecture_code, String schType, String kwd) {
 	    Pro_hwDTO dto = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -373,7 +375,7 @@ public class Pro_hwDAO {
 	    try {
 	        sb.append(" SELECT homework_id, subject ");
 	        sb.append(" FROM homework ");
-	        sb.append(" WHERE homework_id > ? ");
+	        sb.append(" WHERE homework_id > ? AND lecture_code = ? ");
 
 	        if (kwd != null && kwd.length() != 0) {
 	            if (schType.equals("all")) {
@@ -392,6 +394,7 @@ public class Pro_hwDAO {
 	        pstmt = conn.prepareStatement(sb.toString());
 
 	        pstmt.setInt(1, homework_id);
+	        pstmt.setString(2, lecture_code);
 
 	        if (kwd != null && kwd.length() != 0) {
 	            if (schType.equals("all")) {
@@ -432,6 +435,9 @@ public class Pro_hwDAO {
 			pstmt.setString(1, dto.getSubject());
 			pstmt.setString(2, dto.getContent());
 			pstmt.setString(3, dto.getDeadline_date());
+	        if (dto.getLecture_code() == null) {
+	            throw new SQLException("강의 코드가없습니다.");
+	        }
 			pstmt.setString(4, dto.getLecture_code());
 			pstmt.setInt(5, dto.getHomework_id());
 			
@@ -541,4 +547,6 @@ public class Pro_hwDAO {
 	        DBUtil.close(pstmt);
 	    }
 	}
+	
+	
 }
