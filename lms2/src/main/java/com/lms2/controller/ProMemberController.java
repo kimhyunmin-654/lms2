@@ -69,19 +69,9 @@ public class ProMemberController {
 			
 			kwd = util.decodeUrl(kwd);
 					
-			int dataCount;
-			if(kwd.length() == 0) {
-				dataCount = dao.dataCount(lecture_code);
-			} else {
-				dataCount = dao.dataCount(schType, kwd, lecture_code);
-			}
 			
 			int size = 10;
-			int total_page = util.pageCount(dataCount, size);
-			if(current_page > total_page) {
-				current_page = total_page;
-			}
-			
+
 			int offset = (current_page - 1) * size;
 			if(offset < 0) offset = 0;
 			
@@ -92,22 +82,13 @@ public class ProMemberController {
 				list = dao.listmember(lecture_code, offset, size, schType, kwd);
 			}
 			
-			// 페이징
-			String cp = req.getContextPath();
-			String listUrl = cp + "/professor/member/list";
-			if(query.length() != 0) {
-				listUrl += "?" + query;
-			}
+
 			
-			String paging = util.paging(current_page, total_page, listUrl);
 			
 			// 포워딩할 JSP에 전달할 속성
 			mav.addObject("list", list);
-			mav.addObject("dataCount", dataCount);
 			mav.addObject("size", size);
 			mav.addObject("page", current_page);
-			mav.addObject("total_page", total_page);
-			mav.addObject("paging", paging);
 			mav.addObject("schType", schType);
 			mav.addObject("kwd", kwd);
 			mav.addObject("lecture_code", lecture_code);
