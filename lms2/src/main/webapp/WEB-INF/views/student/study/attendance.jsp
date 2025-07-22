@@ -27,9 +27,8 @@
 
 			<div class="container mt-5 ">
 			<div style="margin-top: 100px;">
-			<div class="main-wrapper">
-				<div
-					style="font-size: 29px; text-align: center; margin-bottom: 30px;">
+			<div class="main-wrapper bbs-header">
+				<div style="font-size: 29px; text-align: center; margin-bottom: 30px;">
 					<img src="${pageContext.request.contextPath}/dist/images/chulsuk.png">
 				</div>
 
