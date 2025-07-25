@@ -14,7 +14,21 @@ public class Pro_hwDTO {
 	private String original_filename;
 	private int file_size;
 	private String member_id;
+	private String lecture_subject; // 강의명
+	private int course_id;
 	
+	public String getLecture_subject() {
+		return lecture_subject;
+	}
+	public int getCourse_id() {
+		return course_id;
+	}
+	public void setCourse_id(int course_id) {
+		this.course_id = course_id;
+	}
+	public void setLecture_subject(String lecture_subject) {
+		this.lecture_subject = lecture_subject;
+	}
 	public String getMember_id() {
 		return member_id;
 	}

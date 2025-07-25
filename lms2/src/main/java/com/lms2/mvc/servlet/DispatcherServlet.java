@@ -59,12 +59,19 @@ public class DispatcherServlet extends HttpServlet {
 
 	protected void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		 System.out.println("--- DispatcherServlet: 요청 처리 시작 ---");
+	        System.out.println("요청 URI: " + req.getRequestURI());
+	        System.out.println("요청 URL: " + req.getRequestURL());
+	        System.out.println("서블릿 경로: " + req.getServletPath());
+	        System.out.println("컨텍스트 경로: " + req.getContextPath());
+	        System.out.println("HTTP 메서드: " + req.getMethod());
 		// System.out.printf("Method : %s, Request URI : %s\n", req.getMethod(), req.getRequestURI());
 			
 		final Optional<Object> handler = handlerMappingRegistry.getHandler(req);
-        if (handler.isEmpty()) {
+		  System.out.println("DispatcherServlet: Handler 찾기 시도 결과: " + (handler.isEmpty() ? "없음 (404 예상)" : "찾음"));
+		if (handler.isEmpty()) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            System.out.println("DispatcherServlet: 404 응답 반환됨");
             return;
         }
 

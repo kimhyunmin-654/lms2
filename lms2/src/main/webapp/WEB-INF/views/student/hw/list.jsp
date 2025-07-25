@@ -50,7 +50,7 @@
 							<td>${dataCount - (page - 1) * size - status.index}</td>
 							<td class="left">
 								<div class="text-wrap">
-									<a href="${pageContext.request.contextPath}/student/hw/article?homework_id=${dto.homework_id}&page=${page}&lecture_code=${lecture_code}" class="text-reset">${dto.subject}</a>
+									<a href="${articleUrl}&num=${dto.homework_id}" class="text-reset">${dto.subject}</a>
 								</div>
 							</td>
 							<td>${dto.reg_date}</td>
@@ -58,9 +58,7 @@
 							<td>
 								<c:if test="${not empty dto.save_filename}">
 									<div>
-										<a href="${pageContext.request.contextPath}/homework/download?homework_id=${dto.homework_id}">
-											<i class="fa-solid fa-floppy-disk"></i>
-										</a>
+										<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.homework_id}"><i class="fa-solid fa-floppy-disk"></i></a>
 									</div>
 								</c:if>
 							</td>
@@ -96,10 +94,6 @@
 								<button type="button" class="btn btn-light" onclick="searchList()">검색</button>
 							</div>
 						</form>
-					</div>
-
-					<div class="col text-end">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/student/hw/write?lecture_code=${lecture_code}';">글올리기</button>
 					</div>
 				</div>
 			</div>

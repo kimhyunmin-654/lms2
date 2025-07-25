@@ -49,20 +49,22 @@
 						<tr>
 							<td>${dataCount - (page - 1) * size - status.index}</td>
 							<td class="left">
-								<div class="text-wrap">
-									<a href="${pageContext.request.contextPath}/professor/hw/article?homework_id=${dto.homework_id}&page=${page}&lecture_code=${lecture_code}" class="text-reset">${dto.subject}</a>
-								</div>
+									<div class="text-wrap">
+										<a href="${articleUrl}&num=${dto.homework_id}" class="text-reset">${dto.subject}</a>
+									</div>
 							</td>
 							<td>${dto.reg_date}</td>
 							<td>${dto.deadline_date}</td>
 							<td>
 								<c:if test="${not empty dto.save_filename}">
 									<div>
-										<a href="${pageContext.request.contextPath}/homework/download?homework_id=${dto.homework_id}">
+										<a href="${pageContext.request.contextPath}/homework/download?num=${dto.homework_id}"><i class="fa-solid fa-floppy-disk"></i></a>
 											<i class="fa-solid fa-floppy-disk"></i>
-										</a>
 									</div>
 								</c:if>
+							</td>
+							<td>
+								${dto.hit_count}
 							</td>
 						</tr>
 						</c:forEach>
@@ -78,13 +80,12 @@
 					</div>
 					<div class="col-6 d-flex justify-content-center">
 						<form class="row" name="searchForm">
-							<input type="hidden" name="lecture_code" value="${lecture_code}"> <!-- ✅ 추가 -->
-
+							<input type="hidden" name="lecture_code" value="${lecture_code}">
 							<div class="col-auto p-1">
 								<select name="schType" class="form-select">
 									<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
-									<option value="userName" ${schType=="userName"?"selected":""}>작성자</option>
 									<option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
+									<option value="deadline_date" ${schType=="deadline_date"?"selected":""}>마감일</option>
 									<option value="subject" ${schType=="subject"?"selected":""}>제목</option>
 									<option value="content" ${schType=="content"?"selected":""}>내용</option>
 								</select>

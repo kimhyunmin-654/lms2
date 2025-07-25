@@ -27,50 +27,50 @@
 
                     <div class="body-main">
                         <table class="table table-bordered">
-                            <tr>
-                                <th>제목</th>
-                                <td>${dto.subject}</td>
-                            </tr>
-                            <tr>
-                                <th>내용</th>
-                                <td>${dto.content}</td>
-                            </tr>
+							<tr style="border-top: 3px solid black;">
+								<td width="150px" align="justify">제   목</td>
+								<td align="left">${dto.subject}</td>
+							</tr>
+							<tr>
+								<td width="150px" align="justify">조회수</td>
+								<td align="left">${dto.hit_count}</td>
+							</tr>
+								<tr>
+									<td colspan="2" valign="top" height="200" style="padding: 20px; min-height:200px;">${dto.content}</td>
+								</tr>
+
                             <tr>
                                 <th>마감일</th>
                                 <td>${dto.deadline_date}</td>
                             </tr>
-                            <c:if test="${not empty dto.save_filename}">
-                                <tr>
-                                    <th>첨부파일</th>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/student/hw/download?assign_id=${dto.member_id}">
-                                            <i class="fa-solid fa-floppy-disk"></i>&nbsp;${dto.original_filename}
-                                        </a>
-                                    </td>
-                                </tr>
-                            </c:if>
+							<tr>
+								<c:if test="${not empty dto.save_filename}">
+									<td colspan="2" align="justify">파일명: <i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.homework_id}">${dto.original_filename}</a></td>
+								</c:if>
+							</tr>
                         </table>
 
-                        <h5 class="mt-5">과제 제출</h5>
-                        <form action="${pageContext.request.contextPath}/student/hw/submit" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="assign_id" value="${dto.member_id}" />
-                            <input type="hidden" name="lecture_code" value="${param.lecture_code}" />
-
-                            <div class="mb-3">
-                                <label for="submit_content" class="form-label">제출 내용</label>
-                                <textarea class="form-control" id="submit_content" name="submit_content" rows="5" required></textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="upload" class="form-label">첨부파일</label>
-                                <input type="file" class="form-control" id="upload" name="upload" />
-                            </div>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">제출하기</button>
-                                <a href="${pageContext.request.contextPath}/student/hw/list?lecture_code=${param.lecture_code}" class="btn btn-secondary">목록</a>
-                            </div>
-                        </form>
+						<h5 class="mt-5">과제 제출</h5>
+						<form action="${pageContext.request.contextPath}/student/hw/submit" method="post" enctype="multipart/form-data">
+						    <input type="hidden" name="homework_id" value="${dto.homework_id}" />
+						    <input type="hidden" name="course_id" value="${dto.course_id}" />
+						    <input type="hidden" name="lecture_code" value="${param.lecture_code}" />
+						
+						    <div class="mb-3">
+						        <label for="assign_content" class="form-label">제출 내용</label>
+						        <textarea class="form-control" id="assign_content" name="submit_content" rows="5" required></textarea>
+						    </div>
+						
+						    <div class="mb-3">
+						        <label for="upload" class="form-label">첨부파일</label>
+						        <input type="file" class="form-control" id="upload" name="upload" />
+						    </div>
+						
+						    <div class="text-center">
+						        <button type="submit" class="btn btn-primary">제출하기</button>
+						        <a href="${pageContext.request.contextPath}/student/hw/list?lecture_code=${param.lecture_code}" class="btn btn-secondary">목록</a>
+						    </div>
+						</form>
 
                     </div>
                 </div>
